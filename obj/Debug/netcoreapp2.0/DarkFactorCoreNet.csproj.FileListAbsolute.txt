@@ -1,0 +1,11 @@
+/Users/Thor/Develop/aspnetcoreapp/bin/Debug/netcoreapp2.0/DarkFactorCoreNet.deps.json
+/Users/Thor/Develop/aspnetcoreapp/bin/Debug/netcoreapp2.0/DarkFactorCoreNet.runtimeconfig.json
+/Users/Thor/Develop/aspnetcoreapp/bin/Debug/netcoreapp2.0/DarkFactorCoreNet.runtimeconfig.dev.json
+/Users/Thor/Develop/aspnetcoreapp/bin/Debug/netcoreapp2.0/DarkFactorCoreNet.dll
+/Users/Thor/Develop/aspnetcoreapp/bin/Debug/netcoreapp2.0/DarkFactorCoreNet.pdb
+/Users/Thor/Develop/aspnetcoreapp/obj/Debug/netcoreapp2.0/DarkFactorCoreNet.csprojResolveAssemblyReference.cache
+/Users/Thor/Develop/aspnetcoreapp/obj/Debug/netcoreapp2.0/DarkFactorCoreNet.csproj.CoreCompileInputs.cache
+/Users/Thor/Develop/aspnetcoreapp/obj/Debug/netcoreapp2.0/DarkFactorCoreNet.AssemblyInfoInputs.cache
+/Users/Thor/Develop/aspnetcoreapp/obj/Debug/netcoreapp2.0/DarkFactorCoreNet.AssemblyInfo.cs
+/Users/Thor/Develop/aspnetcoreapp/obj/Debug/netcoreapp2.0/DarkFactorCoreNet.dll
+/Users/Thor/Develop/aspnetcoreapp/obj/Debug/netcoreapp2.0/DarkFactorCoreNet.pdb
