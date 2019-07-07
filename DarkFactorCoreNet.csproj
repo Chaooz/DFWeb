@@ -16,5 +16,10 @@
     <Folder Include="Pages\Views\RightSideElements\" />
     <Folder Include="Source\" />
     <Folder Include="Source\Database\" />
+    <Folder Include="Pages\Views\LeftSideElements\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Pages\Views\LeftSideElements\AdminMenu.cshtml" />
   </ItemGroup>
 </Project>

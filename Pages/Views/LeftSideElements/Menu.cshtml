@@ -1,0 +1,11 @@
+﻿@using DarkFactorCoreNet.Models
+@model List<MenuItem>
+
+<table width=180 cellspacing=2 cellpadding=0>
+
+    @foreach (var item in Model)
+    {
+        <tr><td align=right><div class="@item.MenuClass"><a class=menutext href="index.php?id=@item.ID">@item.Name</a></div></td></tr>
+    }
+
+</table>
