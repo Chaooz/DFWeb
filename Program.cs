@@ -14,12 +14,21 @@ namespace aspnetcoreapp
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            var webHost = CreateWebHostBuilder(args).Build();
+
+            //using ( var scope = webHost.Services.CreateScope())
+            {
+                //var services = scope.ServiceProvider;
+
+                // Connect up database
+
+            }
+
+            webHost.Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
+                .UseStartup<Startup>();
     }
 }
