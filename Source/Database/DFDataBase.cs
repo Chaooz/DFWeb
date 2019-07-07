@@ -79,7 +79,7 @@ namespace DarkFactorCoreNet.Source.Database
         *************************************************************************************************/
         public DFStatement ExecuteSelect( string sql )
         {
-            MySqlCommand cmd = new MySqlCommand(stm, conn);
+            MySqlCommand cmd = new MySqlCommand(sql, conn);
             MySqlDataReader rdr = cmd.ExecuteReader();
 
             while (rdr.Read()) 
