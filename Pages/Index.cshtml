@@ -4,51 +4,14 @@
     ViewData["Title"] = "Home page";
 }
 
-
 <div>
-    <div> DF HEADER </div>
-
     <div class="row">
-        <div>
-            @Html.Partial("Modules/Carousel")
+        <div class="col-md-9">
+            @Html.Partial("Views/Carousel/Carousel")
         </div>
         <div class="col-md-3">
-            blabla
-            Menu
+            @Html.Partial("Views/RightSideElements/News")
         </div>
     </div>
-
 </div>
 
-<div class="row">
-    <div class="col-md-3">
-        <h2>Code blog</h2>
-        <ul>
-            <li>Setting up a Core .net webpage</li>
-            <li>Octopus deploy</li>
-            <li>Se all ...</li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Games</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?linkid=852130">B.E.E.R</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699315">Valyrian Adventures</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Applications</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conan Chat</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699320">TSW Chat</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Run &amp; Deploy</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517851">Run your app</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517853">Run tools such as EF migrations and more</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure App Service</a></li>
-        </ul>
-    </div>
-</div>
