@@ -17,6 +17,7 @@ namespace DarkFactorCoreNet.Models
         public int ID;
         public int ParentID;
         public string Name;
+        public bool IsPublished;
         public string MenuClass;
 
         public MenuItem()

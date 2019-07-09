@@ -1,0 +1,100 @@
+﻿using System;
+using System.Collections.Generic;
+using DarkFactorCoreNet.Models;
+using System.Linq;
+
+namespace DarkFactorCoreNet.Controllers
+{
+    public class MenuController
+    {
+        public List<MenuItem> menuItems;
+
+        public MenuController()
+        {
+            menuItems = new List<MenuItem>();
+            menuItems.Add(new MenuItem() { ID = 1, ParentID = 0, Name = "H O M E", IsPublished = true });
+            menuItems.Add(new MenuItem() { ID = 2, ParentID = 0, Name = "Codemonkey Blog", IsPublished = false });
+            menuItems.Add(new MenuItem() { ID = 3, ParentID = 2, Name = ".Net Core 2 Website", IsPublished = true });
+            menuItems.Add(new MenuItem() { ID = 4, ParentID = 0, Name = "Games", IsPublished = true });
+            menuItems.Add(new MenuItem() { ID = 5, ParentID = 0, Name = "Apps", IsPublished = true });
+            menuItems.Add(new MenuItem() { ID = 7, ParentID = 4, Name = "Noid", IsPublished = true });
+            menuItems.Add(new MenuItem() { ID = 8, ParentID = 4, Name = "Valyrian Adventures", IsPublished = true });
+        }
+
+        public int GetDefaultId()
+        {
+            return menuItems[0].ID;
+        }
+
+        public List<MenuItem> SelectItem( int selectedItemId )
+        {
+            if (selectedItemId == 0 )
+            {
+                selectedItemId = GetDefaultId();
+            }
+
+            // Create the expanded tree
+            List<int> selectedTree = new List<int>();
+            GetSelectedTree(selectedTree, selectedItemId);
+
+            // Add top nodes
+            List<MenuItem> visibleItems = new List<MenuItem>();
+            AddItemsWithParent(visibleItems, selectedTree, 0);
+            return visibleItems;
+        }
+
+        private void AddItemsWithParent(List<MenuItem> visibleItems, List<int> selectedTree, int parentId )
+        {
+            foreach (var menuItem in menuItems)
+            {
+                if (menuItem.ParentID == parentId)
+                {
+                    menuItem.MenuClass = GetMenuClass(menuItem.IsPublished, parentId == 0);
+
+                    visibleItems.Add(menuItem);
+
+                    // Expand child tree
+                    if ( selectedTree.Contains( menuItem.ID ) )
+                    {
+                        AddItemsWithParent(visibleItems, selectedTree, menuItem.ID);
+                    }
+                }
+            }
+        }
+
+        private string GetMenuClass(bool isPublished, bool isMainItem)
+        {
+            if ( isPublished && isMainItem )
+            {
+                return MenuItem.CLASS_MENU;
+            }
+            else if ( isPublished && !isMainItem )
+            {
+                return MenuItem.CLASS_SUBMENU;
+            }
+            else if ( !isPublished && isMainItem )
+            {
+                return MenuItem.CLASS_DRAFTMENU;
+            }
+            else
+            {
+                return MenuItem.CLASS_DRAFTSUBMENU;
+            }
+        }
+
+        private void GetSelectedTree(List<int> expandedTree, int itemId)
+        {
+            var menuItem = GetMenuItem(itemId);
+            if ( menuItem != null && menuItem.ParentID != 0)
+            {
+                GetSelectedTree(expandedTree, menuItem.ParentID);
+            }
+            expandedTree.Add(itemId);
+        }
+
+        private MenuItem GetMenuItem( int menuId )
+        {
+            return menuItems.Where(x => x.ID == menuId).FirstOrDefault();
+        }
+    }
+}

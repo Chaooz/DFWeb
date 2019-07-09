@@ -39,6 +39,7 @@ namespace aspnetcoreapp
             app.UseStaticFiles();
 
             app.UseMvc();
+
         }
     }
 }

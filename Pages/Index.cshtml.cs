@@ -5,19 +5,31 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using DarkFactorCoreNet.Models;
+using DarkFactorCoreNet.Controllers;
 
 namespace aspnetcoreapp.Pages
 {
     public class IndexModel : PageModel
     {
-        public List<MenuItem> list;
+        public List<MenuItem> menuItems;
 
-        public void OnGet()
+        private MenuController menuController;
+        private PageController pageController;
+
+        public IndexModel()
         {
-            list = new List<MenuItem>();
-            list.Add(new MenuItem() { ID = 1, ParentID = 0, Name = "H O M E", MenuClass = MenuItem.CLASS_MENU });
-            list.Add(new MenuItem() { ID = 2, ParentID = 0, Name = "Codemonkey Blog", MenuClass = MenuItem.CLASS_DRAFTMENU });
-            list.Add(new MenuItem() { ID = 3, ParentID = 2, Name = ".Net Core 2 Website", MenuClass = MenuItem.CLASS_DRAFTSUBMENU });
+            menuController = new MenuController();
+            pageController = new PageController();
+        }
+
+        //public void OnGet()
+        //{
+        //    menuItems = menuController.GetDefaultSelection();
+        //}
+
+        public void OnGet(int id)
+        {
+            menuItems = menuController.SelectItem(id);
         }
 
         public ActionResult OnGetPartial() =>
