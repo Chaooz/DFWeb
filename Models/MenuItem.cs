@@ -9,6 +9,8 @@ namespace DarkFactorCoreNet.Models
 {
     public class MenuItem
     {
+        public static string CLASS_SELECTED = "selectedmenu";
+        public static string CLASS_SELECTED_SUB = "selectedsubmenu";
         public static string CLASS_MENU = "menu";
         public static string CLASS_SUBMENU = "submenu";
         public static string CLASS_DRAFTMENU = "menu_editor";
@@ -19,6 +21,7 @@ namespace DarkFactorCoreNet.Models
         public string Name;
         public bool IsPublished;
         public string MenuClass;
+        public int Width;
 
         public MenuItem()
         {

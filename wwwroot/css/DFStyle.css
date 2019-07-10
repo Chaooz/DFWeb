@@ -29,6 +29,14 @@ li {
     font-size: x-small;
 }
 
+.menu, .disabledmenu, .selectedmenu, .menu_editor {
+    width: 180px;
+}
+
+.submenu, .disabledsubmenu, .selectedsubmenu, .submenu_editor {
+    width: 150px;
+}
+
 .menu {
     background: #272727;
     border: solid #777777 1px;
