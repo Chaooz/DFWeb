@@ -1,35 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
+﻿using MySql.Data.MySqlClient;
 
 namespace DarkFactorCoreNet.Source.Database
 {
-    // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
     public class DFStatement
     {
-        private readonly RequestDelegate _next;
+        private MySqlDataReader reader;
+        private int index;
 
-        public DFStatement(RequestDelegate next)
+        public DFStatement(MySqlDataReader reader)
         {
-            _next = next;
+            this.reader = reader;
+            this.index = 0;
         }
 
-        public Task Invoke(HttpContext httpContext)
+        public bool ReadNext()
         {
-
-            return _next(httpContext);
+            if ( this.reader != null )
+            {
+                return this.reader.Read();
+            }
+            return false;
         }
-    }
 
-    // Extension method used to add the middleware to the HTTP request pipeline.
-    public static class DFStatementExtensions
-    {
-        public static IApplicationBuilder UseMiddlewareClassTemplate(this IApplicationBuilder builder)
+        public int ReadUInt32()
         {
-            return builder.UseMiddleware<DFStatement>();
+            if ( this.reader != null)
+            {
+                return this.reader.GetInt32(index++);
+            }
+            return 0;
+        }
+
+        public int ReadUInt32( string columnName )
+        {
+            if (this.reader != null)
+            {
+                index++;
+                return this.reader.GetInt32(columnName);
+            }
+            return 0;
+        }
+
+        public string ReadString(string columnName)
+        {
+            if (this.reader != null)
+            {
+                index++;
+                return this.reader.GetString(columnName);
+            }
+            return null;
         }
     }
 }

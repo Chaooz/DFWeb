@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using DarkFactorCoreNet.Models;
 using System.Linq;
 
+using DarkFactorCoreNet.Repository;
+
 namespace DarkFactorCoreNet.Controllers
 {
     public class MenuController
     {
         public List<MenuItem> menuItems;
+        private MenuRepository menuRepository;
 
         public MenuController()
         {
-            menuItems = new List<MenuItem>();
+            menuRepository = new MenuRepository();
+            menuItems = menuRepository.GetAllItems();
+
+            /*
             menuItems.Add(new MenuItem() { ID = 1, ParentID = 0, Name = "H O M E", IsPublished = true });
             menuItems.Add(new MenuItem() { ID = 2, ParentID = 0, Name = "Codemonkey Blog", IsPublished = false });
             menuItems.Add(new MenuItem() { ID = 3, ParentID = 2, Name = ".Net Core 2 Website", IsPublished = false });
@@ -21,6 +27,7 @@ namespace DarkFactorCoreNet.Controllers
             menuItems.Add(new MenuItem() { ID = 7, ParentID = 4, Name = "Noid", IsPublished = true });
             menuItems.Add(new MenuItem() { ID = 8, ParentID = 4, Name = "Valyrian Adventures", IsPublished = true });
             menuItems.Add(new MenuItem() { ID = 10, ParentID = 8, Name = "Screenshot", IsPublished = true });
+            */
         }
 
         public int GetDefaultId()

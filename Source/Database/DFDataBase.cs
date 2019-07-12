@@ -20,27 +20,33 @@ namespace DarkFactorCoreNet.Source.Database
             conn = null;
         }
 
+        public bool IsConnected()
+        {
+            return conn != null;
+        }
+
         public void Connect(string server, string database, string username, string password)
         {
-            string cs = @"server=localhost;userid=user12;
-            password=34klq*;database=mydb";
+            string cs = string.Format("server={0};userid={1};password={2};database={3}",
+                server,
+                username,
+                password,
+                database);
 
             try
             {
                 conn = new MySqlConnection(cs);
                 conn.Open();
                 Console.WriteLine("MySQL version : {0}", conn.ServerVersion);
-
+                return;
             }
             catch (MySqlException ex)
             {
                 Console.WriteLine("Error: {0}", ex.ToString());
-            }
-            finally
-            {
                 if (conn != null)
                 {
                     conn.Close();
+                    conn = null;
                 }
             }
         }
@@ -80,12 +86,13 @@ namespace DarkFactorCoreNet.Source.Database
         public DFStatement ExecuteSelect( string sql )
         {
             MySqlCommand cmd = new MySqlCommand(sql, conn);
-            MySqlDataReader rdr = cmd.ExecuteReader();
-
-            while (rdr.Read()) 
+            if ( cmd != null )
             {
-                Console.WriteLine(rdr.GetInt32(0) + ": " 
-                    + rdr.GetString(1));
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader != null )
+                {
+                    return new DFStatement(reader);
+                }
             }
             return null;
         }
