@@ -8,16 +8,18 @@ namespace DarkFactorCoreNet.Repository
         private string username;
         private string password;
         private string server;
+        private int port;
         private string database;
 
         protected DFDataBase dataBase;
 
         public BaseRepository()
         {
-            server = "";
-            username = "";
-            password = "";
-            database = "";
+            server = "127.0.0.1";
+            port = 5306;
+            username = "dfweb";
+            password = "testpass";
+            database = "dfweb";
         }
 
         protected DFDataBase GetOrCreateDatabase()
@@ -29,7 +31,7 @@ namespace DarkFactorCoreNet.Repository
 
             if ( !dataBase.IsConnected() )
             {
-                dataBase.Connect(server, database, username,password);
+                dataBase.Connect(server, port, database, username,password);
             }
 
             return dataBase;

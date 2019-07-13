@@ -25,10 +25,11 @@ namespace DarkFactorCoreNet.Source.Database
             return conn != null;
         }
 
-        public void Connect(string server, string database, string username, string password)
+        public void Connect(string server, int port, string database, string username, string password)
         {
-            string cs = string.Format("server={0};userid={1};password={2};database={3}",
+            string cs = string.Format("server={0};port={1};userid={2};password={3};database={4}",
                 server,
+                port,
                 username,
                 password,
                 database);
