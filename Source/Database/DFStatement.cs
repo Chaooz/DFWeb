@@ -15,6 +15,7 @@ namespace DarkFactorCoreNet.Source.Database
 
         public bool ReadNext()
         {
+            this.index = 0;
             if ( this.reader != null )
             {
                 return this.reader.Read();
@@ -26,8 +27,12 @@ namespace DarkFactorCoreNet.Source.Database
         {
             if ( this.reader != null)
             {
-                return this.reader.GetInt32(index++);
+                if (!this.reader.IsDBNull(index))
+                {
+                    return this.reader.GetInt32(index++);
+                }
             }
+            index++;
             return 0;
         }
 
@@ -35,19 +40,40 @@ namespace DarkFactorCoreNet.Source.Database
         {
             if (this.reader != null)
             {
-                index++;
-                return this.reader.GetInt32(columnName);
+                if (!this.reader.IsDBNull(index))
+                {
+                    index++;
+                    return this.reader.GetInt32(columnName);
+                }
             }
+            index++;
             return 0;
+        }
+
+        public string ReadString()
+        {
+            if (this.reader != null)
+            {
+                if (!this.reader.IsDBNull(index))
+                {
+                    return this.reader.GetString(index++);
+                }
+            }
+            index++;
+            return null;
         }
 
         public string ReadString(string columnName)
         {
             if (this.reader != null)
             {
-                index++;
-                return this.reader.GetString(columnName);
+                if ( !this.reader.IsDBNull(index))
+                {
+                    index++;
+                    return this.reader.GetString(columnName);
+                }
             }
+            index++;
             return null;
         }
     }

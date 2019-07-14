@@ -13,6 +13,11 @@
         </div>
         <div class="col-md-9">
             @Html.Partial("Views/Carousel/Carousel")
+            @if (Model.pageModel != null)
+            {
+                <div>&nbsp;</div>
+                @Html.Partial("Views/MainElements/Page.cshtml", Model.pageModel)
+            }
         </div>
     </div>
 </div>

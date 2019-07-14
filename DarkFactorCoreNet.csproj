@@ -19,5 +19,6 @@
     <Folder Include="Pages\Views\LeftSideElements\" />
     <Folder Include="Models\" />
     <Folder Include="Repository\" />
+    <Folder Include="Pages\Views\MainElements\" />
   </ItemGroup>
 </Project>

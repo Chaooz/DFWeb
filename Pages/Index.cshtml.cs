@@ -11,10 +11,11 @@ namespace aspnetcoreapp.Pages
 {
     public class IndexModel : PageModel
     {
-        public List<MenuItem> menuItems;
+        public List<MenuItem>   menuItems;
+        public PageContentModel pageModel;
 
-        private MenuController menuController;
-        private PageController pageController;
+        private MenuController  menuController;
+        private PageController  pageController;
 
         public IndexModel()
         {
@@ -30,6 +31,7 @@ namespace aspnetcoreapp.Pages
         public void OnGet(int id)
         {
             menuItems = menuController.SelectItem(id);
+            pageModel = pageController.GetPage(id);
         }
 
         public ActionResult OnGetPartial() =>

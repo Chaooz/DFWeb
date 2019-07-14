@@ -15,7 +15,7 @@ namespace DarkFactorCoreNet.Repository
         {            List<MenuItem> itemList = new List<MenuItem>();
 
             DFStatement statement = base.GetOrCreateDatabase()
-                .ExecuteSelect("select id,parentid, menuname, published from content order by sort");
+                .ExecuteSelect("select id, parentid, menuname, published from content order by sort");
 
             while (statement.ReadNext())
             {
