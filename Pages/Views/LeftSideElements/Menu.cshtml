@@ -5,7 +5,7 @@
 
     @foreach (var item in Model)
     {
-        <tr><td align=right><div class="@item.MenuClass" style="width:@(item.Width)px"><a class=menutext href="/index?id=@item.ID">@item.Name</a></div></td></tr>
+        <tr><td align=right><div class="@item.MenuClass" style="width:@(item.Width)px"><a class=menutext href="/page?id=@item.ID">@item.Name</a></div></td></tr>
     }
 
 </table>

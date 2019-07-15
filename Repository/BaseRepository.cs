@@ -9,9 +9,7 @@ namespace DarkFactorCoreNet.Repository
         private string password;
         private string server;
         private int port;
-        private string database;
-
-        protected DFDataBase dataBase;
+        private string schema;
 
         public BaseRepository()
         {
@@ -19,22 +17,19 @@ namespace DarkFactorCoreNet.Repository
             port = 5306;
             username = "dfweb";
             password = "testpass";
-            database = "dfweb";
+            schema = "dfweb";
         }
 
         protected DFDataBase GetOrCreateDatabase()
         {
-            if (dataBase == null )
+            DFDataBase db = DFDataBase.GetInstance();
+
+            if ( !db.IsConnected() )
             {
-                dataBase = new DFDataBase();
+                db.Connect(server, port, schema, username,password);
             }
 
-            if ( !dataBase.IsConnected() )
-            {
-                dataBase.Connect(server, port, database, username,password);
-            }
-
-            return dataBase;
+            return db;
         }
     }
 }

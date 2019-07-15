@@ -15,9 +15,20 @@ namespace DarkFactorCoreNet.Source.Database
     {
         private MySqlConnection conn;
 
+        private static DFDataBase instance = null;
+
         public DFDataBase()
         {
             conn = null;
+        }
+
+        public static DFDataBase GetInstance()
+        {
+            if ( instance == null )
+            {
+                instance = new DFDataBase();
+            }
+            return instance;
         }
 
         public bool IsConnected()
@@ -25,14 +36,14 @@ namespace DarkFactorCoreNet.Source.Database
             return conn != null;
         }
 
-        public void Connect(string server, int port, string database, string username, string password)
+        public void Connect(string server, int port, string schema, string username, string password)
         {
             string cs = string.Format("server={0};port={1};userid={2};password={3};database={4}",
                 server,
                 port,
                 username,
                 password,
-                database);
+                schema);
 
             try
             {

@@ -21,4 +21,7 @@
     <Folder Include="Repository\" />
     <Folder Include="Pages\Views\MainElements\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Pages\About.cshtml" />
+  </ItemGroup>
 </Project>
