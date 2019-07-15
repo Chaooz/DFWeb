@@ -214,11 +214,19 @@ li {
     align: center;
 }
 
-.editpage {
+.edit_header {
     font-size: x-small;
     text-decoration: none;
     width: 500px;
     align: center;
+}
+
+.edit_input {
+    font-size: x-small;
+    text-decoration: none;
+    width: 500px;
+    align: center;
+    color: black;
 }
 
 .buildbox {

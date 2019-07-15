@@ -7,40 +7,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using DarkFactorCoreNet.Models;
 using DarkFactorCoreNet.Controllers;
 
-namespace aspnetcoreapp.Pages
+namespace DarkFactorCoreNet.Pages
 {
-    public class Page : PageModel
+    public class Page : BasePageModel
     {
-        public List<MenuItem> menuItems;
-        public PageContentModel pageModel;
-
-        private MenuController menuController;
-        private PageController pageController;
-
-        public Page()
-        {
-            menuController = new MenuController();
-            pageController = new PageController();
-        }
-
-        //public void OnGet()
-        //{
-        //    menuItems = menuController.GetDefaultSelection();
-        //}
-
-        public void OnGet(int id)
-        {
-            menuItems = menuController.SelectItem(id);
-            pageModel = pageController.GetPage(id);
-        }
-
-        public ActionResult OnGetPartial() =>
-
-            new PartialViewResult
-            {
-                ViewName = "Menu",
-                ViewData = ViewData,
-            };
 
     }
 }

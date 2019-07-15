@@ -1,0 +1,33 @@
+﻿@using DarkFactorCoreNet.Models
+@model PageContentModel
+
+<table width=720 cellpadding=5>
+    <tr>
+        <td>
+            <form action='/edit/save' method='POST' style='display: inline;'>
+
+                <input type='hidden' name='id' value='@Model.ID'>
+
+                <div class='edit_header'>Access Control</div>
+                <select name='acl' class='edit_input'>
+                    <option value=0> Public </option>
+                    <option value=1> Member </option>
+                    <option value=2 selected> Editor </option>
+                    <option value=3> Admin </option>
+                </select>
+                <br><br>
+
+                <div class='edit_header'>Title</div>
+                <input name='title' type='text' class='edit_input' value='@Model.Title' placeholder='Enter title'>
+
+                <br><br>
+
+                <div class='edit_header'>Content</div>
+                <textarea rows=30 cols=60 name='content' class='edit_input'>
+                <center>@Model.Content</center>
+                </textarea><br>
+
+            </form>
+        </td>
+    </tr>
+</table>

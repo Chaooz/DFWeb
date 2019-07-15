@@ -24,4 +24,8 @@
   <ItemGroup>
     <Content Remove="Pages\About.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Pages\About.cshtml.cs" />
+    <Compile Remove="Pages\Views\MainElements\Edit.cs" />
+  </ItemGroup>
 </Project>
