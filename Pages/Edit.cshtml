@@ -7,12 +7,12 @@
 <div>
     <div class="row">
         <div class="col-md-3">
-            @Html.Partial("Views/LeftSideElements/Menu.cshtml", Model.menuItems)
+            @await Html.PartialAsync("Views/LeftSideElements/Menu.cshtml", Model.menuItems)
             <div>&nbsp;</div>
-            @Html.Partial("Views/LeftSideElements/AdminMenu.cshtml")
+            @await Html.PartialAsync("Views/LeftSideElements/AdminMenu.cshtml", Model.pageId)
         </div>
         <div class="col-md-9">
-            @Html.Partial("Views/MainElements/Edit.cshtml", Model.pageModel)
+            @await Html.PartialAsync("Views/MainElements/Edit.cshtml", Model.pageModel)
         </div>
     </div>
 </div>

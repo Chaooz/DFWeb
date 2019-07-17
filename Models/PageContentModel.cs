@@ -5,10 +5,12 @@ namespace DarkFactorCoreNet.Models
 {
     public class PageContentModel
     {
-        public int ID;
-        public string Title;
-        public HtmlString Content;
-        public bool IsPublished;
+        public int ID { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public bool IsPublished { get; set; }
+
+        public HtmlString HtmlContent { get; set; }
 
         public PageContentModel()
         {

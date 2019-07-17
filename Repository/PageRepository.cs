@@ -29,12 +29,31 @@ namespace DarkFactorCoreNet.Repository
                     {
                         ID = id,
                         Title = title,
-                        Content = new HtmlString(content),
+                        Content = content,
+                        HtmlContent = new HtmlString(content),
                         IsPublished = published
                     };
                 }
                 return null;
             }
+        }
+
+        public bool SavePage(PageContentModel pageModel)
+        {
+            int isPublised = (pageModel.IsPublished) ? 1 : 0;
+
+            var db = base.GetOrCreateDatabase();
+
+            string sql = @"update content set menuname=@menuname, content = @content, published = @published where id = @id ";
+
+            var variables = db.CreateVariables();
+            variables.Add("@menuname", pageModel.Title);
+            variables.Add("@content", pageModel.Content);
+            variables.Add("@published", isPublised);
+            variables.Add("@id", pageModel.ID);
+
+            int updatedRows = base.GetOrCreateDatabase().ExecuteUpdate(sql, variables);
+            return ( updatedRows == 1);
         }
     }
 }

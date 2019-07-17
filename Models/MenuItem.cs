@@ -16,10 +16,10 @@ namespace DarkFactorCoreNet.Models
         public static string CLASS_DRAFTMENU = "menu_editor";
         public static string CLASS_DRAFTSUBMENU = "submenu_editor";
 
-        public int ID;
-        public int ParentID;
-        public string Name;
-        public bool IsPublished;
+        public int ID { get; set; }
+        public int ParentID { get; set; }
+        public string Name { get; set; }
+        public bool IsPublished { get; set; }
 
         // Temp classes
         public string MenuClass;
