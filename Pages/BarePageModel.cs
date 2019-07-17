@@ -13,20 +13,23 @@ namespace DarkFactorCoreNet.Pages
     {
         public List<MenuItem> menuItems;
         public PageContentModel pageModel;
+        public int pageId;
 
-        protected MenuController menuController;
-        protected PageController pageController;
+        protected MenuCollector menuController;
+        protected PageCollector pageController;
 
         public BasePageModel()
         {
-            menuController = new MenuController();
-            pageController = new PageController();
+            menuController = new MenuCollector();
+            pageController = new PageCollector();
+            pageId = 0;
         }
 
         public void OnGet(int id)
         {
             menuItems = menuController.SelectItem(id);
             pageModel = pageController.GetPage(id);
+            pageId = id;
         }
 
         public ActionResult OnGetPartial() =>

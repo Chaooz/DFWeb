@@ -9,11 +9,11 @@ using DarkFactorCoreNet.Models;
 
 namespace DarkFactorCoreNet.Controllers
 {
-    public class PageController
+    public class PageCollector
     {
         private PageRepository pageRepository;
 
-        public PageController()
+        public PageCollector()
         {
             pageRepository = new PageRepository();
         }

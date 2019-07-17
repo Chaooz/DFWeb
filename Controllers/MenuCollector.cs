@@ -7,12 +7,12 @@ using DarkFactorCoreNet.Repository;
 
 namespace DarkFactorCoreNet.Controllers
 {
-    public class MenuController
+    public class MenuCollector
     {
         public List<MenuItem> menuItems;
         private MenuRepository menuRepository;
 
-        public MenuController()
+        public MenuCollector()
         {
             menuRepository = new MenuRepository();
             menuItems = menuRepository.GetAllItems();
