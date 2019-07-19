@@ -48,7 +48,7 @@ namespace DarkFactorCoreNet.Repository
             }
         }
 
-        public bool SavePage(PageContentModel pageModel)
+        public bool SavePage(EditPageModel pageModel)
         {
             int isPublised = (pageModel.IsPublished) ? 1 : 0;
 
@@ -62,6 +62,35 @@ namespace DarkFactorCoreNet.Repository
 
             int updatedRows = base.GetOrCreateDatabase().ExecuteUpdate(sql, variables);
             return ( updatedRows == 1);
+        }
+
+        public bool CreateChildPage( int parentPageId )
+        {
+            var database = base.GetOrCreateDatabase();
+
+            // First find the sort order to place it last
+            int sortId = 0;
+            string sql = string.Format("select max(sort) as msort from content where parentid = @parentid");
+            var variables = DFDataBase.CreateVariables();
+            variables.Add("@parentid", parentPageId);
+
+            using (DFStatement statement = database.ExecuteSelect(sql, variables))
+            {
+                if (statement.ReadNext())
+                {
+                    sortId = statement.ReadUInt32("msort");
+                }
+            }
+
+            // Create page in database
+            string insertSql = @"insert into content(parentid,menuname,sort,content,published,externurl) values(@parentid,@title, @sortid, null, false, null) ";
+            var insertVariables = DFDataBase.CreateVariables();
+            insertVariables.Add("@parentid", parentPageId);
+            insertVariables.Add("@title", @"Submenu");
+            insertVariables.Add("@sortid", sortId + 1);
+
+            int insertedRows = base.GetOrCreateDatabase().ExecuteInsert(insertSql, insertVariables);
+            return (insertedRows == 1);
         }
     }
 }

@@ -141,16 +141,14 @@ namespace DarkFactorCoreNet.Source.Database
         * Updates records in the database. This function will return the number of rows updated. If the
         * query is a select, it will return -1 as error.
         *
-        * @param  (String)  sqlString   - The db query to execute
-        * @param  (va_list) pArgs       - Arguments for the sql string
-        * @return (int)                 - Return the number of deleted rows
+        * @param  (String)  sqlString                       - The db query to execute
+        * @param  (Dictionary<string, object>) variables    - Arguments for the sql string
+        * @return (int)                                     - Return the number of deleted rows
         *
         * @author Thor Richard Hansen
         *************************************************************************************************/
-
         public int ExecuteUpdate(string sqlString, Dictionary<string,object> variables)
         {
-            //return new DFDatabaseCommand(this, sqlString, conn);
             MySqlCommand cmd = new MySqlCommand(sqlString, conn);
 
             cmd.Parameters.Clear();
@@ -163,15 +161,39 @@ namespace DarkFactorCoreNet.Source.Database
             return cmd.ExecuteNonQuery();
         }
 
-        
+        /************************************************************************************************
+        * ExecuteInsert:
+        * Inserts records in the database. This function will return the number of rows updated. If the
+        * query is a select, it will return -1 as error.
+        *
+        * @param  (String)  sqlString                       - The db query to execute
+        * @param  (Dictionary<string, object>) variables    - Arguments for the sql string
+        * @return (int)                                     - Return the number of inserted rows
+        *
+        * @author Thor Richard Hansen
+        *************************************************************************************************/
+        public int ExecuteInsert(string sqlString, Dictionary<string, object> variables)
+        {
+            MySqlCommand cmd = new MySqlCommand(sqlString, conn);
+
+            cmd.Parameters.Clear();
+
+            foreach (KeyValuePair<string, object> entry in variables)
+            {
+                cmd.Parameters.AddWithValue(entry.Key, entry.Value);
+            }
+
+            return cmd.ExecuteNonQuery();
+        }
+
         /************************************************************************************************
         * ExecuteDelete:
         * Delete records in the database. This function will return the number of rows deleted. If the
         * query is a select, it will return -1 as error.
         *
-        * @param  (String)  sqlString   - The db query to execute
-        * @param  (va_list) pArgs       - Arguments for the sql string
-        * @return (int)                 - Return the number of deleted rows
+        * @param  (String)  sqlString                       - The db query to execute
+        * @param  (Dictionary<string, object>) variables    - Arguments for the sql string
+        * @return (int)                                     - Return the number of deleted rows
         *
         * @author Thor Richard Hansen
         *************************************************************************************************/

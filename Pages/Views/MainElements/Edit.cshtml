@@ -4,9 +4,10 @@
 <table width=720 cellpadding=5>
     <tr>
         <td>
-            <form action='/api/edit' method='POST' style='display: inline;'>
+            <form action='/api/editor' method='POST' style='display: inline;'>
 
                 <input type='hidden' name='ID' value='@Model.ID'>
+                <input type='hidden' name='command' value='save'>
 
                 <div class='edit_header'>Access Control</div>
                 <select name='acl' class='edit_input'>
