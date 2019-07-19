@@ -63,6 +63,11 @@ namespace DarkFactorCoreNet.Source.Database
             }
         }
 
+        public static Dictionary<string, object> CreateVariables()
+        {
+            return new Dictionary<string, object>();
+        }
+
         public void ShowErrorCode(MySqlException ex)
         {
             /*
@@ -97,21 +102,38 @@ namespace DarkFactorCoreNet.Source.Database
         *************************************************************************************************/
         public DFStatement ExecuteSelect( string sql )
         {
-            MySqlCommand cmd = new MySqlCommand(sql, conn);
-            if ( cmd != null )
-            {
-                MySqlDataReader reader = cmd.ExecuteReader();
-                if (reader != null )
-                {
-                    return new DFStatement(reader);
-                }
-            }
-            return null;
+            return ExecuteSelect(sql, null);
         }
 
-        public Dictionary<string, object>  CreateVariables()
+        /************************************************************************************************
+        * ExecuteSelect:
+        * Select fields from a table. where clauses have to be done through bind variables
+        *
+        * @param  (String)                      sqlString - The db query to execute
+        * @param  (Dictionary<string, object>)  variables - Optional arguments to the select statement
+        *
+        * @author Thor Richard Hansen
+        *************************************************************************************************/
+        public DFStatement ExecuteSelect(string sqlString, Dictionary<string, object> variables)
         {
-            return new Dictionary<string, object>();
+            MySqlCommand cmd = new MySqlCommand(sqlString, conn);
+
+            // Set bound variables
+            cmd.Parameters.Clear();
+            if (variables != null)
+            {
+                foreach (KeyValuePair<string, object> entry in variables)
+                {
+                    cmd.Parameters.AddWithValue(entry.Key, entry.Value);
+                }
+            }
+
+            MySqlDataReader reader = cmd.ExecuteReader();
+            if (reader != null)
+            {
+                return new DFStatement(reader);
+            }
+            return null;
         }
 
         /************************************************************************************************

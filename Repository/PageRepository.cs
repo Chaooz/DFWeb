@@ -13,10 +13,14 @@ namespace DarkFactorCoreNet.Repository
 
         public PageContentModel GetPage(int pageId)
         {
-            string sql = string.Format("select id, menuname, content, published from content where id = {0} ", pageId);
+            var database = base.GetOrCreateDatabase();
 
-            using (DFStatement statement = base.GetOrCreateDatabase()
-                .ExecuteSelect(sql))
+            string sql = string.Format("select id, menuname, content, published from content where id = @id");
+
+            var variables = DFDataBase.CreateVariables();
+            variables.Add("@id", pageId);
+
+            using (DFStatement statement = database.ExecuteSelect(sql, variables))
             {
                 while (statement.ReadNext())
                 {
@@ -24,6 +28,12 @@ namespace DarkFactorCoreNet.Repository
                     string title = statement.ReadString("menuname");
                     string content = statement.ReadString("content");
                     bool published = statement.ReadUInt32("published") == 1;
+
+                    // Transition hack for now
+                    if ( content != null )
+                    {
+                        content = content.Replace("\"/img/", "\"http://www.darkfactor.net/img/");
+                    }
 
                     return new PageContentModel()
                     {
@@ -42,11 +52,9 @@ namespace DarkFactorCoreNet.Repository
         {
             int isPublised = (pageModel.IsPublished) ? 1 : 0;
 
-            var db = base.GetOrCreateDatabase();
-
             string sql = @"update content set menuname=@menuname, content = @content, published = @published where id = @id ";
 
-            var variables = db.CreateVariables();
+            var variables = DFDataBase.CreateVariables();
             variables.Add("@menuname", pageModel.Title);
             variables.Add("@content", pageModel.Content);
             variables.Add("@published", isPublised);
