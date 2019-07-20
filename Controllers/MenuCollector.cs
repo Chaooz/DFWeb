@@ -35,20 +35,30 @@ namespace DarkFactorCoreNet.Controllers
             return menuItems[0].ID;
         }
 
+        public List<MenuItem> GetTree( int pageId )
+        {
+            List<int> selectedTree = new List<int>();
+            GetSelectedTree(selectedTree, pageId);
+
+            List<MenuItem> menuTreeList = new List<MenuItem>();
+
+            foreach( var id in selectedTree)
+            {
+                var menuItem = GetMenuItem(id);
+                menuTreeList.Add(menuItem);
+            }
+            return menuTreeList;
+        }
+
         public List<MenuItem> SelectItem( int selectedItemId )
         {
-            if (selectedItemId == 0 )
-            {
-                selectedItemId = GetDefaultId();
-            }
-
             // Create the expanded tree
             List<int> selectedTree = new List<int>();
             GetSelectedTree(selectedTree, selectedItemId);
 
             // Add top nodes
             List<MenuItem> visibleItems = new List<MenuItem>();
-            AddItemsWithParent(visibleItems, selectedTree, 0, 180);
+            AddItemsWithParent(visibleItems, selectedTree, selectedItemId, 180);
             return visibleItems;
         }
 
@@ -102,12 +112,15 @@ namespace DarkFactorCoreNet.Controllers
 
         private void GetSelectedTree(List<int> expandedTree, int itemId)
         {
-            var menuItem = GetMenuItem(itemId);
-            if ( menuItem != null && menuItem.ParentID != 0)
+            if ( itemId != 0)
             {
-                GetSelectedTree(expandedTree, menuItem.ParentID);
+                var menuItem = GetMenuItem(itemId);
+                if (menuItem != null && menuItem.ParentID != 0)
+                {
+                    GetSelectedTree(expandedTree, menuItem.ParentID);
+                }
+                expandedTree.Add(itemId);
             }
-            expandedTree.Add(itemId);
         }
 
         private MenuItem GetMenuItem( int menuId )

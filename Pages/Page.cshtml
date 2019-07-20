@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = Model.pageModel.Title;
 }
+@await Html.PartialAsync("Views/LeftSideElements/TopMenu.cshtml", Model)
 
 <div>
     <div class="row">

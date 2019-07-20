@@ -11,6 +11,7 @@ namespace DarkFactorCoreNet.Pages
 {
     public class BasePageModel : PageModel
     {
+        public List<MenuItem> treeList;
         public List<MenuItem> menuItems;
         public PageContentModel pageModel;
         public int pageId;
@@ -28,6 +29,7 @@ namespace DarkFactorCoreNet.Pages
         public void OnGet(int id)
         {
             menuItems = menuController.SelectItem(id);
+            treeList = menuController.GetTree(id);
             pageModel = pageController.GetPage(id);
             pageId = id;
         }

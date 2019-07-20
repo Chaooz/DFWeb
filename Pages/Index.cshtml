@@ -4,6 +4,8 @@
     ViewData["Title"] = "Home page";
 }
 
+@await Html.PartialAsync("Views/LeftSideElements/TopMenu.cshtml", Model)
+
 <div>
     <div class="row">
         <div class="col-md-3">
