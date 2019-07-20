@@ -22,23 +22,31 @@ namespace DarkFactorCoreNet.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdatePageData([FromForm] EditPageModel editPageModel)
+        public IActionResult UpdatePageData([FromForm] PageContentModel pageContentModel)
         {
             bool didSuceed = false;
-            switch( editPageModel.Command )
+            switch(pageContentModel.Command )
             {
                 case "save":
-                    didSuceed = pageRepository.SavePage(editPageModel);
+                    didSuceed = pageRepository.SavePage(pageContentModel);
                     break;
-
+                case "move_up":
+                    didSuceed = pageRepository.MovePageUp(pageContentModel.ID);
+                    break;
+                case "move_down":
+                    didSuceed = pageRepository.MovePageDown(pageContentModel.ID);
+                    break;
+                case "create_page":
+                    didSuceed = pageRepository.CreatePage(pageContentModel.ID);
+                    break;
                 case "create_child_page":
-                    didSuceed = pageRepository.CreateChildPage(editPageModel.ID);
+                    didSuceed = pageRepository.CreateChildPage(pageContentModel.ID);
                     break;
             }
 
-            if ( editPageModel != null && editPageModel.ID != 0 )
+            if (pageContentModel != null && pageContentModel.ID != 0 )
             {
-                return Redirect("/page?id=" + editPageModel.ID);
+                return Redirect("/page?id=" + pageContentModel.ID);
             }
             return Redirect("/");
         }

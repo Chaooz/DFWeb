@@ -7,6 +7,8 @@
             <form action='/api/editor' method='POST' style='display: inline;'>
 
                 <input type='hidden' name='ID' value='@Model.ID'>
+                <input type='hidden' name='ParentId' value='@Model.ParentId'>
+                <input type='hidden' name='SortId' value='@Model.SortId'>
                 <input type='hidden' name='command' value='save'>
 
                 <div class='edit_header'>Access Control</div>

@@ -4,13 +4,13 @@
     <tr>
         <td align=right>
             <div class=toolmenu><center><B>ADMIN</B></center></div>
-            <div class=toolmenu><form action='/index.php' method='POST' style='display: inline;'><input type='hidden' name='id' value='@Model'><input type='hidden' name='username' placeholder='Username' value=''><input type='hidden' name='password' placeholder='Password' value=''><input class='loginbutton' type='submit' value='Logout thorh'></form></div>
-            <div class=toolmenu><form action='/index.php' method='POST' style='display: inline;'><input type='hidden' name='id' value='@Model'><input type='hidden' name='command' value='move_up'><input class=toolbutton type='submit' value='Move Up'></form></div>
-            <div class=toolmenu><form action='/index.php' method='POST' style='display: inline;'><input type='hidden' name='id' value=@Model'><input type='hidden' name='command' value='move_down'><input class=toolbutton type='submit' value='Move Down'></form></div>
+            <div class=toolmenu><form action='/api/editor' method='POST' style='display: inline;'><input type='hidden' name='id' value='@Model'><input type='hidden' name='username' placeholder='Username' value=''><input type='hidden' name='password' placeholder='Password' value=''><input class='loginbutton' type='submit' value='Logout thorh'></form></div>
+            <div class=toolmenu><form action='/api/editor' method='POST' style='display: inline;'><input type='hidden' name='id' value='@Model'><input type='hidden' name='command' value='move_up'><input class=toolbutton type='submit' value='Move Up'></form></div>
+            <div class=toolmenu><form action='/api/editor' method='POST' style='display: inline;'><input type='hidden' name='id' value='@Model'><input type='hidden' name='command' value='move_down'><input class=toolbutton type='submit' value='Move Down'></form></div>
             <div class=toolmenu><form action='/edit' method='GET' style='display: inline;'><input type='hidden' name='id' value='@Model'><input type='hidden' name='command' value='save'><input class=toolbutton type='submit' value='Edit Page'></form></div>
-            <div class=toolmenu><form action='/index.php' method='POST' style='display: inline;'><input type='hidden' name='command' value='create_page'><input class=toolbutton type='submit' value='New Page'></form></div>
+            <div class=toolmenu><form action='/api/editor' method='POST' style='display: inline;'><input type='hidden' name='id' value='@Model'><input type='hidden' name='command' value='create_page'><input class=toolbutton type='submit' value='New Page'></form></div>
             <div class=toolmenu><form action='/api/editor' method='POST' style='display: inline;'><input type='hidden' name='id' value='@Model'><input type='hidden' name='command' value='create_child_page'><input class=toolbutton type='submit' value='Create Child'></form></div>
-            <div class=toolmenu><form action='/index.php' method='POST' style='display: inline;'><input type='hidden' name='id' value='@Model'><input type='hidden' name='command' value='confirm_delete_page'><input class=toolbutton type='submit' value='Delete Page'></form></div>
+            <div class=toolmenu><form action='/api/editor' method='POST' style='display: inline;'><input type='hidden' name='id' value='@Model'><input type='hidden' name='command' value='confirm_delete_page'><input class=toolbutton type='submit' value='Delete Page'></form></div>
         </td>
     </tr>
 </table>
