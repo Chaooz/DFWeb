@@ -99,6 +99,31 @@ namespace DarkFactorCoreNet.Repository
             return ( updatedRows == 1);
         }
 
+        public int DeletePage(int pageId)
+        {
+            var page = GetPage(pageId);
+            if (page == null)
+            {
+                return pageId;
+            }
+
+            // Do not delete page if it has children
+            var childList = GetPageList(pageId);
+            if ( childList.Count > 0 )
+            {
+                return pageId;
+            }
+
+            string sql = @"delete from content where id = @id ";
+
+            var variables = DFDataBase.CreateVariables();
+            variables.Add("@id", pageId);
+
+            base.GetOrCreateDatabase().ExecuteDelete(sql, variables);
+
+            return page.ParentId;
+        }
+
         public bool CreatePage( int pageId )
         {
             var page = GetPage(pageId);

@@ -42,6 +42,9 @@ namespace DarkFactorCoreNet.Controllers
                 case "create_child_page":
                     didSuceed = pageRepository.CreateChildPage(pageContentModel.ID);
                     break;
+                case "delete_page":
+                    pageContentModel.ID = pageRepository.DeletePage(pageContentModel.ID);
+                    break;
             }
 
             if (pageContentModel != null && pageContentModel.ID != 0 )

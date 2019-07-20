@@ -1,0 +1,19 @@
+﻿@page
+@model DeleteModel
+@{
+    ViewData["Title"] = Model.pageModel.Title;
+}
+
+<div>
+    <div class="row">
+        <div class="col-md-3">
+            @await Html.PartialAsync("Views/LeftSideElements/Menu.cshtml", Model.menuItems)
+            <div>&nbsp;</div>
+            @await Html.PartialAsync("Views/LeftSideElements/AdminMenu.cshtml", Model.pageId)
+        </div>
+        <div class="col-md-9">
+            @await Html.PartialAsync("Views/MainElements/DeletePage.cshtml", Model.pageModel)
+        </div>
+    </div>
+</div>
+

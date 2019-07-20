@@ -197,6 +197,18 @@ namespace DarkFactorCoreNet.Source.Database
         *
         * @author Thor Richard Hansen
         *************************************************************************************************/
+        public int ExecuteDelete(string sqlString, Dictionary<string, object> variables)
+        {
+            MySqlCommand cmd = new MySqlCommand(sqlString, conn);
 
+            cmd.Parameters.Clear();
+
+            foreach (KeyValuePair<string, object> entry in variables)
+            {
+                cmd.Parameters.AddWithValue(entry.Key, entry.Value);
+            }
+
+            return cmd.ExecuteNonQuery();
+        }
     }
 }
