@@ -4,7 +4,9 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MySql.Data" Version="8.0.16" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.6" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.6"><PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
+<Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
+</PackageReference>
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
@@ -16,10 +18,10 @@
     <Folder Include="Pages\Views\RightSideElements\" />
     <Folder Include="Source\" />
     <Folder Include="Source\Database\" />
-    <Folder Include="Pages\Views\LeftSideElements\" />
     <Folder Include="Models\" />
     <Folder Include="Repository\" />
     <Folder Include="Pages\Views\MainElements\" />
+    <Folder Include="Pages\Views\TopElements\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Pages\About.cshtml" />

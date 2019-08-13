@@ -3,17 +3,29 @@
 @{
     ViewData["Title"] = Model.pageModel.Title;
 }
-@await Html.PartialAsync("Views/LeftSideElements/TopMenu.cshtml", Model)
 
 <div>
     <div class="row">
-        <div class="col-md-3">
-            @await Html.PartialAsync("Views/LeftSideElements/Menu.cshtml", Model.menuItems)
-            <div>&nbsp;</div>
-            @await Html.PartialAsync("Views/LeftSideElements/AdminMenu.cshtml", Model.pageId)
+        <div class="col-md-12">
+            @await Html.PartialAsync("Views/TopElements/TopNavigation.cshtml", Model)
         </div>
-        <div class="col-md-9">
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            @await Html.PartialAsync("Views/TopElements/TopMenu.cshtml", Model)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8" style="background-color:darkgrey">
             @await Html.PartialAsync("Views/MainElements/Page.cshtml", Model.pageModel)
+        </div>
+        <div class="col-lg-4 col-md-4" style="background-color:white">
+
+            Vise undersider hvis tilgjengelig
+
+            Siste artikler i kategorien ...
+
         </div>
     </div>
 </div>

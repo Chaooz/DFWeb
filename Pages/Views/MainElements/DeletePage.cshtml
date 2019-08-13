@@ -1,24 +1,26 @@
 ﻿@using DarkFactorCoreNet.Models
 @model PageContentModel
 
-
 <br><br>
 
-<div style="border:solid ;border-color:#ffbb33;padding:10px; width:430px">
+<div style="align-content:center; width:100%;">
 
-    <div class="warning"> <img src="http://www.darkfactor.net/img/warning_icon.png" height="50px" width="50px"> &nbsp; Are you sure you want to delete the page <br />@Model.Title </div>
-    <br>
+    <div style="border:solid ;border-color:#ffbb33;padding:10px; width:430px">
 
-    <div style="width:400px">
-        <form action='/api/editor' method='POST' style='display: inline;'>
+        <div class="warning"> <img src="http://www.darkfactor.net/img/warning_icon.png" height="50px" width="50px"> &nbsp; Are you sure you want to delete the page <br />@Model.Title </div>
+        <br>
 
-            <input type='hidden' name='ID' value='@Model.ID' />
-            <input type='hidden' name='command' value='delete_page' />
+        <div style="width:400px">
+            <form action='/api/editor' method='POST' style='display: inline;'>
 
-            <input class="warning_button" style="float:left" type='submit' value='Cancel' />
-            <input class="warning_button" style="float:right" type='submit' value='Delete' />
-            <br><br>
+                <input type='hidden' name='ID' value='@Model.ID' />
+                <input type='hidden' name='command' value='delete_page' />
 
-        </form>
+                <input class="warning_button" style="float:left" type='submit' value='Cancel' />
+                <input class="warning_button" style="float:right" type='submit' value='Delete' />
+                <br><br>
+
+            </form>
+        </div>
     </div>
 </div>
