@@ -17,7 +17,7 @@ namespace DarkFactorCoreNet.Repository
         {
             var database = base.GetOrCreateDatabase();
 
-            string sql = string.Format("select id, parentid, menuname, content, sort, published from content where id = @id");
+            string sql = string.Format("select id, parentid, menuname, content, teaser, sort, published from content where id = @id");
 
             var variables = DFDataBase.CreateVariables();
             variables.Add("@id", pageId);
@@ -32,11 +32,11 @@ namespace DarkFactorCoreNet.Repository
             }
         }
 
-        public List<PageContentModel> GetPageList(int parentId)
+        public List<PageContentModel> GetPagesWithParentId(int parentId)
         {
             var database = base.GetOrCreateDatabase();
 
-            string sql = string.Format("select id, parentid, menuname, content, sort, published from content where parentid = @parentid");
+            string sql = string.Format("select id, parentid, menuname, content, teaser, sort, published from content where parentid = @parentid order by sort");
 
             var variables = DFDataBase.CreateVariables();
             variables.Add("@parentid", parentId);
@@ -60,6 +60,7 @@ namespace DarkFactorCoreNet.Repository
             int parentId = statement.ReadUInt32("parentid");
             string title = statement.ReadString("menuname");
             string content = statement.ReadString("content");
+            string teaser = statement.ReadString("teaser");
             int sortId = statement.ReadUInt32("sort");
             bool published = statement.ReadUInt32("published") == 1;
 
@@ -69,6 +70,11 @@ namespace DarkFactorCoreNet.Repository
                 content = content.Replace("\"/img/", "\"http://www.darkfactor.net/img/");
             }
 
+            if (teaser != null)
+            {
+                teaser = teaser.Replace("\"/img/", "\"http://www.darkfactor.net/img/");
+            }
+
             return new PageContentModel()
             {
                 ID = id,
@@ -76,6 +82,7 @@ namespace DarkFactorCoreNet.Repository
                 Title = title,
                 Content = content,
                 HtmlContent = new HtmlString(content),
+                HtmlTeaser = new HtmlString(teaser),
                 SortId = sortId,
                 IsPublished = published
             };
@@ -108,7 +115,7 @@ namespace DarkFactorCoreNet.Repository
             }
 
             // Do not delete page if it has children
-            var childList = GetPageList(pageId);
+            var childList = GetPagesWithParentId(pageId);
             if ( childList.Count > 0 )
             {
                 return pageId;
@@ -136,7 +143,7 @@ namespace DarkFactorCoreNet.Repository
 
         public bool CreateChildPage( int parentPageId )
         {
-            List<PageContentModel> pageList = GetPageList(parentPageId);
+            List<PageContentModel> pageList = GetPagesWithParentId(parentPageId);
             PageContentModel page = pageList.OrderBy(x => x.SortId).LastOrDefault();
             int sortId = 0;
             if ( page != null )
@@ -164,7 +171,7 @@ namespace DarkFactorCoreNet.Repository
                 return false;
             }
 
-            var pageList = GetPageList(page.ParentId);
+            var pageList = GetPagesWithParentId(page.ParentId);
             PageContentModel swapPage = pageList.OrderBy(x => x.SortId).Where(x => x.SortId > page.SortId).FirstOrDefault();
             if (swapPage == null)
             {
@@ -188,7 +195,7 @@ namespace DarkFactorCoreNet.Repository
                 return false;
             }
 
-            var pageList = GetPageList(page.ParentId);
+            var pageList = GetPagesWithParentId(page.ParentId);
             PageContentModel swapPage = pageList.OrderBy(x => x.SortId).Where(x => x.SortId < page.SortId).LastOrDefault();
             if (swapPage == null)
             {

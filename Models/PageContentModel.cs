@@ -14,6 +14,7 @@ namespace DarkFactorCoreNet.Models
 
         // Additional html properties
         public HtmlString HtmlContent { get; set; }
+        public HtmlString HtmlTeaser { get; set; }
         public string Command { get; set; }
     }
 }

@@ -58,7 +58,7 @@ namespace DarkFactorCoreNet.Controllers
 
             // Add top nodes
             List<MenuItem> visibleItems = new List<MenuItem>();
-            AddItemsWithParent(visibleItems, selectedTree, selectedItemId, 180);
+            AddItemsWithParent(visibleItems, selectedTree, 0, 180);
             return visibleItems;
         }
 

@@ -1,0 +1,22 @@
+﻿@using DarkFactorCoreNet.Models
+@model List<PageListModel>
+
+@foreach (var pageListModel in Model)
+{
+    <div class="articletitle">
+        <img src="http://www.darkfactor.net/img/DarkFactor_WebLogo.png" width="30px" >&nbsp;<strong>@pageListModel.Title</strong>
+    </div>
+
+    <div style="background-color:white">
+        @foreach (var article in pageListModel.Pages)
+        {
+            <div class="article">
+                <a href="/page?id=@article.ID">@article.Title</a><br /> 
+                @article.HtmlContent
+                <hr />
+            </div>
+        }
+    </div>
+}
+
+

@@ -1,5 +1,5 @@
 ﻿@page
-@model IndexModel
+@model Page
 @{
     ViewData["Title"] = Model.pageModel.Title;
 }
@@ -7,12 +7,12 @@
 <div>
     <div class="row">
         <div class="col-md-12">
-            @await Html.PartialAsync("Views/TopElements/TopNavigation.cshtml", Model)
+            @await Html.PartialAsync("Views/TopElements/TopMenu.cshtml", Model)
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            @await Html.PartialAsync("Views/TopElements/TopMenu.cshtml", Model)
+            @await Html.PartialAsync("Views/TopElements/TopNavigation.cshtml", Model)
         </div>
     </div>
 
@@ -20,12 +20,8 @@
         <div class="col-md-8" style="background-color:darkgrey">
             @await Html.PartialAsync("Views/MainElements/Page.cshtml", Model.pageModel)
         </div>
-        <div class="col-lg-4 col-md-4" style="background-color:white">
-
-            Vise undersider hvis tilgjengelig
-
-            Siste artikler i kategorien ...
-
+        <div class="col-lg-4 col-md-4" >
+            @await Html.PartialAsync("Views/RightSideElements/ArticleSection.cshtml", Model.articleSectionModel)
         </div>
     </div>
 </div>

@@ -14,6 +14,7 @@ namespace DarkFactorCoreNet.Pages
         public List<MenuItem> treeList;
         public List<MenuItem> menuItems;
         public PageContentModel pageModel;
+        public List<PageListModel> articleSectionModel;
         public int pageId;
 
         protected MenuCollector menuController;
@@ -31,7 +32,14 @@ namespace DarkFactorCoreNet.Pages
             menuItems = menuController.SelectItem(id);
             treeList = menuController.GetTree(id);
             pageModel = pageController.GetPage(id);
+            articleSectionModel = GetArticleSection(id);
             pageId = id;
+        }
+
+        virtual
+        protected List<PageListModel> GetArticleSection(int id)
+        {
+            return null;
         }
 
         public ActionResult OnGetPartial() =>
