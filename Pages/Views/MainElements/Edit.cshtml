@@ -1,9 +1,6 @@
 ﻿@using DarkFactorCoreNet.Models
 @model PageContentModel
 
-<table width=720 cellpadding=5>
-    <tr>
-        <td>
             <form action='/api/editor' method='POST' style='display: inline;'>
 
                 <input type='hidden' name='ID' value='@Model.ID'>
@@ -26,12 +23,12 @@
 
                 <br><br>
 
+                <div class='edit_header'>Teaser content</div>
+                <textarea rows=15 cols=30 name='TeaserContent' class='edit_input'>@Model.TeaserContent</textarea><br>
+
                 <div class='edit_header'>Content</div>
                 <textarea rows=30 cols=60 name='Content' class='edit_input'>@Model.Content</textarea><br>
 
                 <input class=toolbutton type='submit' value='Save'>
 
             </form>
-        </td>
-    </tr>
-</table>

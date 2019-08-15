@@ -8,13 +8,13 @@
     </div>
 
     <div style="background-color:white">
-        @foreach (var article in pageListModel.Pages)
+        @foreach (var relPage in pageListModel.Pages)
         {
-            <div class="article">
-                <a href="/page?id=@article.ID">@article.Title</a><br /> 
-                @article.HtmlContent
-                <hr />
-            </div>
+        <div class="article">
+            <a href="/page?id=@relPage.ID" class="articlesubtitle">@relPage.Title</a><br />
+            @relPage.HtmlTeaser
+            <hr />
+        </div>
         }
     </div>
 }

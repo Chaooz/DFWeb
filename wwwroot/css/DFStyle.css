@@ -69,6 +69,14 @@ li {
     font-size:x-large;
 }
 
+.articlesubtitle {
+    padding: 10px;
+    color: black;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: x-large;
+    text-decoration: none;
+}
+
 .article {
     font-size: small;
     text-decoration: none;
@@ -260,7 +268,7 @@ li {
 .edit_input {
     font-size: x-small;
     text-decoration: none;
-    width: 500px;
+    width: 100%;
     align: center;
     color: black;
 }

@@ -80,6 +80,7 @@ namespace DarkFactorCoreNet.Repository
                 ID = id,
                 ParentId = parentId,
                 Title = title,
+                TeaserContent = teaser,
                 Content = content,
                 HtmlContent = new HtmlString(content),
                 HtmlTeaser = new HtmlString(teaser),
@@ -92,11 +93,12 @@ namespace DarkFactorCoreNet.Repository
         {
             int isPublised = (pageModel.IsPublished) ? 1 : 0;
 
-            string sql = @"update content set parentid=@parentid, menuname=@menuname, content = @content, sort=@sort, published = @published where id = @id ";
+            string sql = @"update content set parentid=@parentid, menuname=@menuname, teaser = @teaser, content = @content, sort=@sort, published = @published where id = @id ";
 
             var variables = DFDataBase.CreateVariables();
             variables.Add("@parentid", pageModel.ParentId);
             variables.Add("@menuname", pageModel.Title);
+            variables.Add("@teaser", pageModel.TeaserContent);
             variables.Add("@content", pageModel.Content);
             variables.Add("@sort", pageModel.SortId);
             variables.Add("@published", isPublised);
