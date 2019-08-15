@@ -10,11 +10,18 @@
     <div style="background-color:white">
         @foreach (var relPage in pageListModel.Pages)
         {
-            <div class="article">
-                <a href="/page?id=@relPage.ID" class="articlesubtitle">@relPage.Title</a><br />
-                @relPage.HtmlTeaser
-                <hr />
-            </div>
+        <div class="article">
+            @if (!string.IsNullOrEmpty(relPage.PromoTitle))
+    {
+        <a href="/page?id=@relPage.ID" class="articlesubtitle">@relPage.PromoTitle</a><br />
+}
+            @relPage.HtmlTeaser
+            <br />
+            <br />
+
+            <a href="/page?id=@relPage.ID">Read more &gt;&gt;</a><br />
+            <hr />
+        </div>
         }
     </div>
 }

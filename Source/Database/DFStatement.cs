@@ -100,10 +100,10 @@ namespace DarkFactorCoreNet.Source.Database
         {
             if (this.reader != null)
             {
+                index = this.reader.GetOrdinal(columnName);
                 if (!this.reader.IsDBNull(index))
                 {
-                    index++;
-                    return this.reader.GetInt32(columnName);
+                    return this.reader.GetInt32(index++);
                 }
             }
             index++;
@@ -125,15 +125,21 @@ namespace DarkFactorCoreNet.Source.Database
 
         public string ReadString(string columnName)
         {
-            if (this.reader != null)
+            try
             {
-                if ( !this.reader.IsDBNull(index))
+                if (this.reader != null)
                 {
-                    index++;
-                    return this.reader.GetString(columnName);
+                    index = this.reader.GetOrdinal(columnName);
+                    if (!this.reader.IsDBNull(index))
+                    {
+                        return this.reader.GetString(index);
+                    }
                 }
             }
-            index++;
+            catch(Exception)
+            {
+                return null;
+            }
             return null;
         }
     }
