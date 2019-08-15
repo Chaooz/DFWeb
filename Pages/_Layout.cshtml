@@ -20,16 +20,16 @@
 </head>
 <body>
 
-    <div>
-        <a asp-page="/Index" class="navbar-brand"><img src="http://www.darkfactor.net/img/DarkFactorLogo.png" height="60px" style="align-content:-16px" /></a>
-        <ul class="nav navbar-nav">
-            <li><a href="/Edit?id=1">Edit</a></li>
-            <li><a asp-page="/Index">Login</a></li>
-        </ul>
+
+    <div class="container body-content">
+
+            <div class="row">
+        <div class="col-md-12">
+            <center><a asp-page="/Index" ><img src="http://www.darkfactor.net/img/DarkFactorLogo.png" width="75%"  /></a></center
+        </div>
     </div>
 
 
-    <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>

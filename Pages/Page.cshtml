@@ -17,12 +17,13 @@
     </div>
 
     <div class="row">
-        <div class="col-md-8" style="background-color:darkgrey">
+        <div class="col-md-8">
             @await Html.PartialAsync("Views/MainElements/Page.cshtml", Model.pageModel)
         </div>
         <div class="col-lg-4 col-md-4" >
             @await Html.PartialAsync("Views/RightSideElements/ArticleSection.cshtml", Model.articleSectionModel)
         </div>
     </div>
+
 </div>
 

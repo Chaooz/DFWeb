@@ -5,6 +5,7 @@
     font-style: normal;
     background: black;
     color: white;
+    padding-top:10px;
 }
 
 a:link {
@@ -21,8 +22,8 @@ a:visited {
 
 a:hover {
     font-weight: bold;
-    text-decoration: underline;
-    color: #FFFFFF
+    text-decoration: none;
+    color: #FFFFFF;
 }
 
 li {
@@ -37,10 +38,26 @@ li {
     width: 150px;
 }
 
-.topmenu > li
+.topmenu li
 {
     font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: large;
+}
+
+.icon-bar
+{
+    background-color:black;
+}
+
+.navbar-toggle {
+    border-color: #333;
+    float:left;
+    margin-left:15px;
+}
+
+@media (max-width: 991px) button.navbar-toggle {
+    float: left;
+    margin-left: 12px!important;
 }
 
 .topnav {
@@ -80,16 +97,18 @@ li {
     background: #f1f1f1;
     color: black;
     font-family: Arial, Helvetica, sans-serif;
-    padding: 0px 20px 20px 20px;
+    padding: 20px;
+    margin-bottom:20px;
 }
 
 .article {
     font-size: small;
     text-decoration: none;
-    background:#f1f1f1;
+    background: #f1f1f1;
     color: black;
-    padding: 0px 20px 20px 20px;
+    padding: 20px;
     font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 10px;
 }
 
     .article > a {
@@ -142,6 +161,11 @@ li {
     text-align: right;
 }
 
+.navigation-item {
+    font-size: small;
+    color:white;
+}
+
 .selectedsubmenu {
     background: #272727;
     border: solid #FFFFFF 1px;
@@ -152,7 +176,48 @@ li {
     font-style: italic
 }
 
-.menu_editor, .topmenu {
+.topmenu {
+    background: #d21339;
+    padding: 4px;
+    text-align: right;
+    opacity: 0.8;
+}
+
+.nav > li > a,
+.nav > li > a:hover,
+.nav > li > a:focus {
+    text-decoration: none;
+    background-color: black;
+    transform: skew(-10deg);
+}
+
+.topmenu a:hover {
+    background: rgba(0,0,0,0);
+    color: white;
+    box-shadow: inset 0 0 0 3px #cccccc;
+    animation: bounce 1s;
+}
+
+
+@keyframes bounce {
+    0%, 20%, 60%, 100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+
+    40% {
+        -webkit-transform: translateY(-20px);
+        transform: translateY(-20px);
+    }
+
+    80% {
+        -webkit-transform: translateY(-10px);
+        transform: translateY(-10px);
+    }
+}
+
+
+.menu_editor {
     background: #d21339;
     border: solid #777777 1px;
     bordercolor: black;
@@ -290,19 +355,19 @@ li {
     .buildbox a:link {
         font-weight: bold;
         text-decoration: underline;
-        color: #000000
+        color: #00000;
     }
 
     .buildbox a:hover {
         font-weight: bold;
         text-decoration: underline;
-        color: #000000
+        color: #000000;
     }
 
     .buildbox a:visited {
         font-weight: bold;
         text-decoration: underline;
-        color: #222222
+        color: #222222;
     }
 
 .patchnotes {
@@ -362,7 +427,7 @@ li {
     border: solid #000000 1px;
     color: black;
     font-weight: bold;
-    width: 400px;
+    width: 100%;
     text-align: center;
 }
 

@@ -1,22 +1,20 @@
 ﻿<div class="topnav">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
+    <div class="navbar-header" style="width:100%; padding-left:10px;">
 
-        <a href="/index" class="navbar-brand">Home</a>
+        <i>
+            <a href="/index" class="navigation-item">Home</a>
 
-        @foreach (var item in Model.treeList)
+            @foreach (var item in Model.treeList)
         {
-            <span class="navbar-brand">/</span>
-            <a href="/page?id=@item.ID" class="navbar-brand">@item.Name</a>
+        <span class="navigation-item">/</span>
+        <a href="/page?id=@item.ID" class="navigation-item">@item.Name</a>
         }
 
-        <a href="/edit?id=@Model.pageId" class="navbar-brand">[- Edit -]</a>
+    </i>
+    <a href="/edit?id=@Model.pageId" class="navigation-item" style="float:right;">[ Edit ]</a>
 
+    <br />
+    <br />
     </div>
 </div>
 
