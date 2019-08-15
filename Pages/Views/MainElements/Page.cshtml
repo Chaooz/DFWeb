@@ -1,17 +1,6 @@
 ﻿@using DarkFactorCoreNet.Models
 @model PageContentModel
 
-<table width=720 cellpadding=5>
-    <tr>
-        <td>
-            <center>
-                <br>
-                <table bordersize=0>
-                    <tr>
-                        <td width=600>@Model.HtmlContent</td>
-                    </tr>
-                </table>
-            </center>
-        </td>
-    </tr>
-</table>
+<div class="page">
+    @Model.HtmlContent
+</div>

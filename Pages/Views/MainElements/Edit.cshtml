@@ -1,34 +1,35 @@
 ﻿@using DarkFactorCoreNet.Models
 @model PageContentModel
 
-            <form action='/api/editor' method='POST' style='display: inline;'>
+<form action='/api/editor' method='POST' style='display: inline;'>
 
-                <input type='hidden' name='ID' value='@Model.ID'>
-                <input type='hidden' name='ParentId' value='@Model.ParentId'>
-                <input type='hidden' name='SortId' value='@Model.SortId'>
-                <input type='hidden' name='command' value='save'>
+    <input type='hidden' name='ID' value='@Model.ID'>
+    <input type='hidden' name='ParentId' value='@Model.ParentId'>
+    <input type='hidden' name='SortId' value='@Model.SortId'>
+    <input type='hidden' name='command' value='save'>
 
-                <div class='edit_header'>Access Control</div>
-                <select name='acl' class='edit_input'>
-                    <option value=0> Public </option>
-                    <option value=1> Member </option>
-                    <option value=2 selected> Editor </option>
-                    <option value=3> Admin </option>
-                </select>
+    <div class='edit_header'>Access Control</div>
+    <select name='acl' class='edit_input'>
+        <option value=0> Public </option>
+        <option value=1> Member </option>
+        <option value=2 selected> Editor </option>
+        <option value=3> Admin </option>
+    </select>
 
-                <br><br>
+    <br><br>
 
-                <div class='edit_header'>Title</div>
-                <input name='Title' type='text' class='edit_input' value='@Model.Title' placeholder='Enter title'>
+    <div class='edit_header'>Title</div>
+    <input name='Title' type='text' class='edit_input' value='@Model.Title' placeholder='Enter title'>
 
-                <br><br>
+    <br><br>
 
-                <div class='edit_header'>Teaser content</div>
-                <textarea rows=15 cols=30 name='TeaserContent' class='edit_input'>@Model.TeaserContent</textarea><br>
+    <div class='edit_header'>Teaser content</div>
+    <textarea rows=15 cols=30 name='TeaserContent' class='edit_input'>@Model.TeaserContent</textarea><br>
 
-                <div class='edit_header'>Content</div>
-                <textarea rows=30 cols=60 name='Content' class='edit_input'>@Model.Content</textarea><br>
+    <div class='edit_header'>Content</div>
+    <textarea rows=30 cols=60 name='Content' class='edit_input'>@Model.Content</textarea><br>
 
-                <input class=toolbutton type='submit' value='Save'>
+    <input class=toolbutton type='submit' value='Save'>
+    <input class=toolbutton type='submit' value='Preview'>
 
-            </form>
+</form>

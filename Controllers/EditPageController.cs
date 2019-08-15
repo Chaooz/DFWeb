@@ -29,7 +29,7 @@ namespace DarkFactorCoreNet.Controllers
             {
                 case "save":
                     didSuceed = pageRepository.SavePage(pageContentModel);
-                    break;
+                    return Redirect("/preview?id=" + pageContentModel.ID);
                 case "move_up":
                     didSuceed = pageRepository.MovePageUp(pageContentModel.ID);
                     break;
