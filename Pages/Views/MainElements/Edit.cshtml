@@ -18,6 +18,9 @@
 
     <br><br>
 
+    <div class='edit_header'>Image</div>
+    <input name='Image' type='text' class='edit_input' value='@Model.Image' placeholder=''><br>
+
     <div class='edit_header'>Promo Title</div>
     <input name='PromoTitle' type='text' class='edit_input' value='@Model.PromoTitle' placeholder='Enter title'><br>
     <div class='edit_header'>Promo Text</div>
@@ -25,9 +28,9 @@
     <br>
 
     <div class='edit_header'>Title</div>
-    <input name='Title' type='text' class='edit_input' value='@Model.Title' placeholder='Enter title'><br>
+    <input name='ContentTitle' type='text' class='edit_input' value='@Model.ContentTitle' placeholder='Enter title'><br>
     <div class='edit_header'>Content</div>
-    <textarea rows=30 cols=60 name='Content' class='edit_input'>@Model.Content</textarea><br>
+    <textarea rows=30 cols=60 name='ContentText' class='edit_input'>@Model.ContentText</textarea><br>
 
     <input class=toolbutton type='submit' value='Save'>
     <input class=toolbutton type='submit' value='Preview'>

@@ -9,8 +9,9 @@ namespace DarkFactorCoreNet.Models
         public int ParentId { get; set; }
         public string PromoTitle { get; set; }
         public string PromoText { get; set; }
-        public string Title { get; set; }
-        public string Content { get; set; }
+        public string ContentTitle { get; set; }
+        public string ContentText { get; set; }
+        public string Image { get; set; }
         public int SortId { get; set; }
         public bool IsPublished { get; set; }
 

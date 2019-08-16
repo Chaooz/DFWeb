@@ -17,7 +17,7 @@ namespace DarkFactorCoreNet.Repository
         {
             var database = base.GetOrCreateDatabase();
 
-            string sql = string.Format("select id, parentid, menuname, content, promo_title, promo_text, sort, published from content where id = @id");
+            string sql = string.Format("select id, parentid, promo_title, promo_text, content_title, content_text, image, sort, published from content where id = @id");
 
             var variables = DFDataBase.CreateVariables();
             variables.Add("@id", pageId);
@@ -36,7 +36,7 @@ namespace DarkFactorCoreNet.Repository
         {
             var database = base.GetOrCreateDatabase();
 
-            string sql = string.Format("select id, parentid, menuname, content, promo_title, promo_text, sort, published from content where parentid = @parentid order by sort");
+            string sql = string.Format("select id, parentid, promo_title, promo_text, content_title, content_text, image, sort, published from content where parentid = @parentid order by sort");
 
             var variables = DFDataBase.CreateVariables();
             variables.Add("@parentid", parentId);
@@ -60,15 +60,16 @@ namespace DarkFactorCoreNet.Repository
             int parentId = statement.ReadUInt32("parentid");
             string promoTitle = statement.ReadString("promo_title");
             string promoText = statement.ReadString("promo_text");
-            string title = statement.ReadString("menuname");
-            string content = statement.ReadString("content");
+            string contentTitle = statement.ReadString("content_title");
+            string contentText = statement.ReadString("content_text");
+            string image = statement.ReadString("image");
             int sortId = statement.ReadUInt32("sort");
             bool published = statement.ReadUInt32("published") == 1;
 
             // Transition hack for now
-            if (content != null)
+            if (contentText != null)
             {
-                content = content.Replace("\"/img/", "\"http://www.darkfactor.net/img/");
+                contentText = contentText.Replace("\"/img/", "\"http://www.darkfactor.net/img/");
             }
 
             if (promoText != null)
@@ -82,9 +83,10 @@ namespace DarkFactorCoreNet.Repository
                 ParentId = parentId,
                 PromoTitle = promoTitle,
                 PromoText = promoText,
-                Title = title,
-                Content = content,
-                HtmlContent = new HtmlString(content),
+                ContentTitle = contentTitle,
+                ContentText = contentText,
+                Image = image,
+                HtmlContent = new HtmlString(contentText),
                 HtmlTeaser = new HtmlString(promoText),
                 SortId = sortId,
                 IsPublished = published
@@ -99,8 +101,9 @@ namespace DarkFactorCoreNet.Repository
                          + " parentid=@parentid, "
                          + " promo_title = @promo_title, "
                          + " promo_text = @promo_text, "
-                         + " menuname =@menuname, "
-                         + " content = @content, "
+                         + " content_title =@content_title, "
+                         + " content_text = @content_text, "
+                         + " image = @image, "
                          + " sort =@sort, "
                          + " published = @published "
                          + "where id = @id ";
@@ -109,8 +112,9 @@ namespace DarkFactorCoreNet.Repository
             variables.Add("@parentid", pageModel.ParentId);
             variables.Add("@promo_title", pageModel.PromoTitle);
             variables.Add("@promo_text", pageModel.PromoText);
-            variables.Add("@menuname", pageModel.Title);
-            variables.Add("@content", pageModel.Content);
+            variables.Add("@content_title", pageModel.ContentTitle);
+            variables.Add("@content_text", pageModel.ContentText);
+            variables.Add("@image", pageModel.Image);
             variables.Add("@sort", pageModel.SortId);
             variables.Add("@published", isPublised);
             variables.Add("@id", pageModel.ID);
@@ -166,10 +170,10 @@ namespace DarkFactorCoreNet.Repository
 
             // Create page in database
             var database = base.GetOrCreateDatabase();
-            string insertSql = @"insert into content(parentid,menuname,sort,content,published,externurl) values(@parentid,@title, @sortid, null, false, null) ";
+            string insertSql = @"insert into content(parentid,content_title,sort,content_text,published,externurl) values(@parentid,@content_title, @sortid, null, false, null) ";
             var insertVariables = DFDataBase.CreateVariables();
             insertVariables.Add("@parentid", parentPageId);
-            insertVariables.Add("@title", @"new page");
+            insertVariables.Add("@content_title", @"new page");
             insertVariables.Add("@sortid", sortId + 1);
 
             int insertedRows = base.GetOrCreateDatabase().ExecuteInsert(insertSql, insertVariables);
