@@ -1,0 +1,32 @@
+﻿@page
+@model MainPage
+@{
+    ViewData["Title"] = Model.pageModel.Title;
+}
+
+<div>
+    <div class="row">
+        <div class="col-md-12">
+            @await Html.PartialAsync("Views/TopElements/TopMenu.cshtml", Model)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            @await Html.PartialAsync("Views/TopElements/TopNavigation.cshtml", Model)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 col-md-4">
+            @await Html.PartialAsync("Views/MainElements/MainArticleSection.cshtml", Model.articleSectionModel.ElementAt(0))
+        </div>
+        <div class="col-lg-4 col-md-4">
+            @await Html.PartialAsync("Views/MainElements/MainArticleSection.cshtml", Model.articleSectionModel.ElementAt(1))
+        </div>
+        <div class="col-lg-4 col-md-4">
+            @await Html.PartialAsync("Views/MainElements/MainArticleSection.cshtml", Model.articleSectionModel.ElementAt(2))
+        </div>
+    </div>
+
+</div>
+

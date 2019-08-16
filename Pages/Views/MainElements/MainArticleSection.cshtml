@@ -1,0 +1,22 @@
+﻿@using DarkFactorCoreNet.Models
+@model PageListModel
+
+<div>
+    @foreach (var relPage in Model.Pages)
+    {
+        <div class="article">
+            @if (!string.IsNullOrEmpty(relPage.PromoTitle))
+            {
+                <a href="/page?id=@relPage.ID" class="articlesubtitle">@relPage.PromoTitle</a><br />
+            }
+            @relPage.HtmlTeaser
+            <br />
+            <br />
+
+            <a href="/page?id=@relPage.ID">Read more &gt;&gt;</a><br />
+            <hr />
+        </div>
+    }
+</div>
+
+
