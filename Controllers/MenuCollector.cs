@@ -58,11 +58,11 @@ namespace DarkFactorCoreNet.Controllers
 
             // Add top nodes
             List<MenuItem> visibleItems = new List<MenuItem>();
-            AddItemsWithParent(visibleItems, selectedTree, 0, 180);
+            AddItemsWithParent(visibleItems, selectedTree, 0, 0);
             return visibleItems;
         }
 
-        private void AddItemsWithParent(List<MenuItem> visibleItems, List<int> selectedTree, int parentId, int width )
+        private void AddItemsWithParent(List<MenuItem> visibleItems, List<int> selectedTree, int parentId, int padding )
         {
             int selectedId = selectedTree.LastOrDefault();
             foreach (var menuItem in menuItems)
@@ -70,13 +70,13 @@ namespace DarkFactorCoreNet.Controllers
                 if (menuItem.ParentID == parentId)
                 {
                     menuItem.MenuClass = GetMenuClass(menuItem.IsPublished, parentId == 0, selectedId == menuItem.ID);
-                    menuItem.Width = width;
+                    menuItem.Width = padding;
                     visibleItems.Add(menuItem);
 
                     // Expand child tree
                     if ( selectedTree.Contains( menuItem.ID ) )
                     {
-                        AddItemsWithParent(visibleItems, selectedTree, menuItem.ID, width - 20);
+                        AddItemsWithParent(visibleItems, selectedTree, menuItem.ID, padding + 20);
                     }
                 }
             }
