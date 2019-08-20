@@ -17,14 +17,11 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-4 col-md-4">
-            @await Html.PartialAsync("Views/MainElements/MainArticleSection.cshtml", Model.articleSectionModel.ElementAt(0))
+        <div class="col-lg-8 col-md-8">
+            @await Html.PartialAsync("Views/MainElements/MainWideArticleSection.cshtml", Model.articleSectionModel.ElementAt(0))
         </div>
         <div class="col-lg-4 col-md-4">
             @await Html.PartialAsync("Views/MainElements/MainArticleSection.cshtml", Model.articleSectionModel.ElementAt(1))
-        </div>
-        <div class="col-lg-4 col-md-4">
-            @await Html.PartialAsync("Views/MainElements/MainArticleSection.cshtml", Model.articleSectionModel.ElementAt(2))
         </div>
     </div>
 

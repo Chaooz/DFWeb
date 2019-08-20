@@ -10,21 +10,27 @@
     <div>
         @foreach (var relPage in pageListModel.Pages)
         {
-            <div class="article">
+        <div class="article">
 
-                @if (!string.IsNullOrEmpty(relPage.PromoTitle))
-        {
-            <a href="/page?id=@relPage.ID" class="articlesubtitle">@relPage.PromoTitle</a>
+            @if (!String.IsNullOrEmpty(relPage.Image))
+    {
+        <center><a href="/page?id=@relPage.ID"><img src="@relPage.Image" class="imagefit" /></a></center>
+        <br />
 }
 
 
-                @relPage.HtmlTeaser
-                <br />
-                <br />
+            @if (!string.IsNullOrEmpty(relPage.PromoTitle))
+            {
+        <a href="/page?id=@relPage.ID" class="articlesubtitle">@relPage.PromoTitle</a><br />
+        <br />
+            }
 
-                <a href="/page?id=@relPage.ID">Read more &gt;&gt;</a><br />
-                <hr />
-            </div>
+            @relPage.HtmlTeaser
+            <br />
+            <br />
+
+            <a href="/page?id=@relPage.ID">Read more &gt;&gt;</a><br />
+        </div>
 
         }
     </div>

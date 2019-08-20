@@ -16,27 +16,12 @@ namespace DarkFactorCoreNet.Pages
         {
             List<PageListModel> model = new List<PageListModel>();
 
-            PageListModel row1 = new PageListModel();
-            PageListModel row2 = new PageListModel();
-            PageListModel row3 = new PageListModel();
-
-            int index = 0;
             var subPages = GetSubPages(id);
-            foreach( var page in subPages.Pages )
+            if (subPages.Pages.Count > 0 )
             {
-                int m = index % 3;
-                switch( m )
-                {
-                    case 0: row1.Pages.Add(page); break;
-                    case 1: row2.Pages.Add(page); break;
-                    case 2: row3.Pages.Add(page); break;
-                }
-                index++;
+                model.Add(subPages);
+                model.Add(subPages);
             }
-
-            model.Add(row1);
-            model.Add(row2);
-            model.Add(row3);
 
             return model;
         }

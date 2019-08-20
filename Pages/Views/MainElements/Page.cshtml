@@ -3,11 +3,6 @@
 
 
 <div>
-    @if (!String.IsNullOrEmpty(Model.Image))
-    {
-        <center><a href="/page?id=@Model.ID"><img src="@Model.Image" class="imagefit" /></a></center>
-    }
-
     <div class="page">
         @Model.HtmlContent
     </div>

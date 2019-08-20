@@ -47,6 +47,10 @@ li {
     height: 250px;
 }
 
+.imagefitwide {
+    width: 100%;
+}
+
 .navbar-toggle {
     border-color: #333;
     float: left;
@@ -113,14 +117,32 @@ li {
     background: #f1f1f1;
 }
 
-.article > a {
-        color: black;
-    }
+.article > a  {
+    color: blue;
+}
 
-    .article > hr {
-        margin-top: 2px;
-        margin-bottom: 2px;
-    }
+.articletext > a {
+    color: black;
+}
+
+.articletext > a:link {
+    color: black;
+}
+
+.article > a:visited {
+    color: black;
+}
+
+.articletext > a:visited {
+    color: black;
+}
+
+
+
+.article > hr {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
 
 .disabledmenu {
     background: #272727;
