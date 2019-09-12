@@ -27,5 +27,10 @@ namespace DarkFactorCoreNet.Controllers
         {
             return pageRepository.GetPagesWithParentId(parentId);
         }
+
+        public List<PageContentModel> GetPagesWithTag(string tag)
+        {
+            return pageRepository.GetPagesWithTag(tag);
+        }
     }
 }

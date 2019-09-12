@@ -27,6 +27,7 @@ namespace DarkFactorCoreNet.Pages
             pageId = 0;
         }
 
+        virtual
         public void OnGet(int id)
         {
             menuItems = menuController.SelectItem(id);
@@ -40,6 +41,19 @@ namespace DarkFactorCoreNet.Pages
         protected List<PageListModel> GetArticleSection(int id)
         {
             return null;
+        }
+
+        protected PageListModel GetPagesWithTag(string tag)
+        {
+            return GetPagesWithTag(tag, tag);
+        }
+
+        protected PageListModel GetPagesWithTag(string title, string tag)
+        {
+            PageListModel pageListModel = new PageListModel();
+            pageListModel.Title = title;
+            pageListModel.Pages = pageController.GetPagesWithTag(tag);
+            return pageListModel;
         }
 
         public ActionResult OnGetPartial() =>

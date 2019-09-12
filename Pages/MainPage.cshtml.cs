@@ -11,16 +11,31 @@ namespace DarkFactorCoreNet.Pages
 {
     public class MainPage : BasePageModel
     {
+        public PageListModel mainPageItems;
+
+        override
+        public void OnGet(int id)
+        {
+            base.OnGet(id);
+
+            mainPageItems = GetSubPages(id);
+        }
+
         override
         protected List<PageListModel> GetArticleSection(int id)
         {
             List<PageListModel> model = new List<PageListModel>();
 
-            var subPages = GetSubPages(id);
-            if (subPages.Pages.Count > 0 )
+            var aboutMe = GetPagesWithTag("aboutme");
+            if (aboutMe.Pages.Count > 0)
             {
-                model.Add(subPages);
-                model.Add(subPages);
+                model.Add(aboutMe);
+            }
+
+            var aboutDarkFactor = GetPagesWithTag("about");
+            if (aboutDarkFactor.Pages.Count > 0)
+            {
+                model.Add(aboutDarkFactor);
             }
 
             return model;

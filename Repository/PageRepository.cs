@@ -54,6 +54,32 @@ namespace DarkFactorCoreNet.Repository
             return pageList;
         }
 
+        public List<PageContentModel> GetPagesWithTag(string tag)
+        {
+            var database = base.GetOrCreateDatabase();
+
+            // Todo, change this to check against tagged fields in the document
+            string sql = string.Format("select id, parentid, promo_title, promo_text, content_title, " +
+                                       "content_text, image, sort, published " +
+                                       "from content " +
+                                       "where content_title like @tag");
+
+            var variables = DFDataBase.CreateVariables();
+            variables.Add("@tag", tag);
+
+            List<PageContentModel> pageList = new List<PageContentModel>();
+
+            using (DFStatement statement = database.ExecuteSelect(sql, variables))
+            {
+                while (statement.ReadNext())
+                {
+                    var page = ReadPage(statement);
+                    pageList.Add(page);
+                }
+            }
+            return pageList;
+        }
+
         private PageContentModel ReadPage(DFStatement statement)
         {
             int id = statement.ReadUInt32("id");
