@@ -111,8 +111,8 @@ CREATE TABLE `contenttags` (
 
 LOCK TABLES `contenttags` WRITE;
 /*!40000 ALTER TABLE `contenttags` DISABLE KEYS */;
-INSERT INTO `contenttags` (`contentid`, `tagid`) VALUES (7,1);
-INSERT INTO `contenttags` (`contentid`, `tagid`) VALUES (7,2);
+INSERT INTO `contenttags` (`contentid`, `tagid`) VALUES (132,1);
+INSERT INTO `contenttags` (`contentid`, `tagid`) VALUES (25,2);
 /*!40000 ALTER TABLE `contenttags` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -150,4 +150,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-09-13 13:28:47
+-- Dump completed on 2019-09-13 13:37:55
