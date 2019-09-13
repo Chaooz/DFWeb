@@ -91,6 +91,55 @@ INSERT INTO `content` (`id`, `parentid`, `content_title`, `sort`, `promo_title`,
 INSERT INTO `content` (`id`, `parentid`, `content_title`, `sort`, `promo_title`, `promo_text`, `content_text`, `image`, `published`, `externurl`) VALUES (142,94,'Nostalgia',1,'Nostalgia','Setting up this webpage with all the new tech has been fun, but I have also touched upon a real hard dose of nostalgia. The reason for this is because I have polished some of the webpages for my own projects. ','Setting up this webpage with all the new tech has been fun, but I have also touched upon a real hard dose of nostalgia. The reason for this is because I have polished some of the webpages for my own projects. Many games that I made 90% complete but never finished. So going forward I want to dedicate 1 week for each project every month. The week will be spent getting development up, getting it to run see if I can do some life saving fixes to the project and perhaps make some screenshots. I have no delusion that the project will be 100% finished but maybe in a state where it is good enough. \r\nNot to mention that I have many Amiga projects that are missing for this page and needs to be dusted off and added to my BitBucket collection. Maybe even a little article and screenshot as well :)',NULL,0,NULL);
 /*!40000 ALTER TABLE `content` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `contenttags`
+--
+
+DROP TABLE IF EXISTS `contenttags`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `contenttags` (
+  `contentid` int(11) NOT NULL,
+  `tagid` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contenttags`
+--
+
+LOCK TABLES `contenttags` WRITE;
+/*!40000 ALTER TABLE `contenttags` DISABLE KEYS */;
+INSERT INTO `contenttags` (`contentid`, `tagid`) VALUES (7,1);
+INSERT INTO `contenttags` (`contentid`, `tagid`) VALUES (7,2);
+/*!40000 ALTER TABLE `contenttags` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tags`
+--
+
+DROP TABLE IF EXISTS `tags`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `tags` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tag` varchar(50) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tags`
+--
+
+LOCK TABLES `tags` WRITE;
+/*!40000 ALTER TABLE `tags` DISABLE KEYS */;
+INSERT INTO `tags` (`id`, `tag`) VALUES (1,'Thor');
+INSERT INTO `tags` (`id`, `tag`) VALUES (2,'DarkFactor');
+/*!40000 ALTER TABLE `tags` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -101,4 +150,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-09-12 15:23:05
+-- Dump completed on 2019-09-13 13:28:47

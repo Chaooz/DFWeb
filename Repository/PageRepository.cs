@@ -56,16 +56,18 @@ namespace DarkFactorCoreNet.Repository
 
         public List<PageContentModel> GetPagesWithTag(string tag)
         {
+            var lowerTag = tag.ToLower();
             var database = base.GetOrCreateDatabase();
 
-            // Todo, change this to check against tagged fields in the document
-            string sql = string.Format("select id, parentid, promo_title, promo_text, content_title, " +
-                                       "content_text, image, sort, published " +
-                                       "from content " +
-                                       "where content_title like @tag");
+            string sql = string.Format("select c.id, c.parentid, c.promo_title, c.promo_text, c.content_title, " +
+                                       "c.content_text, c.image, c.sort, c.published " +
+                                       "from content c, contenttags, tags " +
+                                       "where c.id = contenttags.contentid " +
+                                       "and contenttags.tagid = tags.id " +
+                                       "and tags.tag = @tag");
 
             var variables = DFDataBase.CreateVariables();
-            variables.Add("@tag", tag);
+            variables.Add("@tag", lowerTag);
 
             List<PageContentModel> pageList = new List<PageContentModel>();
 
