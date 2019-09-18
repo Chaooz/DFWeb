@@ -34,6 +34,14 @@
     <div class='edit_header'>Content</div>
     <textarea rows=30 cols=60 name='ContentText' class='edit_input'>@Model.ContentText</textarea><br>
 
+
+    <div class='edit_header'>Tags</div>
+    @foreach (var tag in Model.Tags)
+    {
+        <span> @tag.name [<a href="">X</a>]</span>
+    }
+    <input name='NewTag' type='text' class='edit_input' value=''>
+
     <input class=toolbutton type='submit' value='Save'>
     <input class=toolbutton type='submit' value='Preview'>
 

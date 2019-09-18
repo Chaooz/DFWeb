@@ -22,14 +22,22 @@ namespace DarkFactorCoreNet.Repository
             var variables = DFDataBase.CreateVariables();
             variables.Add("@id", pageId);
 
+            PageContentModel pageModel = null;
+
             using (DFStatement statement = database.ExecuteSelect(sql, variables))
             {
                 if (statement.ReadNext())
                 {
-                    return ReadPage(statement);
+                    pageModel = ReadPage(statement);
                 }
-                return null;
             }
+
+            if ( pageModel != null )
+            {
+                pageModel.Tags = GetTagsForPage(pageModel.ID);
+            }
+
+            return pageModel;
         }
 
         public List<PageContentModel> GetPagesWithParentId(int parentId)
@@ -104,7 +112,7 @@ namespace DarkFactorCoreNet.Repository
             {
                 promoText = promoText.Replace("\"/img/", "\"http://www.darkfactor.net/img/");
             }
-
+            
             return new PageContentModel()
             {
                 ID = id,
@@ -254,6 +262,32 @@ namespace DarkFactorCoreNet.Repository
             bool didSave1 = SavePage(page);
             bool didSave2 = SavePage(swapPage);
             return didSave1 && didSave2;
+        }
+
+        public List<TagModel> GetTagsForPage( int pageId )
+        {
+            List<TagModel> list = new List<TagModel>();
+            string sql = string.Format("select t.id, t.tag " +
+                            "from tags t, contenttags ct " +
+                            "where ct.tagid = t.id " +
+                            "and ct.contentid = @pageId " );
+
+            var database = base.GetOrCreateDatabase();
+            var variables = DFDataBase.CreateVariables();
+            variables.Add("@pageId", pageId);
+
+            using (DFStatement statement = database.ExecuteSelect(sql, variables))
+            {
+                while (statement.ReadNext())
+                {
+                    int tagId = statement.ReadUInt32("id");
+                    string tagName = statement.ReadString("tag");
+
+                    list.Add( new TagModel() { id = tagId, name = tagName } );
+                }
+            }
+
+            return list;
         }
     }
 }

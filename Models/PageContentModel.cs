@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Html;
+using System.Collections.Generic;
 
 namespace DarkFactorCoreNet.Models
 {
@@ -19,5 +20,12 @@ namespace DarkFactorCoreNet.Models
         public HtmlString HtmlContent { get; set; }
         public HtmlString HtmlTeaser { get; set; }
         public string Command { get; set; }
+
+        public IList<TagModel> Tags{ get; set; }
+
+        public PageContentModel()
+        {
+            Tags = new List<TagModel>();
+        }
     }
 }
