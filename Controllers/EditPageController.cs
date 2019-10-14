@@ -21,6 +21,13 @@ namespace DarkFactorCoreNet.Controllers
             pageRepository = new PageRepository();
         }
 
+        [HttpGet]
+        public PageContentModel GetModel( int pageId )
+        {
+            PageContentModel model = pageRepository.GetPage(pageId);
+            return model;
+        }
+
         [HttpPost]
         public IActionResult UpdatePageData([FromForm] PageContentModel pageContentModel)
         {
