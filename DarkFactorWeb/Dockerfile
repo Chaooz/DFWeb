@@ -14,3 +14,8 @@ FROM microsoft/aspnetcore:2.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "DarkFactorCoreNet.dll"]
+
+EXPOSE 5000
+
+#docker build -t dotnetcoredarkfactorweb .
+#docker run -d -p 8080:80 --name dotnetcoredarkfactorweb dotnetcoredarkfactorweb
