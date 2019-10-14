@@ -1,6 +1,6 @@
 version: '3.6'
 services:
-  webapp:
+  dfweb:
     build:
       network: host
       context: ./
@@ -9,7 +9,7 @@ services:
       - "8080:80"
 
   database:
-    image: mariadb
+    image: mysqldb
     user: root
     environment:
     - "MYSQL_ROOT_PASSWORD=secret"
@@ -17,11 +17,11 @@ services:
     - "MYSQL_USER=webuser"
     - "MYSQL_PASSWORD=secretpwd"
     volumes:
-    - webapp-mariadb:/var/lib/mysql
+    - darkfactorweb-mysqldb:/var/lib/mysql
     - ./database/my.cnf:/etc/my.cnf
     ports:
     - "3306:3306"
   
 volumes:
-  webapp-mariadb:
+  darkfactorweb-mysqldb:
     external: true
