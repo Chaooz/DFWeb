@@ -13,10 +13,10 @@ namespace DarkFactorCoreNet.Repository
 
         public BaseRepository()
         {
-            server = "127.0.0.1";
+            server = "192.168.1.144";
             port = 5306;
-            username = "dfweb";
-            password = "testpass";
+            username = "webuser";
+            password = "secretpwd";
             schema = "dfweb";
         }
 

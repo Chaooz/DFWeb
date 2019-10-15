@@ -9,7 +9,7 @@ services:
       - "8080:80"
 
   database:
-    image: mysqldb
+    image: mysql/mysql-server:8.0.17
     user: root
     environment:
     - "MYSQL_ROOT_PASSWORD=secret"
@@ -18,9 +18,10 @@ services:
     - "MYSQL_PASSWORD=secretpwd"
     volumes:
     - darkfactorweb-mysqldb:/var/lib/mysql
-    - ./database/my.cnf:/etc/my.cnf
+    #- ./MySqlServer/my.cnf:/etc/my.cnf
+    - ./MySqlServer/darkfactorweb.sql:/darkfactorweb.sql
     ports:
-    - "3306:3306"
+    - "5306:3306"
   
 volumes:
   darkfactorweb-mysqldb:

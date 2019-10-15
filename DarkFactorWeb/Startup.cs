@@ -24,6 +24,12 @@ namespace DarkFactorCoreNet
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+/* 
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"))
+            );
+            */
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
