@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using DarkFactorCoreNet.Repository;
 
 [assembly: ApiController]
 namespace DarkFactorCoreNet
@@ -30,6 +31,8 @@ namespace DarkFactorCoreNet
                 options.UseMySql(Configuration.GetConnectionString("DefaultConnection"))
             );
             */
+
+            services.AddSingleton(typeof(IPageRepository), typeof(PageRepository));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

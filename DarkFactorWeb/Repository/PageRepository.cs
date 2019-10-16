@@ -7,7 +7,22 @@ using DarkFactorCoreNet.Source.Database;
 
 namespace DarkFactorCoreNet.Repository
 {
-    public class PageRepository : BaseRepository
+    public interface IPageRepository
+    {
+        PageContentModel GetPage(int pageId);
+        List<PageContentModel> GetPagesWithParentId(int parentId);
+        List<PageContentModel> GetPagesWithTag(string tag);
+        List<TagModel> GetTagsForPage( int pageId );
+
+        bool SavePage(PageContentModel pageModel);
+        int DeletePage(int pageId);
+        bool CreatePage( int pageId );
+        bool CreateChildPage( int parentPageId );
+        bool MovePageDown(int pageId);
+        bool MovePageUp(int pageId);
+    }
+
+    public class PageRepository : BaseRepository, IPageRepository
     {
         public PageRepository()
         {
