@@ -11,5 +11,8 @@ namespace DarkFactorCoreNet.Pages
 {
     public class IndexModel : BasePageModel
     {
+        public IndexModel(IPageCollector pageController, IMenuCollector menuController) : base(pageController,menuController)
+        {
+        }
     }
 }

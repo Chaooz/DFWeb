@@ -17,13 +17,13 @@ namespace DarkFactorCoreNet.Pages
         public List<PageListModel> articleSectionModel;
         public int pageId;
 
-        protected MenuCollector menuController;
-        protected PageCollector pageController;
+        protected IMenuCollector menuController;
+        protected IPageCollector pageController;
 
-        public BasePageModel()
+        public BasePageModel(IPageCollector pageController, IMenuCollector menuController)
         {
-            menuController = new MenuCollector();
-            pageController = new PageCollector();
+            this.menuController = menuController;
+            this.pageController = pageController;
             pageId = 0;
         }
 

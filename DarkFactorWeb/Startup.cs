@@ -7,7 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using DarkFactorCoreNet.Repository;
+using DarkFactorCoreNet.Source.Database;
+using DarkFactorCoreNet.Controllers;
 
 [assembly: ApiController]
 namespace DarkFactorCoreNet
@@ -32,7 +35,12 @@ namespace DarkFactorCoreNet
             );
             */
 
+            services.AddScoped(typeof(IMenuCollector), typeof(MenuCollector));
+            services.AddScoped(typeof(IPageCollector), typeof(PageCollector));
+
+            services.AddSingleton(typeof(IMenuRepository), typeof(MenuRepository));
             services.AddSingleton(typeof(IPageRepository), typeof(PageRepository));
+            services.AddSingleton(typeof(IDFDatabase), typeof(DFDataBase));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

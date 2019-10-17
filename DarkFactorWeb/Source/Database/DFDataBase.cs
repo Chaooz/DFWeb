@@ -11,24 +11,35 @@ using MySql.Data.MySqlClient;
 
 namespace DarkFactorCoreNet.Source.Database
 {
-    public class DFDataBase
+    public interface IDFDatabase
     {
+        bool IsConnected();
+        DFStatement ExecuteSelect( string sql );
+        DFStatement ExecuteSelect(string sqlString, Dictionary<string, object> variables);
+        int ExecuteUpdate(string sqlString, Dictionary<string,object> variables);
+        int ExecuteInsert(string sqlString, Dictionary<string, object> variables);
+        int ExecuteDelete(string sqlString, Dictionary<string, object> variables);
+    }
+
+    public class DFDataBase : IDFDatabase
+    { 
         private MySqlConnection conn;
 
-        private static DFDataBase instance = null;
+        private string username;
+        private string password;
+        private string server;
+        private int port;
+        private string schema;
 
         public DFDataBase()
         {
             conn = null;
-        }
 
-        public static DFDataBase GetInstance()
-        {
-            if ( instance == null )
-            {
-                instance = new DFDataBase();
-            }
-            return instance;
+            server = "192.168.1.144";
+            port = 5306;
+            username = "webuser";
+            password = "secretpwd";
+            schema = "dfweb";
         }
 
         public bool IsConnected()
@@ -36,7 +47,16 @@ namespace DarkFactorCoreNet.Source.Database
             return conn != null;
         }
 
-        public void Connect(string server, int port, string schema, string username, string password)
+        public bool ReConnect()
+        {
+            if ( conn == null )
+            {
+                return Connect(server,port,schema,username,password);
+            }
+            return true;
+        }
+
+        public bool Connect(string server, int port, string schema, string username, string password)
         {
             string cs = string.Format("server={0};port={1};userid={2};password={3};database={4}",
                 server,
@@ -50,7 +70,7 @@ namespace DarkFactorCoreNet.Source.Database
                 conn = new MySqlConnection(cs);
                 conn.Open();
                 Console.WriteLine("MySQL version : {0}", conn.ServerVersion);
-                return;
+                return true;
             }
             catch (MySqlException ex)
             {
@@ -61,6 +81,7 @@ namespace DarkFactorCoreNet.Source.Database
                     conn = null;
                 }
             }
+            return false;
         }
 
         public static Dictionary<string, object> CreateVariables()
@@ -116,6 +137,8 @@ namespace DarkFactorCoreNet.Source.Database
         *************************************************************************************************/
         public DFStatement ExecuteSelect(string sqlString, Dictionary<string, object> variables)
         {
+            ReConnect();
+
             MySqlCommand cmd = new MySqlCommand(sqlString, conn);
 
             // Set bound variables
@@ -149,6 +172,8 @@ namespace DarkFactorCoreNet.Source.Database
         *************************************************************************************************/
         public int ExecuteUpdate(string sqlString, Dictionary<string,object> variables)
         {
+            ReConnect();
+
             MySqlCommand cmd = new MySqlCommand(sqlString, conn);
 
             cmd.Parameters.Clear();
@@ -174,6 +199,7 @@ namespace DarkFactorCoreNet.Source.Database
         *************************************************************************************************/
         public int ExecuteInsert(string sqlString, Dictionary<string, object> variables)
         {
+            ReConnect();
             MySqlCommand cmd = new MySqlCommand(sqlString, conn);
 
             cmd.Parameters.Clear();
@@ -199,6 +225,7 @@ namespace DarkFactorCoreNet.Source.Database
         *************************************************************************************************/
         public int ExecuteDelete(string sqlString, Dictionary<string, object> variables)
         {
+            ReConnect();
             MySqlCommand cmd = new MySqlCommand(sqlString, conn);
 
             cmd.Parameters.Clear();

@@ -22,16 +22,18 @@ namespace DarkFactorCoreNet.Repository
         bool MovePageUp(int pageId);
     }
 
-    public class PageRepository : BaseRepository, IPageRepository
+    public class PageRepository : IPageRepository
     {
-        public PageRepository()
+        private IDFDatabase database;
+
+
+        public PageRepository(IDFDatabase database)
         {
+            this.database = database;
         }
 
         public PageContentModel GetPage(int pageId)
         {
-            var database = base.GetOrCreateDatabase();
-
             string sql = string.Format("select id, parentid, promo_title, promo_text, content_title, content_text, image, sort, published from content where id = @id");
 
             var variables = DFDataBase.CreateVariables();
@@ -57,8 +59,6 @@ namespace DarkFactorCoreNet.Repository
 
         public List<PageContentModel> GetPagesWithParentId(int parentId)
         {
-            var database = base.GetOrCreateDatabase();
-
             string sql = string.Format("select id, parentid, promo_title, promo_text, content_title, content_text, image, sort, published from content where parentid = @parentid order by sort");
 
             var variables = DFDataBase.CreateVariables();
@@ -80,7 +80,6 @@ namespace DarkFactorCoreNet.Repository
         public List<PageContentModel> GetPagesWithTag(string tag)
         {
             var lowerTag = tag.ToLower();
-            var database = base.GetOrCreateDatabase();
 
             string sql = string.Format("select c.id, c.parentid, c.promo_title, c.promo_text, c.content_title, " +
                                        "c.content_text, c.image, c.sort, c.published " +
@@ -170,7 +169,7 @@ namespace DarkFactorCoreNet.Repository
             variables.Add("@published", isPublised);
             variables.Add("@id", pageModel.ID);
 
-            int updatedRows = base.GetOrCreateDatabase().ExecuteUpdate(sql, variables);
+            int updatedRows = database.ExecuteUpdate(sql, variables);
             return ( updatedRows == 1);
         }
 
@@ -194,7 +193,7 @@ namespace DarkFactorCoreNet.Repository
             var variables = DFDataBase.CreateVariables();
             variables.Add("@id", pageId);
 
-            base.GetOrCreateDatabase().ExecuteDelete(sql, variables);
+            database.ExecuteDelete(sql, variables);
 
             return page.ParentId;
         }
@@ -220,14 +219,13 @@ namespace DarkFactorCoreNet.Repository
             }
 
             // Create page in database
-            var database = base.GetOrCreateDatabase();
             string insertSql = @"insert into content(parentid,content_title,sort,content_text,published,externurl) values(@parentid,@content_title, @sortid, null, false, null) ";
             var insertVariables = DFDataBase.CreateVariables();
             insertVariables.Add("@parentid", parentPageId);
             insertVariables.Add("@content_title", @"new page");
             insertVariables.Add("@sortid", sortId + 1);
 
-            int insertedRows = base.GetOrCreateDatabase().ExecuteInsert(insertSql, insertVariables);
+            int insertedRows = database.ExecuteInsert(insertSql, insertVariables);
             return (insertedRows == 1);
         }
 
@@ -287,7 +285,6 @@ namespace DarkFactorCoreNet.Repository
                             "where ct.tagid = t.id " +
                             "and ct.contentid = @pageId " );
 
-            var database = base.GetOrCreateDatabase();
             var variables = DFDataBase.CreateVariables();
             variables.Add("@pageId", pageId);
 

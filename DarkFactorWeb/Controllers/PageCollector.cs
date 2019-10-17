@@ -9,13 +9,20 @@ using DarkFactorCoreNet.Models;
 
 namespace DarkFactorCoreNet.Controllers
 {
-    public class PageCollector
+    public interface IPageCollector
     {
-        private PageRepository pageRepository;
+        PageContentModel GetPage(int pageId);
+        List<PageContentModel> GetPagesWithParentId(int parentId);
+        List<PageContentModel> GetPagesWithTag(string tag);
+    }
 
-        public PageCollector()
+    public class PageCollector : IPageCollector
+    {
+        private IPageRepository pageRepository;
+
+        public PageCollector(IPageRepository pageRepository)
         {
-            pageRepository = new PageRepository();
+            this.pageRepository = pageRepository;
         }
 
         public PageContentModel GetPage(int pageId)

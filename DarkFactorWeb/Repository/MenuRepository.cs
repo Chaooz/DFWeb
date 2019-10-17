@@ -5,17 +5,25 @@ using DarkFactorCoreNet.Source.Database;
 
 namespace DarkFactorCoreNet.Repository
 {
-    public class MenuRepository : BaseRepository
+    public interface IMenuRepository
     {
-        public MenuRepository()
+        List<MenuItem> GetAllItems();
+    }
+
+    public class MenuRepository : IMenuRepository
+    {
+        private IDFDatabase database;
+
+        public MenuRepository(IDFDatabase database)
         {
+            this.database = database;
         }
 
         public List<MenuItem> GetAllItems()
         {
             List<MenuItem> itemList = new List<MenuItem>();
 
-            using (DFStatement statement = base.GetOrCreateDatabase()
+            using (DFStatement statement = database
                 .ExecuteSelect("select id, parentid, content_title, published from content order by sort"))
             {
                 while (statement.ReadNext())

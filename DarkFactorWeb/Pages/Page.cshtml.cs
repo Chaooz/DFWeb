@@ -11,6 +11,10 @@ namespace DarkFactorCoreNet.Pages
 {
     public class Page : BasePageModel
     {
+        public Page(IPageCollector pageController, IMenuCollector menuController) : base(pageController,menuController)
+        {
+        }
+
         override
         protected List<PageListModel> GetArticleSection(int id)
         {

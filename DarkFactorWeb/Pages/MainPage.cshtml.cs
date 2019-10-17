@@ -13,6 +13,10 @@ namespace DarkFactorCoreNet.Pages
     {
         public PageListModel mainPageItems;
 
+        public MainPage(IPageCollector pageController, IMenuCollector menuController) : base(pageController,menuController)
+        {
+        }
+
         override
         public void OnGet(int id)
         {

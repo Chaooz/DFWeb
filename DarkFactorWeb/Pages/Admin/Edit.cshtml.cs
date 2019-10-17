@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using DarkFactorCoreNet.Repository;
 using DarkFactorCoreNet.Models;
+using DarkFactorCoreNet.Controllers;
 
 namespace DarkFactorCoreNet.Pages
 {
@@ -14,7 +15,7 @@ namespace DarkFactorCoreNet.Pages
     {
         private IPageRepository pageRepository;
 
-        public EditModel(IPageRepository pageRepository)
+        public EditModel(IPageRepository pageRepository, IPageCollector pageController, IMenuCollector menuController) : base(pageController,menuController)
         {
             this.pageRepository = pageRepository;
         }

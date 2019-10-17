@@ -7,27 +7,22 @@ using DarkFactorCoreNet.Repository;
 
 namespace DarkFactorCoreNet.Controllers
 {
-    public class MenuCollector
+    public interface IMenuCollector
+    {
+        int GetDefaultId();
+        List<MenuItem> GetTree( int pageId );
+        List<MenuItem> SelectItem( int selectedItemId );
+    }
+
+    public class MenuCollector : IMenuCollector
     {
         public List<MenuItem> menuItems;
-        private MenuRepository menuRepository;
+        private IMenuRepository menuRepository;
 
-        public MenuCollector()
+        public MenuCollector(IMenuRepository menuRepository)
         {
-            menuRepository = new MenuRepository();
+            this.menuRepository = menuRepository;
             menuItems = menuRepository.GetAllItems();
-
-            /*
-            menuItems.Add(new MenuItem() { ID = 1, ParentID = 0, Name = "H O M E", IsPublished = true });
-            menuItems.Add(new MenuItem() { ID = 2, ParentID = 0, Name = "Codemonkey Blog", IsPublished = false });
-            menuItems.Add(new MenuItem() { ID = 3, ParentID = 2, Name = ".Net Core 2 Website", IsPublished = false });
-            menuItems.Add(new MenuItem() { ID = 9, ParentID = 2, Name = ".Heml for dummies", IsPublished = true });
-            menuItems.Add(new MenuItem() { ID = 4, ParentID = 0, Name = "Games", IsPublished = true });
-            menuItems.Add(new MenuItem() { ID = 5, ParentID = 0, Name = "Apps", IsPublished = true });
-            menuItems.Add(new MenuItem() { ID = 7, ParentID = 4, Name = "Noid", IsPublished = true });
-            menuItems.Add(new MenuItem() { ID = 8, ParentID = 4, Name = "Valyrian Adventures", IsPublished = true });
-            menuItems.Add(new MenuItem() { ID = 10, ParentID = 8, Name = "Screenshot", IsPublished = true });
-            */
         }
 
         public int GetDefaultId()
