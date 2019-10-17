@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DarkFactorCoreNet.Models;
-using DarkFactorCoreNet.Source.Database;
+using DarkFactorCoreNet.Repository.Database;
 
 namespace DarkFactorCoreNet.Repository
 {

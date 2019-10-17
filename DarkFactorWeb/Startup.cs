@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using DarkFactorCoreNet.Repository;
-using DarkFactorCoreNet.Source.Database;
+using DarkFactorCoreNet.Repository.Database;
 using DarkFactorCoreNet.Controllers;
 
 [assembly: ApiController]

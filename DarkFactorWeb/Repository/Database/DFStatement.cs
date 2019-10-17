@@ -1,7 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 
-namespace DarkFactorCoreNet.Source.Database
+namespace DarkFactorCoreNet.Repository.Database
 {
     public class DFStatement : IDisposable
     {

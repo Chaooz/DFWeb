@@ -9,7 +9,7 @@ using MySql.Data.MySqlClient;
 // http://zetcode.com/db/mysqlcsharptutorial/
 // https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-strings
 
-namespace DarkFactorCoreNet.Source.Database
+namespace DarkFactorCoreNet.Repository.Database
 {
     public interface IDFDatabase
     {

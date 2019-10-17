@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Html;
 using DarkFactorCoreNet.Models;
-using DarkFactorCoreNet.Source.Database;
+using DarkFactorCoreNet.Repository.Database;
 
 namespace DarkFactorCoreNet.Repository
 {
@@ -25,7 +25,6 @@ namespace DarkFactorCoreNet.Repository
     public class PageRepository : IPageRepository
     {
         private IDFDatabase database;
-
 
         public PageRepository(IDFDatabase database)
         {
