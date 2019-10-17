@@ -17,22 +17,22 @@ namespace DarkFactorCoreNet.Pages
         public List<PageListModel> articleSectionModel;
         public int pageId;
 
-        protected IMenuCollector menuController;
-        protected IPageCollector pageController;
+        protected IMenuProvider menuProvider;
+        protected IPageProvider pageProvider;
 
-        public BasePageModel(IPageCollector pageController, IMenuCollector menuController)
+        public BasePageModel(IPageProvider pageProvider, IMenuProvider menuProvider)
         {
-            this.menuController = menuController;
-            this.pageController = pageController;
+            this.menuProvider = menuProvider;
+            this.pageProvider = pageProvider;
             pageId = 0;
         }
 
         virtual
         public void OnGet(int id)
         {
-            menuItems = menuController.SelectItem(id);
-            treeList = menuController.GetTree(id);
-            pageModel = pageController.GetPage(id);
+            menuItems = menuProvider.SelectItem(id);
+            treeList = menuProvider.GetTree(id);
+            pageModel = pageProvider.GetPage(id);
             articleSectionModel = GetArticleSection(id);
             pageId = id;
         }
@@ -52,7 +52,7 @@ namespace DarkFactorCoreNet.Pages
         {
             PageListModel pageListModel = new PageListModel();
             pageListModel.Title = title;
-            pageListModel.Pages = pageController.GetPagesWithTag(tag);
+            pageListModel.Pages = pageProvider.GetPagesWithTag(tag);
             return pageListModel;
         }
 

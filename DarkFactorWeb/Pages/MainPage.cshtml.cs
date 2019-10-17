@@ -13,7 +13,7 @@ namespace DarkFactorCoreNet.Pages
     {
         public PageListModel mainPageItems;
 
-        public MainPage(IPageCollector pageController, IMenuCollector menuController) : base(pageController,menuController)
+        public MainPage(IPageProvider pageProvider, IMenuProvider menuProvider) : base(pageProvider,menuProvider)
         {
         }
 
@@ -48,7 +48,7 @@ namespace DarkFactorCoreNet.Pages
         private PageListModel GetSubPages(int parentId)
         {
             PageListModel model = new PageListModel();
-            model.Pages = pageController.GetPagesWithParentId(parentId);
+            model.Pages = pageProvider.GetPagesWithParentId(parentId);
             return model;
         }
     }

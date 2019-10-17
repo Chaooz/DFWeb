@@ -11,7 +11,7 @@ namespace DarkFactorCoreNet.Pages
 {
     public class DeleteModel : BasePageModel
     {
-        public DeleteModel(IPageCollector pageController, IMenuCollector menuController) : base(pageController,menuController)
+        public DeleteModel(IPageProvider pageProvider, IMenuProvider menuProvider) : base(pageProvider,menuProvider)
         {
         }
     }

@@ -15,7 +15,9 @@ namespace DarkFactorCoreNet.Pages
     {
         private IPageRepository pageRepository;
 
-        public EditModel(IPageRepository pageRepository, IPageCollector pageController, IMenuCollector menuController) : base(pageController,menuController)
+        public EditModel(IPageRepository pageRepository,
+            IPageProvider pageProvider, 
+            IMenuProvider menuProvider) : base(pageProvider,menuProvider)
         {
             this.pageRepository = pageRepository;
         }

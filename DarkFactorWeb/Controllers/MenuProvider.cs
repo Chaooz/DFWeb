@@ -7,19 +7,19 @@ using DarkFactorCoreNet.Repository;
 
 namespace DarkFactorCoreNet.Controllers
 {
-    public interface IMenuCollector
+    public interface IMenuProvider
     {
         int GetDefaultId();
         List<MenuItem> GetTree( int pageId );
         List<MenuItem> SelectItem( int selectedItemId );
     }
 
-    public class MenuCollector : IMenuCollector
+    public class MenuProvider : IMenuProvider
     {
         public List<MenuItem> menuItems;
         private IMenuRepository menuRepository;
 
-        public MenuCollector(IMenuRepository menuRepository)
+        public MenuProvider(IMenuRepository menuRepository)
         {
             this.menuRepository = menuRepository;
             menuItems = menuRepository.GetAllItems();

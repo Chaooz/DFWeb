@@ -11,7 +11,7 @@ namespace DarkFactorCoreNet.Pages
 {
     public class PreviewModel : BasePageModel
     {
-        public PreviewModel(IPageCollector pageController, IMenuCollector menuController) : base(pageController,menuController)
+        public PreviewModel(IPageProvider pageProvider, IMenuProvider menuProvider) : base(pageProvider,menuProvider)
         {
         }
 
@@ -34,7 +34,7 @@ namespace DarkFactorCoreNet.Pages
             PageListModel model = new PageListModel();
             model.Title = "Sidemenu view";
 
-            var page = pageController.GetPage(id);
+            var page = pageProvider.GetPage(id);
             if ( page != null )
             {
                 model.Pages.Add(page);

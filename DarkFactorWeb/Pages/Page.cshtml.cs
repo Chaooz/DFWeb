@@ -11,7 +11,8 @@ namespace DarkFactorCoreNet.Pages
 {
     public class Page : BasePageModel
     {
-        public Page(IPageCollector pageController, IMenuCollector menuController) : base(pageController,menuController)
+
+        public Page(IPageProvider pageProvider, IMenuProvider menuProvider) : base(pageProvider,menuProvider)
         {
         }
 
@@ -33,7 +34,7 @@ namespace DarkFactorCoreNet.Pages
         {
             PageListModel model = new PageListModel();
             model.Title = "Related Articles";
-            model.Pages = pageController.GetPagesWithParentId(parentId);
+            model.Pages = pageProvider.GetPagesWithParentId(parentId);
             return model;
         }
     }
