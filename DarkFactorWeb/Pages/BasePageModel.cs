@@ -48,6 +48,11 @@ namespace DarkFactorCoreNet.Pages
             return GetPagesWithTag(tag, tag);
         }
 
+        protected List<String> GetRelatedTags(int pageId)
+        {
+            return pageProvider.GetRelatedTags(pageId);
+        }
+
         protected PageListModel GetPagesWithTag(string title, string tag)
         {
             PageListModel pageListModel = new PageListModel();

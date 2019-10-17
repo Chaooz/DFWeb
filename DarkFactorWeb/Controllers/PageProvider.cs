@@ -14,6 +14,7 @@ namespace DarkFactorCoreNet.Controllers
         PageContentModel GetPage(int pageId);
         List<PageContentModel> GetPagesWithParentId(int parentId);
         List<PageContentModel> GetPagesWithTag(string tag);
+        List<String> GetRelatedTags(int pageId);
     }
 
     public class PageProvider : IPageProvider
@@ -38,6 +39,11 @@ namespace DarkFactorCoreNet.Controllers
         public List<PageContentModel> GetPagesWithTag(string tag)
         {
             return pageRepository.GetPagesWithTag(tag);
+        }
+
+        public List<String> GetRelatedTags(int pageId)
+        {
+            return pageRepository.GetRelatedTags(pageId);
         }
     }
 }

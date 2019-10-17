@@ -30,18 +30,15 @@ namespace DarkFactorCoreNet.Pages
         {
             List<PageListModel> model = new List<PageListModel>();
 
-            var aboutMe = GetPagesWithTag("Thor");
-            if (aboutMe.Pages.Count > 0)
+            List<String> tagList = GetRelatedTags(id);
+            foreach( String tag in tagList)
             {
-                model.Add(aboutMe);
+                var tagPage = GetPagesWithTag(tag);
+                if (tagPage.Pages.Count > 0)
+                {
+                    model.Add(tagPage);
+                }
             }
-
-            var aboutDarkFactor = GetPagesWithTag("DarkFactor");
-            if (aboutDarkFactor.Pages.Count > 0)
-            {
-                model.Add(aboutDarkFactor);
-            }
-
             return model;
         }
 

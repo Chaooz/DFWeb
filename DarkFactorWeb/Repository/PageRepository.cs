@@ -13,6 +13,7 @@ namespace DarkFactorCoreNet.Repository
         List<PageContentModel> GetPagesWithParentId(int parentId);
         List<PageContentModel> GetPagesWithTag(string tag);
         List<TagModel> GetTagsForPage( int pageId );
+        List<String> GetRelatedTags(int pageId);
 
         bool SavePage(PageContentModel pageModel);
         int DeletePage(int pageId);
@@ -140,6 +141,28 @@ namespace DarkFactorCoreNet.Repository
                 SortId = sortId,
                 IsPublished = published
             };
+        }
+
+        public List<String> GetRelatedTags(int pageId)
+        {
+            List<String> tagList = new List<String>();
+
+            string sql = string.Format("select t.tag " +
+                                       "from tags t, relatedtags rt " +
+                                       "where rt.contentid = @pageid " +
+                                       "and rt.tagid = t.id " );
+
+            var variables = DFDataBase.CreateVariables();
+            variables.Add("@pageid", pageId);
+            using (DFStatement statement = database.ExecuteSelect(sql, variables))
+            {
+                while (statement.ReadNext())
+                {
+                    string tag = statement.ReadString("tag");
+                    tagList.Add(tag);
+                }
+            }
+            return tagList;
         }
 
         public bool SavePage(PageContentModel pageModel)

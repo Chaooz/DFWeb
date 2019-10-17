@@ -35,7 +35,7 @@ namespace DarkFactorCoreNet.Repository.Database
         {
             conn = null;
 
-            server = "192.168.1.144";
+            server = "127.0.0.1";
             port = 5306;
             username = "webuser";
             password = "secretpwd";
