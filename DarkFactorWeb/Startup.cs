@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using DarkFactorCoreNet.Repository;
 using DarkFactorCoreNet.Repository.Database;
 using DarkFactorCoreNet.Controllers;
+using DarkFactorCoreNet.Models;
 
 [assembly: ApiController]
 namespace DarkFactorCoreNet
@@ -35,6 +36,9 @@ namespace DarkFactorCoreNet
             );
             */
 
+            services.AddOptions();
+            services.Configure<DatabaseConfig>(Configuration.GetSection("DatabaseConfigModel"));
+
             services.AddScoped(typeof(IMenuProvider), typeof(MenuProvider));
             services.AddScoped(typeof(IPageProvider), typeof(PageProvider));
 
@@ -58,6 +62,7 @@ namespace DarkFactorCoreNet
             app.UseStaticFiles();
             //app.UseHttpsRedirection();
             app.UseMvc();
+
 
         }
     }

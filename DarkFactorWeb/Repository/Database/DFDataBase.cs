@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+
 using MySql.Data.MySqlClient;
+using DarkFactorCoreNet.Models;
 
 // http://zetcode.com/db/mysqlcsharptutorial/
 // https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-strings
@@ -25,21 +28,12 @@ namespace DarkFactorCoreNet.Repository.Database
     { 
         private MySqlConnection conn;
 
-        private string username;
-        private string password;
-        private string server;
-        private int port;
-        private string schema;
+        private DatabaseConfig dbOptions;
 
-        public DFDataBase()
+        public DFDataBase ( IOptions<DatabaseConfig> options )
         {
             conn = null;
-
-            server = "127.0.0.1";
-            port = 5306;
-            username = "webuser";
-            password = "secretpwd";
-            schema = "dfweb";
+            dbOptions = options.Value;
         }
 
         public bool IsConnected()
@@ -51,7 +45,11 @@ namespace DarkFactorCoreNet.Repository.Database
         {
             if ( conn == null )
             {
-                return Connect(server,port,schema,username,password);
+                return Connect(dbOptions.Server,
+                                dbOptions.Port,
+                                dbOptions.Schema,
+                                dbOptions.Username,
+                                dbOptions.Password);
             }
             return true;
         }
