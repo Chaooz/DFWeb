@@ -1,6 +1,14 @@
 ﻿@using DarkFactorCoreNet.Models
 @model PageContentModel
 
+@{
+    var acl = new Dictionary<int, string>();
+    acl[0] = "Public";
+    acl[1] = "Member";
+    acl[2] = "Editor";
+    acl[3] = "Admin";    
+}
+
 <form  method='POST' style='display: inline;'>
 
     <input type='hidden' name='ID' value='@Model.ID'>
@@ -10,10 +18,17 @@
 
     <div class='edit_header'>Access Control</div>
     <select name='acl' class='edit_input'>
-        <option value=0> Public </option>
-        <option value=1> Member </option>
-        <option value=2 selected> Editor </option>
-        <option value=3> Admin </option>
+        @foreach (var aclKv in acl)
+        {
+            if ( aclKv.Key == Model.Acl )
+            {
+                <option value=@aclKv.Key selected> @aclKv.Value </option>
+            }   
+            else
+            {
+                <option value=@aclKv.Key> @aclKv.Value </option>
+            }
+        }
     </select>
 
     <br><br>

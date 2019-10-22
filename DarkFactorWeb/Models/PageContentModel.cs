@@ -14,7 +14,7 @@ namespace DarkFactorCoreNet.Models
         public string ContentText { get; set; }
         public string Image { get; set; }
         public int SortId { get; set; }
-        public bool IsPublished { get; set; }
+        public int Acl { get; set; }
 
         // Additional html properties
         public HtmlString HtmlContent { get; set; }

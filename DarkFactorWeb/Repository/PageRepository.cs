@@ -114,7 +114,7 @@ namespace DarkFactorCoreNet.Repository
             string contentText = statement.ReadString("content_text");
             string image = statement.ReadString("image");
             int sortId = statement.ReadUInt32("sort");
-            bool published = statement.ReadUInt32("published") == 1;
+            int acl = statement.ReadUInt32("published");
 
             // Transition hack for now
             if (contentText != null)
@@ -139,7 +139,7 @@ namespace DarkFactorCoreNet.Repository
                 HtmlContent = new HtmlString(contentText),
                 HtmlTeaser = new HtmlString(promoText),
                 SortId = sortId,
-                IsPublished = published
+                Acl = acl
             };
         }
 
@@ -167,8 +167,6 @@ namespace DarkFactorCoreNet.Repository
 
         public bool SavePage(PageContentModel pageModel)
         {
-            int isPublised = (pageModel.IsPublished) ? 1 : 0;
-
             string sql = @"update content set "
                          + " parentid=@parentid, "
                          + " promo_title = @promo_title, "
@@ -188,7 +186,7 @@ namespace DarkFactorCoreNet.Repository
             variables.Add("@content_text", pageModel.ContentText);
             variables.Add("@image", pageModel.Image);
             variables.Add("@sort", pageModel.SortId);
-            variables.Add("@published", isPublised);
+            variables.Add("@published", pageModel.Acl);
             variables.Add("@id", pageModel.ID);
 
             int updatedRows = database.ExecuteUpdate(sql, variables);
