@@ -30,17 +30,13 @@ namespace DarkFactorCoreNet
         {
             services.AddMvc();
 
-/* 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"))
-            );
-            */
-
             services.AddOptions();
+            services.AddHttpContextAccessor();
             services.Configure<DatabaseConfig>(Configuration.GetSection("DatabaseConfigModel"));
 
             services.AddScoped(typeof(IMenuProvider), typeof(MenuProvider));
             services.AddScoped(typeof(IPageProvider), typeof(PageProvider));
+            services.AddScoped(typeof(ILoginProvider), typeof(LoginProvider));
 
             services.AddSingleton(typeof(IMenuRepository), typeof(MenuRepository));
             services.AddSingleton(typeof(IPageRepository), typeof(PageRepository));
