@@ -4,10 +4,10 @@
         <i>
             <a href="/index" class="navigation-item">Home</a>
 
-            @foreach (var item in Model.treeList)
+        @foreach (var item in Model.treeList)
         {
-        <span class="navigation-item">/</span>
-        <a href="/page?id=@item.ID" class="navigation-item">@item.Name</a>
+            <span class="navigation-item">/</span>
+            <a href="/page?id=@item.ID" class="navigation-item">@item.Name</a>
         }
 
     </i>

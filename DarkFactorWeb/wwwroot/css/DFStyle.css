@@ -10,13 +10,13 @@
 
 a:link {
     font-weight: bold;
-    text-decoration: underline;
+ /*   text-decoration: underline;*/
     color: #FFFFFF
 }
 
 a:visited {
     font-weight: bold;
-    text-decoration: underline;
+/*    text-decoration: underline;*/
     color: #FFFFFF
 }
 
@@ -26,16 +26,16 @@ a:hover {
     color: #FFFFFF;
 }
 
+/*
 li {
     font-size: x-small;
 }
-
 .topmenu li
 {
     font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: large;
 }
-
+*/
 .icon-bar
 {
     background-color:black;

@@ -59,6 +59,11 @@ namespace DarkFactorCoreNet.Controllers
             {
                 //_logger.LogInformation("LoginUser ...");
 
+                if ( username == null || password == null )
+                {
+                    return false;
+                }
+
                 // Do an actual check against service or repository for this user
                 if ( username.Equals("chaoz") && password.Equals("mypass"))
                 {
