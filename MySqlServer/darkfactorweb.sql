@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.16, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.17, for Linux (x86_64)
 --
 -- Host: localhost    Database: dfweb
 -- ------------------------------------------------------
--- Server version	8.0.16
+-- Server version	8.0.17
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
- SET NAMES utf8mb4 ;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,7 +21,7 @@
 
 DROP TABLE IF EXISTS `content`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `content` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parentid` int(11) NOT NULL DEFAULT '0',
@@ -71,7 +71,7 @@ INSERT INTO `content` (`id`, `parentid`, `content_title`, `sort`, `promo_title`,
 INSERT INTO `content` (`id`, `parentid`, `content_title`, `sort`, `promo_title`, `promo_text`, `content_text`, `image`, `published`, `externurl`) VALUES (113,104,'Amazon In App Purchase',1,'Amazon In App Purchase','<H2>Debugging application over Wifi</H2>\r\n\r\n<pre>\r\n\r\n# Make sure you have any sort of Android device connected when switching.\r\nOtherwise it will just throw an error about unknown device\r\n\r\n# Restart the ADB server to listen for a tcp socket ( instead of USB )\r\nadb kill-server\r\nadb tcpip 5555\r\n\r\nIf the tcpip command is hanging, check if the port is already open.\r\nadb shell netstat | grep 5555\r\n\r\nOr you can fetch the port it is using with this\r\nadb shell getprop | grep adb\r\n\r\n# Connect to the Android device\r\nadb connect 192.168.1.103\r\ntimeout 1 >NUL\r\n\r\n# Clear log, start the app and show the log afterwards\r\nadb logcat Ã¢â‚¬â€œc\r\nadb shell am start -n com.darkfactor.vaclient/.ValyrianAdventures\r\nadb logcat Ã¢â‚¬â€œd\r\n\r\n# Amazon.sdktester.json\r\n{\r\n  \"1200\" : {\r\n    \"itemType\": \"CONSUMABLE\",\r\n    \"price\": 3.99,\r\n    \"title\": \"1200 Diamonds\",\r\n    \"description\": \"Purchase 1200 diamonds for a great price!\"\r\n  }\r\n}\r\n\r\n\r\n# Push the item shop testing app\r\nhttp://forum.xda-developers.com/showthread.php?t=517874\r\nadb push amazon.sdktester.json /mnt/sdcard\r\nadb shell rm -r /mnt/sdcard/amazon.sdktester.json\r\n\r\n# Fire TV howto\r\nhttps://developer.amazon.com/public/solutions/devices/fire-tv/\r\ndocs/installing-and-running-your-app\r\n</pre>','<H2>Debugging application over Wifi</H2>\r\n\r\n<pre>\r\n\r\n# Make sure you have any sort of Android device connected when switching.\r\nOtherwise it will just throw an error about unknown device\r\n\r\n# Restart the ADB server to listen for a tcp socket ( instead of USB )\r\nadb kill-server\r\nadb tcpip 5555\r\n\r\nIf the tcpip command is hanging, check if the port is already open.\r\nadb shell netstat | grep 5555\r\n\r\nOr you can fetch the port it is using with this\r\nadb shell getprop | grep adb\r\n\r\n# Connect to the Android device\r\nadb connect 192.168.1.103\r\ntimeout 1 >NUL\r\n\r\n# Clear log, start the app and show the log afterwards\r\nadb logcat Ã¢â‚¬â€œc\r\nadb shell am start -n com.darkfactor.vaclient/.ValyrianAdventures\r\nadb logcat Ã¢â‚¬â€œd\r\n\r\n# Amazon.sdktester.json\r\n{\r\n  \"1200\" : {\r\n    \"itemType\": \"CONSUMABLE\",\r\n    \"price\": 3.99,\r\n    \"title\": \"1200 Diamonds\",\r\n    \"description\": \"Purchase 1200 diamonds for a great price!\"\r\n  }\r\n}\r\n\r\n\r\n# Push the item shop testing app\r\nhttp://forum.xda-developers.com/showthread.php?t=517874\r\nadb push amazon.sdktester.json /mnt/sdcard\r\nadb shell rm -r /mnt/sdcard/amazon.sdktester.json\r\n\r\n# Fire TV howto\r\nhttps://developer.amazon.com/public/solutions/devices/fire-tv/\r\ndocs/installing-and-running-your-app\r\n</pre>',NULL,0,NULL);
 INSERT INTO `content` (`id`, `parentid`, `content_title`, `sort`, `promo_title`, `promo_text`, `content_text`, `image`, `published`, `externurl`) VALUES (114,104,'Callstack',2,'Callstack','https://android.googlesource.com/platform/frameworks/base/+/gingerbread/libs/utils/CallStack.cpp\r\n\r\nhttps://github.com/xroche/coffeecatch\r\nhttp://www.linuxprogrammingblog.com/code-examples/sigaction','https://android.googlesource.com/platform/frameworks/base/+/gingerbread/libs/utils/CallStack.cpp\r\n\r\nhttps://github.com/xroche/coffeecatch\r\nhttp://www.linuxprogrammingblog.com/code-examples/sigaction',NULL,0,NULL);
 INSERT INTO `content` (`id`, `parentid`, `content_title`, `sort`, `promo_title`, `promo_text`, `content_text`, `image`, `published`, `externurl`) VALUES (115,104,'mouse click on ground',3,'mouse click on ground','http://www.bfilipek.com/2012/06/select-mouse-opengl.html\r\nhttp://webglfactory.blogspot.no/2011/05/how-to-convert-world-to-screen.html\r\nhttps://www.google.no/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=c%2B%2B+finding+3d+coords+from+mouse&start=10','http://www.bfilipek.com/2012/06/select-mouse-opengl.html\r\nhttp://webglfactory.blogspot.no/2011/05/how-to-convert-world-to-screen.html\r\nhttps://www.google.no/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=c%2B%2B+finding+3d+coords+from+mouse&start=10',NULL,0,NULL);
-INSERT INTO `content` (`id`, `parentid`, `content_title`, `sort`, `promo_title`, `promo_text`, `content_text`, `image`, `published`, `externurl`) VALUES (141,94,'Docker',3,'Docker','Checking out on the Docker buzz I was intrigued by the promised benefits of easy setup of the environment, able to work offline/locally with a full stack environment and easy deployment to production.','blaba docker','/images/docker.png',0,NULL);
+INSERT INTO `content` (`id`, `parentid`, `content_title`, `sort`, `promo_title`, `promo_text`, `content_text`, `image`, `published`, `externurl`) VALUES (141,94,'Docker',3,'Docker','Checking out on the Docker buzz I was intrigued by the promised benefits of easy setup of the environment, able to work offline/locally with a full stack environment and easy deployment to production.','blaba docker 2','/images/docker.png',0,NULL);
 INSERT INTO `content` (`id`, `parentid`, `content_title`, `sort`, `promo_title`, `promo_text`, `content_text`, `image`, `published`, `externurl`) VALUES (117,109,'Testflight',3,'Testflight','<pre>\r\n# Howto\r\nhttps://developer.apple.com/app-store/testflight/\r\nhttp://help.testflightapp.com/customer/portal/articles/1333914-how-to-create-an-ipa-xcode-5-\r\n\r\n# Itunes App\r\nhttps://itunes.apple.com/us/app/testflight/id899247664?mt=8\r\n\r\n</pre>','<pre>\r\n# Howto\r\nhttps://developer.apple.com/app-store/testflight/\r\nhttp://help.testflightapp.com/customer/portal/articles/1333914-how-to-create-an-ipa-xcode-5-\r\n\r\n# Itunes App\r\nhttps://itunes.apple.com/us/app/testflight/id899247664?mt=8\r\n\r\n</pre>',NULL,0,NULL);
 INSERT INTO `content` (`id`, `parentid`, `content_title`, `sort`, `promo_title`, `promo_text`, `content_text`, `image`, `published`, `externurl`) VALUES (118,104,'Android : Amazon',4,'Android : Amazon','# Amazon Android console page\r\nhttps://developer.amazon.com/home.html\r\n','# Amazon Android console page\r\nhttps://developer.amazon.com/home.html\r\n',NULL,0,NULL);
 INSERT INTO `content` (`id`, `parentid`, `content_title`, `sort`, `promo_title`, `promo_text`, `content_text`, `image`, `published`, `externurl`) VALUES (119,104,'ADB Commands',5,'ADB Commands','<pre>\r\n# uninstall package\r\nadb shell pm uninstall -k com.darkfactor.vaclient\r\n\r\n# list packages\r\nadb shell pm list packages | grep darkfactor\r\n\r\n# Install package\r\nadb install ValyrianAdventuresAmazon.apk\r\n\r\n</pre>','<pre>\r\n# uninstall package\r\nadb shell pm uninstall -k com.darkfactor.vaclient\r\n\r\n# list packages\r\nadb shell pm list packages | grep darkfactor\r\n\r\n# Install package\r\nadb install ValyrianAdventuresAmazon.apk\r\n\r\n</pre>',NULL,0,NULL);
@@ -87,7 +87,7 @@ INSERT INTO `content` (`id`, `parentid`, `content_title`, `sort`, `promo_title`,
 INSERT INTO `content` (`id`, `parentid`, `content_title`, `sort`, `promo_title`, `promo_text`, `content_text`, `image`, `published`, `externurl`) VALUES (132,1,'About Me',3,'About Me','blabla about me','blabla about me',NULL,0,NULL);
 INSERT INTO `content` (`id`, `parentid`, `content_title`, `sort`, `promo_title`, `promo_text`, `content_text`, `image`, `published`, `externurl`) VALUES (133,94,'.Net Core 2',2,'.Net Core 2','Moving on from the last century to this one I wanted to rebuild the DarkFactor webpage using newer technology than php could offer. ','<center><img src=\"/images/code.jpeg\" width=100%></center><br>\r\nMoving on from the last century to this one I wanted to rebuild the DarkFactor webpage using newer technology than php could offer. Yes I am a fan of LAMP ( Linux, Apache, MySql and PhP) but time has come to move on to a toolset I also toy with at work.<BR>\r\n<BR>\r\nSo the choice fell on Asp.Net Core 2. I wanted to use #DotNetCore2, #Docker and #Microservices to build everything up. The reason for this is quite easy : toy with new tech but also have the possibility to run everything offline. Of course, easy deployment would come in handy.<BR>\r\n<BR>\r\nStep two is basically to make it more secure that my old php webpage. To achieve this I wanted to dive into topics like #encrypted_storage, #encrypted_config, enable ssl while also doing the normal tricks like bound variables in SQL, argument verification, #stresstest and #unittests for my codebase.<BR>\r\n<BR>\r\n\r\n','/images/code.jpeg',0,NULL);
 INSERT INTO `content` (`id`, `parentid`, `content_title`, `sort`, `promo_title`, `promo_text`, `content_text`, `image`, `published`, `externurl`) VALUES (134,7,'Bots',94,'Bots','Action based card game where you contriol your robots destruction of your oponent. Supporting LAN multiplayer game as well as AI controlled robots for extra difficulty this is a nice little game for Mac, PC, iOS and Android.\r\n','<BR>\r\nAction based card game where you contriol your robots destruction of your oponent. Supporting LAN multiplayer game as well as AI controlled robots for extra difficulty this is a nice little game for Mac, PC, iOS and Android.\r\n\r\n<img src=\"/images/Bots/Screenshot 2019-08-16 at 07.36.18.png\" width=50%><br>\r\n','/images/Bots/Screenshot 2019-08-16 at 07.42.26.png',0,NULL);
-INSERT INTO `content` (`id`, `parentid`, `content_title`, `sort`, `promo_title`, `promo_text`, `content_text`, `image`, `published`, `externurl`) VALUES (142,94,'Nostalgia',1,'Nostalgia','Setting up this webpage with all the new tech has been fun, but I have also touched upon a real hard dose of nostalgia. The reason for this is because I have polished some of the webpages for my own projects. ','Setting up this webpage with all the new tech has been fun, but I have also touched upon a real hard dose of nostalgia. The reason for this is because I have polished some of the webpages for my own projects. Many games that I made 90% complete but never finished. So going forward I want to dedicate 1 week for each project every month. The week will be spent getting development up, getting it to run see if I can do some life saving fixes to the project and perhaps make some screenshots. I have no delusion that the project will be 100% finished but maybe in a state where it is good enough. \r\nNot to mention that I have many Amiga projects that are missing for this page and needs to be dusted off and added to my BitBucket collection. Maybe even a little article and screenshot as well :)',NULL,0,NULL);
+INSERT INTO `content` (`id`, `parentid`, `content_title`, `sort`, `promo_title`, `promo_text`, `content_text`, `image`, `published`, `externurl`) VALUES (142,94,'Nostalgia',1,'Nostalgia','Setting up this webpage with all the new tech has been fun, but I have also touched upon a real hard dose of nostalgia. The reason for this is because I have polished some of the webpages for my own projects. ','Setting up this webpage with all the new tech has been fun, but I have also touched upon a real hard dose of nostalgia. The reason for this is because I have polished some of the webpages for my own projects. Many games that I made 90% complete but never finished. So going forward I want to dedicate 1 week for each project every month. The week will be spent getting development up, getting it to run see if I can do some life saving fixes to the project and perhaps make some screenshots. I have no delusion that the project will be 100% finished but maybe in a state where it is good enough. \r\nNot to mention that I have many Amiga projects that are missing for this page and needs to be dusted off and added to my BitBucket collection. Maybe even a little article and screenshot as well :)',NULL,2,NULL);
 /*!40000 ALTER TABLE `content` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,17 +97,8 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `contenttags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `contenttags` (
-  `contentid` int(11) NOT NULL,
-  `tagid` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-DROP TABLE IF EXISTS `relatedtags`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `relatedtags` (
   `contentid` int(11) NOT NULL,
   `tagid` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
@@ -125,12 +116,36 @@ INSERT INTO `contenttags` (`contentid`, `tagid`) VALUES (25,2);
 UNLOCK TABLES;
 
 --
+-- Table structure for table `relatedtags`
+--
+
+DROP TABLE IF EXISTS `relatedtags`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `relatedtags` (
+  `contentid` int(11) NOT NULL,
+  `tagid` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `relatedtags`
+--
+
+LOCK TABLES `relatedtags` WRITE;
+/*!40000 ALTER TABLE `relatedtags` DISABLE KEYS */;
+INSERT INTO `relatedtags` (`contentid`, `tagid`) VALUES (7,1);
+INSERT INTO `relatedtags` (`contentid`, `tagid`) VALUES (7,2);
+/*!40000 ALTER TABLE `relatedtags` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tags`
 --
 
 DROP TABLE IF EXISTS `tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tag` varchar(50) NOT NULL DEFAULT '',
@@ -158,4 +173,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-14 13:38:45
+-- Dump completed on 2019-11-19 14:32:00
