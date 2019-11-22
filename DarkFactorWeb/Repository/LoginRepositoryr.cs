@@ -8,29 +8,31 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using DarkFactorCoreNet.Repository.Database;
 
 using DarkFactorCoreNet.Models;
 
 namespace DarkFactorCoreNet.Controllers
 {
-    public interface ILoginProvider
+    public interface ILoginRepository
     {
         bool IsLoggedIn();
         bool LoginUser(string username, string password);
     }
 
-    public class LoginProvider : ILoginProvider
+    public class LoginRepository : ILoginRepository
     {
-        private readonly ILogger<LoginProvider> _logger;
+        private readonly ILogger<LoginRepository> _logger;
 
         private HttpContext _httpContext;
-
+        private IDFDatabase _database;
         private LoggedInUser _loggedInUser;
 
         public static readonly string SessionKeyName = "WEBUSER";
 
-        public LoginProvider( IHttpContextAccessor httpContext )
+        public LoginRepository( IHttpContextAccessor httpContext, IDFDatabase database )
         {
+            _database = database;
             _loggedInUser = null;
             if ( httpContext != null )
             {
@@ -58,24 +60,36 @@ namespace DarkFactorCoreNet.Controllers
             if ( _httpContext != null )
             {
                 //_logger.LogInformation("LoginUser ...");
-
                 if ( username == null || password == null )
                 {
                     return false;
                 }
 
-                // Do an actual check against service or repository for this user
-                if ( username.Equals("chaoz") && password.Equals("mypass"))
-                {
-                    _loggedInUser = new LoggedInUser()
-                    {
-                        Username = username,
-                        // Hack
-                        UserAccessLevel = LoggedInUser.AccessLevel.Admin
-                    };
+                string sql = string.Format("select password, acl from users where username = @username");
 
-                    _httpContext.Session.SetString(SessionKeyName, username);
-                    return true;
+                var variables = DFDataBase.CreateVariables();
+                variables.Add("@username", username);
+
+                List<PageContentModel> pageList = new List<PageContentModel>();
+
+                using (DFStatement statement = _database.ExecuteSelect(sql, variables))
+                {
+                    while (statement.ReadNext())
+                    {
+                        // TODO : Hash password
+                        string dbPassword = statement.ReadString("password");
+                        int acl = statement.ReadUInt32("acl");
+                        if ( password.Equals( dbPassword) )
+                        {
+                            _loggedInUser = new LoggedInUser()
+                            {
+                                Username = username,
+                                UserAccessLevel = (LoggedInUser.AccessLevel) acl
+                            };
+
+                            return true;
+                        }
+                    }
                 }
             }
             return false;

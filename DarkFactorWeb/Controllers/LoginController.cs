@@ -13,18 +13,18 @@ namespace DarkFactorCoreNet.Controllers
     public class LoginController : ControllerBase
     {
        
-        ILoginProvider _loginProvider;
+        ILoginRepository _loginRepository;
         Microsoft.AspNetCore.Http.HttpContext _context;
 
-        public LoginController(ILoginProvider loginProvider)
+        public LoginController(ILoginRepository loginRepository)
         {
-            _loginProvider = loginProvider;
+            _loginRepository = loginRepository;
         }
 
         [HttpPost]
         public IActionResult LoginUser([FromForm] UserLoginModel loginModel)
         {
-            _loginProvider.LoginUser(loginModel.username,loginModel.password);
+            _loginRepository.LoginUser(loginModel.username,loginModel.password);
             return Redirect("/");
         }
 

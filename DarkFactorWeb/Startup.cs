@@ -44,7 +44,7 @@ namespace DarkFactorCoreNet
 
             services.AddScoped(typeof(IMenuProvider), typeof(MenuProvider));
             services.AddScoped(typeof(IPageProvider), typeof(PageProvider));
-            services.AddScoped(typeof(ILoginProvider), typeof(LoginProvider));
+            services.AddScoped(typeof(ILoginRepository), typeof(LoginRepository));
 
             services.AddSingleton(typeof(IMenuRepository), typeof(MenuRepository));
             services.AddSingleton(typeof(IPageRepository), typeof(PageRepository));
