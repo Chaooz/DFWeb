@@ -24,9 +24,17 @@ namespace DarkFactorCoreNet.Controllers
         [HttpPost]
         public IActionResult LoginUser([FromForm] UserLoginModel loginModel)
         {
-            _loginRepository.LoginUser(loginModel.username,loginModel.password);
-            return Redirect("/");
-        }
+            var ret = _loginRepository.LoginUser(loginModel.username,loginModel.password);
+            switch(ret)
+            {
+                case LoggedInUser.UserErrorCode.UserDoesNotExist:
+                    return Redirect("/");
 
+                case LoggedInUser.UserErrorCode.WrongPassword:
+                    return Redirect("/");
+                default:
+                    return Redirect("/");
+           }
+        }
     }
 }

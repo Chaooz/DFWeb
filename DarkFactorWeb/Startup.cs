@@ -38,6 +38,15 @@ namespace DarkFactorCoreNet
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
 
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                // Make the session cookie essential
+                options.Cookie.IsEssential = true;
+            });
+
             services.AddOptions();
             services.AddHttpContextAccessor();
             services.Configure<DatabaseConfig>(Configuration.GetSection("DatabaseConfigModel"));
@@ -77,6 +86,7 @@ namespace DarkFactorCoreNet
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             }); 
 
+            app.UseSession();  
             app.UseMvc();
         }
     }
