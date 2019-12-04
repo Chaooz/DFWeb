@@ -18,7 +18,8 @@ namespace DarkFactorCoreNet.Models
             UserExistsAlready,
             CodeError,
             WrongPassword,
-            PinCodeDoesNotMatch
+            PinCodeDoesNotMatch,
+        
         }
 
         public string Username;

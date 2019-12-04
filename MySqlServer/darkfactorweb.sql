@@ -26,12 +26,13 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL DEFAULT '',
   `password` varchar(255) NOT NULL DEFAULT '',
+  `salt` varchar(255) NOT NULL DEFAULT '',
   `acl` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=143 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-insert into `users` ( `id`,`username`, `password`, `acl` ) values (1,'Chaoz','Pass123', 0);
+insert into `users` ( `id`,`username`, `password`, `salt`,`acl` ) values (1,'Chaoz','Pass123', '', 0);
 
 
 --

@@ -8,6 +8,24 @@
     padding-top:10px;
 }
 
+.buttonrow
+{
+    width:100%;
+}
+
+.btn-primary
+{
+    float: right;
+}
+
+.btn-primary, .btn-secondary
+{
+    @media screen {
+        padding-bottom: 5px;
+        width:100%;
+    }
+}
+
 a:link {
     font-weight: bold;
  /*   text-decoration: underline;*/

@@ -19,6 +19,9 @@ namespace DarkFactorCoreNet.Controllers
         bool IsLoggedIn();
         LoggedInUser.UserErrorCode LoginUser(string username, string password);
         LoggedInUser.UserErrorCode ChangePassword(string username, string password, string pinCode);
+
+        LoggedInUser.UserErrorCode VerifyPinCode(string pinCode);
+
     }
 
     public class LoginRepository : ILoginRepository
@@ -108,7 +111,16 @@ namespace DarkFactorCoreNet.Controllers
             return false;
         }
 
-        // TODO : Return errorcode/ok
+        public LoggedInUser.UserErrorCode VerifyPinCode(string pinCode)
+        {
+            if ( pinCode.Equals("1337") )
+            {
+                return LoggedInUser.UserErrorCode.OK;
+            }
+            return LoggedInUser.UserErrorCode.PinCodeDoesNotMatch;            
+        }
+
+
         public LoggedInUser.UserErrorCode ChangePassword(string username, string password, string pinCode)
         {
             var context = GetContext();
