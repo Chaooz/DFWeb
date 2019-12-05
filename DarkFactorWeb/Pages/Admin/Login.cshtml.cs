@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using DarkFactorCoreNet.Repository;
+using DarkFactorCoreNet.Provider;
 using DarkFactorCoreNet.Models;
 using DarkFactorCoreNet.Controllers;
 
@@ -13,10 +13,11 @@ namespace DarkFactorCoreNet.Pages
 {
     public class LoginModel : BasePageModel
     {
-        private ILoginRepository _loginProvider;
+        private ILoginProvider _loginProvider;
 
-        public LoginModel(ILoginRepository loginProvider,
-            IPageProvider pageProvider, IMenuProvider menuProvider) : base(pageProvider,menuProvider)
+        public LoginModel(ILoginProvider loginProvider,
+            IPageProvider pageProvider, 
+            IMenuProvider menuProvider) : base(pageProvider,menuProvider)
         {
             _loginProvider = loginProvider;
         }

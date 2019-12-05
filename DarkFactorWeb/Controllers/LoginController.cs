@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Core;
 using DarkFactorCoreNet.Models;
+using DarkFactorCoreNet.Provider;
 
 namespace DarkFactorCoreNet.Controllers
 {
@@ -12,25 +13,25 @@ namespace DarkFactorCoreNet.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-       
-        ILoginRepository _loginRepository;
+        ILoginProvider _loginProvider;
+
         Microsoft.AspNetCore.Http.HttpContext _context;
 
-        public LoginController(ILoginRepository loginRepository)
+        public LoginController(ILoginProvider loginProvider)
         {
-            _loginRepository = loginRepository;
+            _loginProvider = loginProvider;
         }
 
         [HttpPost]
         [Route("LoginUser")]
         public IActionResult LoginUser([FromForm] UserLoginModel loginModel)
         {
-            var ret = _loginRepository.LoginUser(loginModel.username,loginModel.password);
+            var ret = _loginProvider.LoginUser(loginModel.username,loginModel.password);
             switch(ret)
             {
-                case LoggedInUser.UserErrorCode.UserDoesNotExist:
+                case UserModel.UserErrorCode.UserDoesNotExist:
                     return Redirect("/Login/LoginFailed");
-                case LoggedInUser.UserErrorCode.WrongPassword:
+                case UserModel.UserErrorCode.WrongPassword:
                     return Redirect("/Login/LoginFailed");
                 default:
                     return Redirect("/");
@@ -41,21 +42,21 @@ namespace DarkFactorCoreNet.Controllers
         [Route("ChangePassStep1")]
         public IActionResult ChangePassStep1([FromForm] string email)
         {
-            return Redirect("/Login/ChangePassStep2");
+            var returnCode = _loginProvider.CreatePasswordToken(email);
+            switch( returnCode )
+            {
+                case UserModel.UserErrorCode.OK:
+                    return Redirect("/Login/ChangePassStep2");
+                default:
+                    return Redirect("/Login/ChangePassStep1?error=Unknown");
+            }
         }
 
         [HttpPost]
         [Route("ChangePassStep2")]
         public IActionResult ChangePassStep2([FromForm] string code)
         {
-            var ret = _loginRepository.VerifyPinCode(code);
-            switch(ret)
-            {
-                case LoggedInUser.UserErrorCode.PinCodeDoesNotMatch:
-                    return Redirect("/Login/ChangePassStep2?errorId=" + ret.ToString());
-                default:
-                    return Redirect("/Login/ChangePassStep3");
-           }
+            return Redirect("/Login/ChangePassStep3");
         }
 
         [HttpPost]

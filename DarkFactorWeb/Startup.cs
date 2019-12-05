@@ -14,6 +14,7 @@ using DarkFactorCoreNet.Repository;
 using DarkFactorCoreNet.Repository.Database;
 using DarkFactorCoreNet.Controllers;
 using DarkFactorCoreNet.Models;
+using DarkFactorCoreNet.Provider;
 
 [assembly: ApiController]
 namespace DarkFactorCoreNet
@@ -54,6 +55,10 @@ namespace DarkFactorCoreNet
             services.AddScoped(typeof(IMenuProvider), typeof(MenuProvider));
             services.AddScoped(typeof(IPageProvider), typeof(PageProvider));
             services.AddScoped(typeof(ILoginRepository), typeof(LoginRepository));
+
+            services.AddScoped(typeof(ILoginProvider), typeof(LoginProvider));
+            services.AddScoped(typeof(IUserSessionProvider), typeof(UserSessionProvider));
+
 
             services.AddSingleton(typeof(IMenuRepository), typeof(MenuRepository));
             services.AddSingleton(typeof(IPageRepository), typeof(PageRepository));
