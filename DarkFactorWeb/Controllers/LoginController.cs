@@ -42,14 +42,8 @@ namespace DarkFactorCoreNet.Controllers
         [Route("ChangePassStep1")]
         public IActionResult ChangePassStep1([FromForm] string email)
         {
-            var returnCode = _loginProvider.CreatePasswordToken(email);
-            switch( returnCode )
-            {
-                case UserModel.UserErrorCode.OK:
-                    return Redirect("/Login/ChangePassStep2");
-                default:
-                    return Redirect("/Login/ChangePassStep1?error=Unknown");
-            }
+            var userId = _loginProvider.CreatePasswordToken(email);
+            return Redirect("/Login/ChangePassStep2");
         }
 
         [HttpPost]

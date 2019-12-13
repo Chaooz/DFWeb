@@ -1,23 +1,32 @@
 using Microsoft.AspNetCore.Http;
+using DarkFactorCoreNet.Models;
 
 namespace DarkFactorCoreNet.Provider
 {
     public interface IUserSessionProvider
     {
         void RemoveSession();
-        void SetToken(string token);
+        void SetUser(UserModel user);
 
         string GetUsername();
+        string GetToken();
     }
 
     public class UserSessionProvider : IUserSessionProvider
     {
         public static readonly string SessionKeyUserName = "WEBUSER";
+
+        public static readonly string SessionUsernameKey = "Username";
+        public static readonly string SessionTokenbKey = "Token";
+
         private readonly IHttpContextAccessor _httpContextAccessor;
+
+        private LoggedInUser _loggedInUser;
 
         public UserSessionProvider( IHttpContextAccessor httpContext )
         {
             _httpContextAccessor = httpContext;
+            _loggedInUser = null;
         }
 
         private HttpContext GetContext()
@@ -31,18 +40,24 @@ namespace DarkFactorCoreNet.Provider
 
         public void RemoveSession()
         {
-            RemoveConfig("Username");
-            RemoveConfig("Token");
+            RemoveConfig(SessionUsernameKey);
+            RemoveConfig(SessionTokenbKey);
         }
 
-        public void SetToken(string token)
+        public void SetUser(UserModel user)
         {
-            SetConfigString("Token", token);
+            SetConfigString(SessionUsernameKey, user.Username);
+            SetConfigString(SessionTokenbKey, user.Token);
         }
 
         public string GetUsername()
         {
-            return GetConfigString("Username");
+            return GetConfigString(SessionUsernameKey);
+        }
+
+        public string GetToken()
+        {
+            return GetConfigString(SessionTokenbKey);
         }
 
         private string GetConfigString(string keyName)
@@ -60,7 +75,14 @@ namespace DarkFactorCoreNet.Provider
             var context = GetContext();
             if ( context != null )
             {
-                context.Session.SetString(SessionKeyUserName + "." + keyName, value);
+                if ( value != null )
+                {
+                    context.Session.SetString(SessionKeyUserName + "." + keyName, value);
+                } 
+                else
+                {
+                    context.Session.Remove(SessionKeyUserName + "." + keyName);
+                }
             }
         }
 

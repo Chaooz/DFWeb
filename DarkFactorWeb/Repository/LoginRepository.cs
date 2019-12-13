@@ -71,6 +71,7 @@ namespace DarkFactorCoreNet.Repository
                 {
                     UserModel user = new UserModel()
                     {
+                        UserId = statement.ReadUInt32("id"),
                         Username = statement.ReadString("username"),
                         Password = statement.ReadString("password"),
                         Email = statement.ReadString("email"),

@@ -19,12 +19,17 @@ namespace DarkFactorCoreNet.Models
             CodeError,
             WrongPassword,
             PinCodeDoesNotMatch,
+            MustChangePassword
         
         }
 
+        public int UserId;
         public string Username;
         public string Password;
         public string Email;
+        public byte[]  Salt;
+        public string Token;
+        public bool MustChangePassword;
         public AccessLevel UserAccessLevel;
     }
 }
