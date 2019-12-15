@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Http;
 using DarkFactorCoreNet.Repository;
 using DarkFactorCoreNet.Repository.Database;
 using DarkFactorCoreNet.Controllers;
-using DarkFactorCoreNet.Models;
+using DarkFactorCoreNet.ConfigModel;
 using DarkFactorCoreNet.Provider;
 
 [assembly: ApiController]
@@ -51,6 +51,9 @@ namespace DarkFactorCoreNet
             services.AddOptions();
             services.AddHttpContextAccessor();
             services.Configure<DatabaseConfig>(Configuration.GetSection("DatabaseConfigModel"));
+            services.Configure<EmailConfiguration>(Configuration.GetSection("EmailConfiguration"));
+
+            services.AddSingleton(typeof(IEmailConfiguration), typeof(EmailConfiguration));
 
             services.AddScoped(typeof(IMenuProvider), typeof(MenuProvider));
             services.AddScoped(typeof(IPageProvider), typeof(PageProvider));
@@ -58,12 +61,11 @@ namespace DarkFactorCoreNet
 
             services.AddScoped(typeof(ILoginProvider), typeof(LoginProvider));
             services.AddScoped(typeof(IUserSessionProvider), typeof(UserSessionProvider));
-
+            services.AddScoped(typeof(IEmailProvider), typeof(EmailProvider));
 
             services.AddSingleton(typeof(IMenuRepository), typeof(MenuRepository));
             services.AddSingleton(typeof(IPageRepository), typeof(PageRepository));
             services.AddSingleton(typeof(IDFDatabase), typeof(DFDataBase));
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

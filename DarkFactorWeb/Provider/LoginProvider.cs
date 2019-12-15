@@ -12,7 +12,7 @@ namespace DarkFactorCoreNet.Provider
     public interface ILoginProvider
     {
         UserModel.UserErrorCode LoginUser(string username, string password);
-        int CreatePasswordToken(string email);
+        UserModel CreatePasswordToken(string email);
     }
 
     public class LoginProvider : ILoginProvider
@@ -69,14 +69,14 @@ namespace DarkFactorCoreNet.Provider
             return UserModel.UserErrorCode.OK;
         }
 
-        public int CreatePasswordToken(string email)
+        public UserModel CreatePasswordToken(string email)
         {
             _userSession.RemoveSession();
 
             UserModel userModel = _loginRepository.GetUserWithEmail(email);
             if ( userModel == null )
             {
-                return 0;
+                return null;
             }
 
             // Generate random activation code
@@ -88,7 +88,7 @@ namespace DarkFactorCoreNet.Provider
 
             // Todo Send email with code
 
-            return userModel.UserId;
+            return userModel;
         }
 
         public UserModel.UserErrorCode ChangePassword(string password)

@@ -14,12 +14,14 @@ namespace DarkFactorCoreNet.Controllers
     public class LoginController : ControllerBase
     {
         ILoginProvider _loginProvider;
+        IEmailProvider _emailProvider;
 
         Microsoft.AspNetCore.Http.HttpContext _context;
 
-        public LoginController(ILoginProvider loginProvider)
+        public LoginController(ILoginProvider loginProvider, IEmailProvider emailProvider)
         {
             _loginProvider = loginProvider;
+            _emailProvider = emailProvider;
         }
 
         [HttpPost]
@@ -42,7 +44,18 @@ namespace DarkFactorCoreNet.Controllers
         [Route("ChangePassStep1")]
         public IActionResult ChangePassStep1([FromForm] string email)
         {
-            var userId = _loginProvider.CreatePasswordToken(email);
+            var userModel = _loginProvider.CreatePasswordToken(email);
+            if( userModel != null )
+            {
+                // Send code on email
+                EmailMessage message = new EmailMessage();
+                message.ToAddresses.Add( new EmailAddress(){ Name = "Bla", Address = userModel.Email } );
+                message.FromAddresses.Add( new EmailAddress() { Name = "DarkFactor", Address = "darkfactor@altibox.no" } );
+                message.Subject = "DarkFactor : Code";
+                message.Content = "Your code to reset your password is : " + userModel.Token;
+
+                _emailProvider.Send( message );
+            }
             return Redirect("/Login/ChangePassStep2");
         }
 

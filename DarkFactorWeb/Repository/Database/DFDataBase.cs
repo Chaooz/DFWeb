@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
 using MySql.Data.MySqlClient;
-using DarkFactorCoreNet.Models;
+using DarkFactorCoreNet.ConfigModel;
 
 // http://zetcode.com/db/mysqlcsharptutorial/
 // https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-strings
