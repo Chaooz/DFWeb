@@ -5,7 +5,7 @@ using System.Linq;
 
 using DarkFactorCoreNet.Repository;
 
-namespace DarkFactorCoreNet.Controllers
+namespace DarkFactorCoreNet.Provider
 {
     public interface IMenuProvider
     {
