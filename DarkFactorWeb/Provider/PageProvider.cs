@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using DarkFactorCoreNet.Repository;
 using DarkFactorCoreNet.Models;
 
-namespace DarkFactorCoreNet.Controllers
+namespace DarkFactorCoreNet.Provider
 {
     public interface IPageProvider
     {

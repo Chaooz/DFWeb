@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using DarkFactorCoreNet.Repository;
 using DarkFactorCoreNet.Models;
-using DarkFactorCoreNet.Controllers;
 using DarkFactorCoreNet.Provider;
 
 namespace DarkFactorCoreNet.Pages

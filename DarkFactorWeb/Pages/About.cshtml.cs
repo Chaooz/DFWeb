@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace aspnetcoreapp.Pages
+namespace DarkFactorCoreNet.Pages
 {
     public class AboutModel : PageModel
     {

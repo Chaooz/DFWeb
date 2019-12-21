@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using DarkFactorCoreNet.Controllers;
 using DarkFactorCoreNet.Provider;
 
 namespace DarkFactorCoreNet.Pages
