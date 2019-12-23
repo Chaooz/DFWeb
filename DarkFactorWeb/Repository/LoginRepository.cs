@@ -79,7 +79,7 @@ namespace DarkFactorCoreNet.Repository
                         Salt = statement.ReadBlob("salt", 16),
                         IsLoggedIn = false,
                         MustChangePassword = false,
-                        UserAccessLevel = (UserModel.AccessLevel) statement.ReadUInt32("acl")
+                        UserAccessLevel = (AccessLevel) statement.ReadUInt32("acl")
                     };
                     return user;
                 }

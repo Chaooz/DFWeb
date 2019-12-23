@@ -20,8 +20,7 @@ namespace DarkFactorCoreNet.Pages
 
         protected ILoginProvider _loginProvider;
 
-        public bool ShowLogin { get; set; }
-        public string Handle { get; set; }
+        public UserInfoModel UserInfoModel { get; set; }
 
         public BasePageModel(IPageProvider pageProvider, IMenuProvider menuProvider, ILoginProvider loginProvider)
         {
@@ -38,8 +37,7 @@ namespace DarkFactorCoreNet.Pages
             treeList = menuProvider.GetTree(id);
             pageModel = pageProvider.GetPage(id);
             articleSectionModel = GetArticleSection(id);
-            ShowLogin = _loginProvider.IsLoggedIn() == false;
-            Handle = _loginProvider.GetHandle();
+            UserInfoModel = _loginProvider.GetLoginInfo();
             pageId = id;
         }
 

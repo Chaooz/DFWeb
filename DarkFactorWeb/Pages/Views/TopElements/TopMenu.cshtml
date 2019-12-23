@@ -19,7 +19,7 @@
                 }
             </ul>
 
-            @if ( Model.ShowLogin )
+            @if ( Model.UserInfoModel.IsLoggedIn == false )
             {
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <form class="form-inline" action="/api/Login/LoginUser" method="POST">
@@ -32,7 +32,7 @@
             else
             {
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse text-dark">
-                    Welcome @Model.Handle
+                    Welcome @Model.UserInfoModel.Handle
                 </div>
             }
         </div>

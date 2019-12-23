@@ -3,13 +3,7 @@ namespace DarkFactorCoreNet.Models
 {
     public class UserModel
     {
-        public enum AccessLevel
-        {
-            Public,
-            Member,
-            Editor,
-            Admin
-        }
+        
 
         public enum UserErrorCode
         {

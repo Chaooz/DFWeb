@@ -11,8 +11,7 @@ namespace DarkFactorCoreNet.Provider
 {
     public interface ILoginProvider
     {
-        bool IsLoggedIn();
-        string GetHandle();
+        UserInfoModel GetLoginInfo();
         UserModel.UserErrorCode LoginUser(string username, string password);
         void Logout();
         UserModel CreatePasswordToken(string email);
@@ -37,24 +36,18 @@ namespace DarkFactorCoreNet.Provider
             _loginRepository = loginRepository;
         }
 
-        public bool IsLoggedIn()
+        public UserInfoModel GetLoginInfo()
         {
+            UserInfoModel userInfo = new UserInfoModel();
+
             var user = GetLoggedInUser();
             if ( user != null )
             {
-                return user.IsLoggedIn;
+                userInfo.IsLoggedIn = user.IsLoggedIn;
+                userInfo.UserAccessLevel = (int) user.UserAccessLevel; 
+                userInfo.Handle = user.Username;
             }
-            return false;
-        }
-
-        public string GetHandle()
-        {
-            var user = GetLoggedInUser();
-            if ( user != null && user.IsLoggedIn )
-            {
-                return user.Username;
-            }
-            return null;
+            return userInfo;
         }
         
         public UserModel GetLoggedInUser()
