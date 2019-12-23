@@ -41,6 +41,14 @@ namespace DarkFactorCoreNet.Controllers
         }
 
         [HttpPost]
+        [Route("Logout")]
+        public IActionResult LogoutUser()
+        {
+            _loginProvider.Logout();
+            return Redirect("/");
+        }
+
+        [HttpPost]
         [Route("ChangePassStep1")]
         public IActionResult ChangePassStep1([FromForm] string email)
         {
