@@ -15,7 +15,7 @@ namespace DarkFactorCoreNet.Pages
 
         public LoginModel(ILoginProvider loginProvider,
             IPageProvider pageProvider, 
-            IMenuProvider menuProvider) : base(pageProvider,menuProvider)
+            IMenuProvider menuProvider) : base(pageProvider,menuProvider, loginProvider)
         {
             _loginProvider = loginProvider;
         }

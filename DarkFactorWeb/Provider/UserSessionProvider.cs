@@ -10,6 +10,7 @@ namespace DarkFactorCoreNet.Provider
 
         string GetUsername();
         string GetToken();
+        bool IsLoggedIn();
     }
 
     public class UserSessionProvider : IUserSessionProvider
@@ -17,16 +18,14 @@ namespace DarkFactorCoreNet.Provider
         public static readonly string SessionKeyUserName = "WEBUSER";
 
         public static readonly string SessionUsernameKey = "Username";
-        public static readonly string SessionTokenbKey = "Token";
+        public static readonly string SessionTokenKey = "Token";
+        public static readonly string SessionIsLoggedIn = "IsLoggedIn";
 
         private readonly IHttpContextAccessor _httpContextAccessor;
-
-        private LoggedInUser _loggedInUser;
 
         public UserSessionProvider( IHttpContextAccessor httpContext )
         {
             _httpContextAccessor = httpContext;
-            _loggedInUser = null;
         }
 
         private HttpContext GetContext()
@@ -41,13 +40,15 @@ namespace DarkFactorCoreNet.Provider
         public void RemoveSession()
         {
             RemoveConfig(SessionUsernameKey);
-            RemoveConfig(SessionTokenbKey);
+            RemoveConfig(SessionTokenKey);
+            RemoveConfig(SessionIsLoggedIn);
         }
 
         public void SetUser(UserModel user)
         {
             SetConfigString(SessionUsernameKey, user.Username);
-            SetConfigString(SessionTokenbKey, user.Token);
+            SetConfigString(SessionTokenKey, user.Token);
+            SetConfigInt(SessionIsLoggedIn, user.IsLoggedIn ? 1 : 0);
         }
 
         public string GetUsername()
@@ -57,7 +58,17 @@ namespace DarkFactorCoreNet.Provider
 
         public string GetToken()
         {
-            return GetConfigString(SessionTokenbKey);
+            return GetConfigString(SessionTokenKey);
+        }
+
+        public bool IsLoggedIn()
+        {
+            var IsLoggedIn = GetConfigInt(SessionIsLoggedIn);
+            if ( IsLoggedIn != null && IsLoggedIn == 1 )
+            {
+                return true;
+            }
+            return false;
         }
 
         private string GetConfigString(string keyName)
@@ -78,6 +89,32 @@ namespace DarkFactorCoreNet.Provider
                 if ( value != null )
                 {
                     context.Session.SetString(SessionKeyUserName + "." + keyName, value);
+                } 
+                else
+                {
+                    context.Session.Remove(SessionKeyUserName + "." + keyName);
+                }
+            }
+        }
+
+        private int? GetConfigInt(string keyName)
+        {
+            var context = GetContext();
+            if ( context != null )
+            {
+                return context.Session.GetInt32(SessionKeyUserName + "." + keyName);
+            }
+            return null;
+        }
+
+        private void SetConfigInt(string keyName, int? value)
+        {
+            var context = GetContext();
+            if ( context != null )
+            {
+                if ( value != null )
+                {
+                    context.Session.SetInt32(SessionKeyUserName + "." + keyName, value.GetValueOrDefault());
                 } 
                 else
                 {

@@ -26,9 +26,9 @@ namespace DarkFactorCoreNet.Controllers
 
         [HttpPost]
         [Route("LoginUser")]
-        public IActionResult LoginUser([FromForm] UserLoginModel loginModel)
+        public IActionResult LoginUser([FromForm] string username, [FromForm] string password)
         {
-            var ret = _loginProvider.LoginUser(loginModel.username,loginModel.password);
+            var ret = _loginProvider.LoginUser(username,password);
             switch(ret)
             {
                 case UserModel.UserErrorCode.UserDoesNotExist:
@@ -63,14 +63,30 @@ namespace DarkFactorCoreNet.Controllers
         [Route("ChangePassStep2")]
         public IActionResult ChangePassStep2([FromForm] string code)
         {
-            return Redirect("/Login/ChangePassStep3");
+            var didSucceed = _loginProvider.VerifyPasswordToken(code);
+            if ( didSucceed )
+            {
+                return Redirect("/Login/ChangePassStep3");
+            }
+            return Redirect("/Login/ChangePassStep1");
         }
 
         [HttpPost]
         [Route("ChangePassStep3")]
-        public IActionResult ChangePassStep3([FromForm] UserLoginModel loginModel)
+        public IActionResult ChangePassStep3([FromForm] string password, [FromForm] string password2)
         {
-            return Redirect("/");
-        }
+            if ( string.IsNullOrEmpty( password ) || string.IsNullOrEmpty( password2 ) || !password.Equals(password2) )
+            {
+                return Redirect("/Login/ChangePassStep3");
+            }
+
+            var errorCode = _loginProvider.ChangePassword(password);
+            if ( errorCode == UserModel.UserErrorCode.OK )
+            {
+                _loginProvider.Logout();
+                return Redirect("/");
+            }
+            return Redirect("/Login/ChangePassStep1");
+       }
     }
 }

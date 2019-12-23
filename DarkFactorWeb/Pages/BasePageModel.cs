@@ -18,10 +18,16 @@ namespace DarkFactorCoreNet.Pages
         protected IMenuProvider menuProvider;
         protected IPageProvider pageProvider;
 
-        public BasePageModel(IPageProvider pageProvider, IMenuProvider menuProvider)
+        protected ILoginProvider _loginProvider;
+
+        public bool ShowLogin { get; set; }
+        public string Handle { get; set; }
+
+        public BasePageModel(IPageProvider pageProvider, IMenuProvider menuProvider, ILoginProvider loginProvider)
         {
             this.menuProvider = menuProvider;
             this.pageProvider = pageProvider;
+            _loginProvider = loginProvider;
             pageId = 0;
         }
 
@@ -32,6 +38,8 @@ namespace DarkFactorCoreNet.Pages
             treeList = menuProvider.GetTree(id);
             pageModel = pageProvider.GetPage(id);
             articleSectionModel = GetArticleSection(id);
+            ShowLogin = _loginProvider.IsLoggedIn() == false;
+            Handle = _loginProvider.GetHandle();
             pageId = id;
         }
 

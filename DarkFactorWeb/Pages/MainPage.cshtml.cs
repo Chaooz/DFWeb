@@ -9,7 +9,7 @@ namespace DarkFactorCoreNet.Pages
     {
         public PageListModel mainPageItems;
 
-        public MainPage(IPageProvider pageProvider, IMenuProvider menuProvider) : base(pageProvider,menuProvider)
+        public MainPage(IPageProvider pageProvider, IMenuProvider menuProvider, ILoginProvider loginProvider) : base(pageProvider,menuProvider, loginProvider)
         {
         }
 

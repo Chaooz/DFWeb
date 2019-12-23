@@ -142,5 +142,36 @@ namespace DarkFactorCoreNet.Repository.Database
             }
             return null;
         }
+
+        public byte[] ReadBlob(string columnName, int length=1000)
+        {
+            try
+            {
+                if (this.reader != null)
+                {
+                    index = this.reader.GetOrdinal(columnName);
+                    if (!this.reader.IsDBNull(index))
+                    {
+                        byte[] buffer = new byte[length];
+                        long numBytes = this.reader.GetBytes(index, 0, buffer, 0, length);
+                        if ( numBytes > 0 )
+                        {
+                            if ( numBytes != length )
+                            {
+                                byte[] retBuffer = new byte[numBytes];
+                                Array.Copy(buffer , retBuffer , numBytes);
+                                return retBuffer;
+                            }
+                            return buffer;
+                        }
+                    }
+                }
+            }
+            catch(Exception)
+            {
+                return null;
+            }
+            return null;
+        }
     }
 }

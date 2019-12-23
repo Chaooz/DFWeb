@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 
 using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace DarkFactorCoreNet.Repository
     {
         UserModel GetUserWithUsername(string username);
         UserModel GetUserWithEmail(string email);
-        UserModel.UserErrorCode ChangePassword(string username, string password);
+        UserModel.UserErrorCode ChangePassword(string username, string password, byte[] salt);
     }
 
     public class LoginRepository : ILoginRepository
@@ -75,6 +76,9 @@ namespace DarkFactorCoreNet.Repository
                         Username = statement.ReadString("username"),
                         Password = statement.ReadString("password"),
                         Email = statement.ReadString("email"),
+                        Salt = statement.ReadBlob("salt", 16),
+                        IsLoggedIn = false,
+                        MustChangePassword = false,
                         UserAccessLevel = (UserModel.AccessLevel) statement.ReadUInt32("acl")
                     };
                     return user;
@@ -83,9 +87,9 @@ namespace DarkFactorCoreNet.Repository
             return null;
         }
 
-        public UserModel.UserErrorCode ChangePassword(string username, string password)
+        public UserModel.UserErrorCode ChangePassword(string username, string encryptedPassword, byte[] salt)
         {
-            if ( string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) )
+            if ( string.IsNullOrEmpty(username) || string.IsNullOrEmpty(encryptedPassword) )
             {
                 return UserModel.UserErrorCode.UserDoesNotExist;
             }
@@ -96,14 +100,11 @@ namespace DarkFactorCoreNet.Repository
                 return UserModel.UserErrorCode.UserDoesNotExist;
             }
 
-            // Update password
-            string salt = "123";
-
             string sql = string.Format("update users set salt=@salt, password=@password where username=@username");
 
             var variables = DFDataBase.CreateVariables();
             variables.Add("@salt", salt);
-            variables.Add("@password", password);
+            variables.Add("@password", encryptedPassword);
             variables.Add("@username", username);
 
             int numRows = _database.ExecuteUpdate(sql, variables);

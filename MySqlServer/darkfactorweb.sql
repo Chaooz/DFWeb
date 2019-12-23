@@ -27,13 +27,13 @@ CREATE TABLE `users` (
   `username` varchar(50) NOT NULL DEFAULT '',
   `password` varchar(255) NOT NULL DEFAULT '',
   `email` varchar(255) NOT NULL DEFAULT '',
-  `salt` varchar(255) NOT NULL DEFAULT '',
+  `salt` tinyblob(100),
   `acl` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=143 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-insert into `users` ( `id`,`username`, `password`, `email`, `salt`,`acl` ) values (1,'Chaoz','Pass123', 'thor@gale-huset.net','', 0);
+insert into `users` ( `id`,`username`, `password`, `email`, `salt`,`acl` ) values (1,'Chaoz','Pass123', 'thor@gale-huset.net',null, 0);
 
 
 --

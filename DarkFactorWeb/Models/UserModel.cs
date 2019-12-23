@@ -19,7 +19,8 @@ namespace DarkFactorCoreNet.Models
             CodeError,
             WrongPassword,
             PinCodeDoesNotMatch,
-            MustChangePassword
+            MustChangePassword,
+            PasswordDoesNotMatch
         
         }
 
@@ -30,6 +31,7 @@ namespace DarkFactorCoreNet.Models
         public byte[]  Salt;
         public string Token;
         public bool MustChangePassword;
+        public bool IsLoggedIn;
         public AccessLevel UserAccessLevel;
     }
 }

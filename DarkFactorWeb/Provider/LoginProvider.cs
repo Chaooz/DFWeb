@@ -11,8 +11,14 @@ namespace DarkFactorCoreNet.Provider
 {
     public interface ILoginProvider
     {
+        bool IsLoggedIn();
+        string GetHandle();
         UserModel.UserErrorCode LoginUser(string username, string password);
+        void Logout();
         UserModel CreatePasswordToken(string email);
+
+        bool VerifyPasswordToken(string token);
+        UserModel.UserErrorCode ChangePassword(string password);
     }
 
     public class LoginProvider : ILoginProvider
@@ -33,16 +39,36 @@ namespace DarkFactorCoreNet.Provider
 
         public bool IsLoggedIn()
         {
-            return GetLoggedInUser() != null;
+            var user = GetLoggedInUser();
+            if ( user != null )
+            {
+                return user.IsLoggedIn;
+            }
+            return false;
         }
 
-        public LoggedInUser GetLoggedInUser()
+        public string GetHandle()
+        {
+            var user = GetLoggedInUser();
+            if ( user != null && user.IsLoggedIn )
+            {
+                return user.Username;
+            }
+            return null;
+        }
+        
+        public UserModel GetLoggedInUser()
         {
             string username = _userSession.GetUsername();
             if ( username != null )
             {
                 var user = _loginRepository.GetUserWithUsername(username);
-                return null;
+                if ( user != null )
+                {
+                    user.IsLoggedIn = _userSession.IsLoggedIn();
+                    user.Token = _userSession.GetToken();
+                }
+                return user;
             }
             return null;
         }
@@ -66,7 +92,15 @@ namespace DarkFactorCoreNet.Provider
                 return UserModel.UserErrorCode.WrongPassword;
             }
 
+            user.IsLoggedIn = true;
+            _userSession.SetUser(user);
+
             return UserModel.UserErrorCode.OK;
+        }
+
+        public void Logout()
+        {
+            _userSession.RemoveSession();
         }
 
         public UserModel CreatePasswordToken(string email)
@@ -86,18 +120,33 @@ namespace DarkFactorCoreNet.Provider
             // Remember this user
             _userSession.SetUser(userModel);
 
-            // Todo Send email with code
-
             return userModel;
+        }
+
+        public bool VerifyPasswordToken(string token)
+        {
+            var user = GetLoggedInUser();
+            if ( user != null )
+            {
+                if ( user.Token.Equals(token ) )
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public UserModel.UserErrorCode ChangePassword(string password)
         {
-            byte[] salt = generateSalt();
-            string hashedPassword = generateHash(password,salt);
-            string username = _userSession.GetUsername();
+            if ( string.IsNullOrEmpty( password ) )
+            {
+                return UserModel.UserErrorCode.PasswordDoesNotMatch;
+            }
 
-            return _loginRepository.ChangePassword(username,password);
+            byte[] salt = generateSalt();
+            string encryptedPassword = generateHash(password,salt);
+            string username = _userSession.GetUsername();
+            return _loginRepository.ChangePassword(username, encryptedPassword, salt);
         }
 
         public static string generateHash(string password, byte[] condiment) 

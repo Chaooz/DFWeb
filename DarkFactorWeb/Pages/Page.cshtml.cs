@@ -7,7 +7,7 @@ namespace DarkFactorCoreNet.Pages
     public class Page : BasePageModel
     {
 
-        public Page(IPageProvider pageProvider, IMenuProvider menuProvider) : base(pageProvider,menuProvider)
+        public Page(IPageProvider pageProvider, IMenuProvider menuProvider, ILoginProvider loginProvider) : base(pageProvider,menuProvider, loginProvider)
         {
         }
 
