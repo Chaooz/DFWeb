@@ -32,12 +32,6 @@ namespace DarkFactorCoreNet.Pages
                 case "save":
                     didSuceed = pageRepository.SavePage(pageContentModel);
                     return Redirect("/admin/preview?id=" + pageContentModel.ID);
-                case "move_up":
-                    didSuceed = pageRepository.MovePageUp(pageContentModel.ID);
-                    break;
-                case "move_down":
-                    didSuceed = pageRepository.MovePageDown(pageContentModel.ID);
-                    break;
                 case "create_page":
                     didSuceed = pageRepository.CreatePage(pageContentModel.ID);
                     break;

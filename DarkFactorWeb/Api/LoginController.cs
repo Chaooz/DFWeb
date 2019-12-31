@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Core;
 using DarkFactorCoreNet.Models;
 using DarkFactorCoreNet.Provider;
 
-namespace DarkFactorCoreNet.Controllers
+namespace DarkFactorCoreNet.Api
 {
     [Route("api/[controller]")]
     [ApiController]

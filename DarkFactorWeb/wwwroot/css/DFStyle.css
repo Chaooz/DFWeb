@@ -131,6 +131,15 @@ li {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.articleedit {
+    padding: 5px;
+    font-size: small;
+    text-decoration: none;
+    background: lightgrey;
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 .articlefull {
     background: #f1f1f1;
 }

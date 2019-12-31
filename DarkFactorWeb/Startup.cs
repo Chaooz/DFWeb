@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Http;
 
 using DarkFactorCoreNet.Repository;
 using DarkFactorCoreNet.Repository.Database;
-using DarkFactorCoreNet.Controllers;
+using DarkFactorCoreNet.Api;
 using DarkFactorCoreNet.ConfigModel;
 using DarkFactorCoreNet.Provider;
 
@@ -57,6 +57,7 @@ namespace DarkFactorCoreNet
 
             services.AddScoped(typeof(IMenuProvider), typeof(MenuProvider));
             services.AddScoped(typeof(IPageProvider), typeof(PageProvider));
+            services.AddScoped(typeof(IEditPageProvider), typeof(EditPageProvider));
             services.AddScoped(typeof(ILoginRepository), typeof(LoginRepository));
 
             services.AddScoped(typeof(ILoginProvider), typeof(LoginProvider));

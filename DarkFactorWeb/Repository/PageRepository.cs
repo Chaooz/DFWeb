@@ -19,8 +19,6 @@ namespace DarkFactorCoreNet.Repository
         int DeletePage(int pageId);
         bool CreatePage( int pageId );
         bool CreateChildPage( int parentPageId );
-        bool MovePageDown(int pageId);
-        bool MovePageUp(int pageId);
     }
 
     public class PageRepository : IPageRepository
@@ -247,54 +245,6 @@ namespace DarkFactorCoreNet.Repository
 
             int insertedRows = database.ExecuteInsert(insertSql, insertVariables);
             return (insertedRows == 1);
-        }
-
-        public bool MovePageDown(int pageId)
-        {
-            PageContentModel page = GetPage(pageId);
-            if (page == null )
-            {
-                return false;
-            }
-
-            var pageList = GetPagesWithParentId(page.ParentId);
-            PageContentModel swapPage = pageList.OrderBy(x => x.SortId).Where(x => x.SortId > page.SortId).FirstOrDefault();
-            if (swapPage == null)
-            {
-                return false;
-            }
-
-            int swapSortId = page.SortId;
-            page.SortId = swapPage.SortId;
-            swapPage.SortId = swapSortId;
-
-            bool didSave1 = SavePage(page);
-            bool didSave2 = SavePage(swapPage);
-            return didSave1 && didSave2;
-        }
-
-        public bool MovePageUp(int pageId)
-        {
-            PageContentModel page = GetPage(pageId);
-            if (page == null)
-            {
-                return false;
-            }
-
-            var pageList = GetPagesWithParentId(page.ParentId);
-            PageContentModel swapPage = pageList.OrderBy(x => x.SortId).Where(x => x.SortId < page.SortId).LastOrDefault();
-            if (swapPage == null)
-            {
-                return false;
-            }
-
-            int swapSortId = page.SortId;
-            page.SortId = swapPage.SortId;
-            swapPage.SortId = swapSortId;
-
-            bool didSave1 = SavePage(page);
-            bool didSave2 = SavePage(swapPage);
-            return didSave1 && didSave2;
         }
 
         public List<TagModel> GetTagsForPage( int pageId )

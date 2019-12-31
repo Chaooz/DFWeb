@@ -68,6 +68,11 @@ namespace DarkFactorCoreNet.Provider
 
         public UserModel.UserErrorCode LoginUser(string username, string password)
         {
+            if ( string.IsNullOrEmpty( username ) || string.IsNullOrEmpty( password ) ) 
+            {
+                return UserModel.UserErrorCode.UserDoesNotExist;
+            }
+
             var user = _loginRepository.GetUserWithUsername(username);
             if ( user == null )
             {
