@@ -12,9 +12,12 @@ namespace DarkFactorCoreNet.Models
         public string Title { get; set; }
         public List<PageContentModel> Pages;
 
+        public bool ShowEditor;
+
         public PageListModel()
         {
             Pages = new List<PageContentModel>();
+            ShowEditor = false;
         }
     };
 }

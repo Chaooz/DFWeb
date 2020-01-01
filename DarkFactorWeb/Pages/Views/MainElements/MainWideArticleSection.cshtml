@@ -4,24 +4,27 @@
 <div>
     @foreach (var relPage in Model.Pages)
     {
-        <div class="articleedit" style="width:100%;display:flex">
-            <form class="form-inline" style="margin-left:2px;" action="/api/Edit/MoveDown" method="POST">
-                <input type="hidden" id="pageid" name="pageid" value="@relPage.ID">
-                <button class="btn btn-sm btn-outline-primary my-2 my-sm-0" type="submit"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i></button>
-            </form>
-            <form class="form-inline" style="margin-left:2px" action="/api/Edit/MoveUp" method="POST">
-                <input type="hidden" id="pageid" name="pageid" value="@relPage.ID">
-                <button class="btn btn-sm btn-outline-primary my-2 my-sm-0" type="submit"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i></button>
-            </form>
-            <form class="form-inline" style="margin-left:2px" action="/api/Edit/EditPage" method="POST">
-                <input type="hidden" id="pageid" name="pageid" value="@relPage.ID">
-                <button class="btn btn-sm btn-outline-primary my-2 my-sm-0" type="submit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-            </form>
-            <form class="form-inline" style="margin-left:2px" action="/api/Edit/Delete" method="POST">
-                <input type="hidden" id="pageid" name="pageid" value="@relPage.ID">
-                <button class="btn btn-sm btn-outline-primary my-2 my-sm-0" type="submit"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-            </form>
-        </div>
+        @if ( Model.ShowEditor )
+        {
+            <div class="articleedit" style="width:100%;display:flex">
+                <form class="form-inline" style="margin-left:2px;" action="/api/Edit/MoveDown" method="POST">
+                    <input type="hidden" id="pageid" name="pageid" value="@relPage.ID">
+                    <button class="btn btn-sm btn-outline-primary my-2 my-sm-0" type="submit"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i></button>
+                </form>
+                <form class="form-inline" style="margin-left:2px" action="/api/Edit/MoveUp" method="POST">
+                    <input type="hidden" id="pageid" name="pageid" value="@relPage.ID">
+                    <button class="btn btn-sm btn-outline-primary my-2 my-sm-0" type="submit"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i></button>
+                </form>
+                <form class="form-inline" style="margin-left:2px" action="/api/Edit/EditPage" method="POST">
+                    <input type="hidden" id="pageid" name="pageid" value="@relPage.ID">
+                    <button class="btn btn-sm btn-outline-primary my-2 my-sm-0" type="submit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                </form>
+                <form class="form-inline" style="margin-left:2px" action="/api/Edit/Delete" method="POST">
+                    <input type="hidden" id="pageid" name="pageid" value="@relPage.ID">
+                    <button class="btn btn-sm btn-outline-primary my-2 my-sm-0" type="submit"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                </form>
+            </div>
+        }
 
         <div class="article" style="width:100%;display:flex">
 

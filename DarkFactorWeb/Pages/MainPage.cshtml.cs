@@ -41,7 +41,15 @@ namespace DarkFactorCoreNet.Pages
         private PageListModel GetSubPages(int parentId)
         {
             PageListModel model = new PageListModel();
+            model.Title = "Main Page";
             model.Pages = pageProvider.GetPagesWithParentId(parentId);
+
+            var userInfo = _loginProvider.GetLoginInfo();
+            if ( userInfo != null )
+            {
+                model.ShowEditor = userInfo.UserAccessLevel >= (int)AccessLevel.Editor;
+            }
+
             return model;
         }
     }
