@@ -14,19 +14,26 @@ namespace DarkFactorCoreNet.Provider
         bool MovePageUp(PageContentModel page);
         bool MovePageDown(PageContentModel page);
         bool EditPage(int pageId);
+        bool AddImage(int pageId, String filename, byte[] data);
     }
 
     public class EditPageProvider : IEditPageProvider
     {
         private IPageProvider _pageProvider;
+        private IPageRepository _pageRepository;
         private IUserSessionProvider _userSession;
         private ILoginRepository _loginRepository;
 
-        public EditPageProvider(IPageProvider pageProvider, IUserSessionProvider userSession, ILoginRepository loginRepository)
+        public EditPageProvider(
+            IPageProvider pageProvider, 
+            IUserSessionProvider userSession, 
+            ILoginRepository loginRepository,
+            IPageRepository pageRepository)
         {
             _pageProvider = pageProvider;
             _userSession = userSession;
             _loginRepository = loginRepository;
+            _pageRepository = pageRepository;
         }
 
         public bool MovePageUp(PageContentModel page)
@@ -48,7 +55,7 @@ namespace DarkFactorCoreNet.Provider
                 return false;
             }
 
-            return _pageProvider.SwapSort(page,swapPage);
+            return SwapSort(page,swapPage);
        }
 
         public bool MovePageDown(PageContentModel page)
@@ -70,7 +77,18 @@ namespace DarkFactorCoreNet.Provider
                 return false;
             }
 
-            return _pageProvider.SwapSort(page,swapPage);
+            return SwapSort(page,swapPage);
+        }
+
+        private bool SwapSort(PageContentModel page1, PageContentModel page2)
+        {
+            int swapSortId = page1.SortId;
+            page1.SortId = page2.SortId;
+            page2.SortId = swapSortId;
+
+            bool didSave1 = _pageRepository.SavePage(page1);
+            bool didSave2 = _pageRepository.SavePage(page2);
+            return didSave1 && didSave2;
         }
 
         public bool EditPage(int pageId)
@@ -102,6 +120,16 @@ namespace DarkFactorCoreNet.Provider
             }
 
             return true;
+        }
+
+        public bool AddImage(int pageId, String filename, byte[] data)
+        {
+            if ( !CanEditPage() )
+            {
+                return false;
+            }
+ 
+            return _pageRepository.AddImage(pageId,filename, data);
         }
     }
 }

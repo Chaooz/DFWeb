@@ -6,6 +6,12 @@ using Microsoft.AspNetCore.Mvc.Core;
 using DarkFactorCoreNet.Models;
 using DarkFactorCoreNet.Provider;
 
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+
 namespace DarkFactorCoreNet.Api
 {
     [Route("api/[controller]")]
@@ -68,6 +74,28 @@ namespace DarkFactorCoreNet.Api
             return Redirect("/mainpage?id=" + pageId);
         }
 
+        // This action handles the form POST and the upload
+        [HttpPost]
+        [Route("AddImage")]
+        public async Task<IActionResult> AddImage([FromForm] int pageId, [FromForm] List<IFormFile> files)
+        {
+            foreach (var formFile in files)
+            {
+                if (formFile.Length > 0)
+                {
+                    var filePath = Path.GetTempFileName();
 
+                    //using (var memoryStream = System.IO.File.Create(filePath))
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await formFile.CopyToAsync(memoryStream);
+                        var fileArray = memoryStream.ToArray();
+
+                        _editPageProvider.AddImage(pageId, formFile.FileName, fileArray);
+                    }
+                }
+            }
+            return Redirect("/admin/edit?id=" + pageId);
+        }
     }
 }

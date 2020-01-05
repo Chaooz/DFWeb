@@ -9,6 +9,25 @@
     acl[3] = "Admin";    
 }
 
+<div class="articletitle" style="width:100%">
+    Images
+</div>
+
+    <div class="article" style="width:100%">
+
+<ul>
+@foreach( var imageModel in Model.ImageList)
+{
+    <li><div> @imageModel.Filename [ <a href="/api/Edit/DeleteImage?id=@imageModel.Id">X</a> ]</div></li>
+}
+</ul>
+    <form  method='POST' action="/api/Edit/AddImage" enctype="multipart/form-data" style='display: inline;'>
+            <input type='hidden' name='pageId' value='@Model.ID'>
+            <input type="file" name="files" />
+            <input class=toolbutton type='submit' value='Upload'>
+    </form>
+</div>
+
 <form  method='POST' style='display: inline;'>
 
     <input type='hidden' name='ID' value='@Model.ID'>

@@ -14,6 +14,7 @@ namespace DarkFactorCoreNet.Repository
         List<PageContentModel> GetPagesWithTag(string tag);
         List<TagModel> GetTagsForPage( int pageId );
         List<String> GetRelatedTags(int pageId);
+        List<ImageModel> GetImages(int pageId);
 
         bool SavePage(PageContentModel pageModel);
         bool SaveMainPage(PageContentModel pageModel);
@@ -21,6 +22,7 @@ namespace DarkFactorCoreNet.Repository
         int DeletePage(int pageId);
         bool CreatePage( int pageId );
         bool CreateChildPage( int parentPageId );
+        bool AddImage(int pageId, String filename, byte[] data);
     }
 
     public class PageRepository : IPageRepository
@@ -165,6 +167,31 @@ namespace DarkFactorCoreNet.Repository
             return tagList;
         }
 
+        public List<ImageModel> GetImages(int pageId)
+        {
+            List<ImageModel> imageList = new List<ImageModel>();
+
+            string sql = string.Format("select id, filename, data from images where pageid=@pageid" );
+
+            var variables = DFDataBase.CreateVariables();
+            variables.Add("@pageid", pageId);
+            using (DFStatement statement = database.ExecuteSelect(sql, variables))
+            {
+                while (statement.ReadNext())
+                {
+                    ImageModel imageModel = new ImageModel()
+                    {
+                        Id = statement.ReadUInt32("id"),
+                        Filename = statement.ReadString("filename"),
+                        Data = statement.ReadBlob("data")
+                    };
+                    imageList.Add(imageModel);
+                }
+            }
+            return imageList;
+        }
+
+
         public bool SavePromoPage(PageContentModel pageModel)
         {
             var editPage = GetPage( pageModel.ID );
@@ -291,6 +318,18 @@ namespace DarkFactorCoreNet.Repository
             }
 
             return list;
+        }
+
+        public bool AddImage(int pageId, String filename, byte[] data)
+        {
+            string insertSql = @"insert into images(pageId,filename,data, uploadeddate) values(@pageId,@filename, @data, now()) ";
+            var insertVariables = DFDataBase.CreateVariables();
+            insertVariables.Add("@pageId", pageId);
+            insertVariables.Add("@filename", filename);
+            insertVariables.Add("@data", data);
+
+            int insertedRows = database.ExecuteInsert(insertSql, insertVariables);
+            return (insertedRows == 1);
         }
     }
 }

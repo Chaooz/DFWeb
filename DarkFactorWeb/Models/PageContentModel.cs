@@ -15,6 +15,7 @@ namespace DarkFactorCoreNet.Models
         public string Image { get; set; }
         public int SortId { get; set; }
         public int Acl { get; set; }
+        public List<ImageModel> ImageList { get; set; }
 
         // Additional html properties
         public HtmlString HtmlContent { get; set; }

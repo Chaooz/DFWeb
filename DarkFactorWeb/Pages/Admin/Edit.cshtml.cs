@@ -24,6 +24,14 @@ namespace DarkFactorCoreNet.Pages
             this.pageRepository = pageRepository;
         }
 
+        override
+        public void OnGet(int id)
+        {
+            base.OnGet(id);
+
+            pageModel.ImageList = pageRepository.GetImages( pageModel.ID );
+        }
+
         public IActionResult OnPostAsync([FromForm] PageContentModel pageContentModel)
         {
             bool didSuceed = false;
