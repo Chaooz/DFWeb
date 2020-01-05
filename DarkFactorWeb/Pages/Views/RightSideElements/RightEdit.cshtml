@@ -1,0 +1,66 @@
+@using DarkFactorCoreNet.Models
+@model PageContentModel
+
+@{
+    var acl = new Dictionary<int, string>();
+    acl[0] = "Public";
+    acl[1] = "Member";
+    acl[2] = "Editor";
+    acl[3] = "Admin";    
+}
+
+<form  method='POST' style='display: inline;'>
+
+    <input type='hidden' name='ID' value='@Model.ID'>
+    <input type='hidden' name='ParentId' value='@Model.ParentId'>
+    <input type='hidden' name='SortId' value='@Model.SortId'>
+    <input type='hidden' name='command' value='savePromo'>
+
+<div class="articletitle" style="width:100%">
+    Properties
+</div>
+<div class="article" style="width:100%">
+
+    <div class='edit_header'>Access Control</div>
+    <select name='acl' class='edit_input'>
+        @foreach (var aclKv in acl)
+        {
+            if ( aclKv.Key == Model.Acl )
+            {
+                <option value=@aclKv.Key selected> @aclKv.Value </option>
+            }   
+            else
+            {
+                <option value=@aclKv.Key> @aclKv.Value </option>
+            }
+        }
+    </select>
+<br>
+    <div class='edit_header'>Tags</div>
+    @foreach (var tag in Model.Tags)
+    {
+        <span> @tag.name [<a href="">X</a>]</span>
+    }
+    <input name='NewTag' type='text' class='edit_input' value=''>
+
+</div>
+
+<div class="articletitle" style="width:100%">
+    Promo section
+</div>
+<div class="article" style="width:100%">
+
+    <div class='edit_header'>Image</div>
+    <input name='Image' type='text' class='edit_input' value='@Model.Image' placeholder=''><br>
+
+    <div class='edit_header'>Promo Title</div>
+    <input name='PromoTitle' type='text' class='edit_input' value='@Model.PromoTitle' placeholder='Enter title'><br>
+
+    <div class='edit_header'>Promo Text</div>
+    <textarea rows=15 cols=15 name='PromoText' class='edit_input'>@Model.PromoText</textarea><br>
+    <br>
+</div>
+
+    <input class=toolbutton type='submit' value='Save'>
+
+</form>

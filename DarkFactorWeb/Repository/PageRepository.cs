@@ -16,6 +16,8 @@ namespace DarkFactorCoreNet.Repository
         List<String> GetRelatedTags(int pageId);
 
         bool SavePage(PageContentModel pageModel);
+        bool SaveMainPage(PageContentModel pageModel);
+        bool SavePromoPage(PageContentModel pageModel);
         int DeletePage(int pageId);
         bool CreatePage( int pageId );
         bool CreateChildPage( int parentPageId );
@@ -161,6 +163,25 @@ namespace DarkFactorCoreNet.Repository
                 }
             }
             return tagList;
+        }
+
+        public bool SavePromoPage(PageContentModel pageModel)
+        {
+            var editPage = GetPage( pageModel.ID );
+            editPage.Acl = pageModel.Acl;
+            editPage.Tags = pageModel.Tags;
+            editPage.Image = pageModel.Image;
+            editPage.PromoText = pageModel.PromoText;
+            editPage.PromoTitle = pageModel.PromoTitle;
+            return SavePage(editPage);
+        }
+
+        public bool SaveMainPage(PageContentModel pageModel)
+        {
+            var editPage = GetPage( pageModel.ID );
+            editPage.ContentTitle = pageModel.ContentTitle;
+            editPage.ContentText = pageModel.ContentText;
+            return SavePage(editPage);
         }
 
         public bool SavePage(PageContentModel pageModel)

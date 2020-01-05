@@ -1,0 +1,27 @@
+﻿@using DarkFactorCoreNet.Models
+@model PageContentModel
+
+<div class="articletitle" style="width:100%">
+    Main Article
+</div>
+
+<div class="article" style="width:100%;display:flex">
+
+<form  method='POST' style='display: inline;'>
+
+    <input type='hidden' name='ID' value='@Model.ID'>
+    <input type='hidden' name='ParentId' value='@Model.ParentId'>
+    <input type='hidden' name='SortId' value='@Model.SortId'>
+    <input type='hidden' name='command' value='save'>
+
+    <div class='edit_header'>Title</div>
+    <input name='ContentTitle' type='text' class='edit_input' value='@Model.ContentTitle' placeholder='Enter title'><br>
+
+    <div class='edit_header'>Content</div>
+    <textarea rows=30 cols=50 name='ContentText' class='edit_input'>@Model.ContentText</textarea><br>
+
+    <input class=toolbutton type='submit' value='Save'>
+    <input class=toolbutton type='submit' value='Preview'>
+
+</form>
+</div>

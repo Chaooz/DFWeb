@@ -30,7 +30,10 @@ namespace DarkFactorCoreNet.Pages
             switch(pageContentModel.Command )
             {
                 case "save":
-                    didSuceed = pageRepository.SavePage(pageContentModel);
+                    didSuceed = pageRepository.SaveMainPage(pageContentModel);
+                    return Redirect("/admin/preview?id=" + pageContentModel.ID);
+                case "savePromo":
+                    didSuceed = pageRepository.SavePromoPage(pageContentModel);
                     return Redirect("/admin/preview?id=" + pageContentModel.ID);
                 case "create_page":
                     didSuceed = pageRepository.CreatePage(pageContentModel.ID);
