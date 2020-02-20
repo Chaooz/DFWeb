@@ -57,8 +57,11 @@ namespace DarkFactorCoreNet.Api
         [Route("EditPage")]
         public IActionResult EditPage([FromForm] int pageId)
         {
-            _editPageProvider.EditPage(pageId);
-            return null;
+            if ( _editPageProvider.EditPage(pageId) )
+            {
+                return Redirect("/admin/edit?id=" + pageId);
+            }
+            return Redirect("/mainpage?id=" + pageId);
         }
 
         [HttpPost]
@@ -95,6 +98,14 @@ namespace DarkFactorCoreNet.Api
                     }
                 }
             }
+            return Redirect("/admin/edit?id=" + pageId);
+        }
+
+        [HttpPost]
+        [Route("DeleteImage")]
+        public IActionResult DeleteImage([FromForm] int pageId, [FromForm] int imageId)
+        {
+            _editPageProvider.DeleteImage(imageId);
             return Redirect("/admin/edit?id=" + pageId);
         }
     }

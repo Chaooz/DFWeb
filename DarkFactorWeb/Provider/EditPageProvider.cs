@@ -15,6 +15,7 @@ namespace DarkFactorCoreNet.Provider
         bool MovePageDown(PageContentModel page);
         bool EditPage(int pageId);
         bool AddImage(int pageId, String filename, byte[] data);
+        bool DeleteImage(int imageId);
     }
 
     public class EditPageProvider : IEditPageProvider
@@ -130,6 +131,16 @@ namespace DarkFactorCoreNet.Provider
             }
  
             return _pageRepository.AddImage(pageId,filename, data);
+        }
+
+        public bool DeleteImage(int imageId)
+        {
+            if ( !CanEditPage() )
+            {
+                return false;
+            }
+ 
+            return _pageRepository.DeleteImage(imageId);
         }
     }
 }

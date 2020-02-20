@@ -18,7 +18,13 @@
 <ul>
 @foreach( var imageModel in Model.ImageList)
 {
-    <li><div> @imageModel.Filename [ <a href="/api/Edit/DeleteImage?id=@imageModel.Id">X</a> ]</div></li>
+    <li><div> @imageModel.Filename
+        <form  method='POST' action="/api/Edit/DeleteImage" style='display: inline;'>
+                <input type='hidden' name='pageId' value='@Model.ID'>
+                <input type='hidden' name='imageId' value='@imageModel.Id'>
+                <input class=toolbutton type='submit' value='X'>
+        </form>
+    </div></li>
 }
 </ul>
     <form  method='POST' action="/api/Edit/AddImage" enctype="multipart/form-data" style='display: inline;'>

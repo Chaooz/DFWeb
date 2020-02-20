@@ -23,6 +23,7 @@ namespace DarkFactorCoreNet.Repository
         bool CreatePage( int pageId );
         bool CreateChildPage( int parentPageId );
         bool AddImage(int pageId, String filename, byte[] data);
+        bool DeleteImage(int imageId);
     }
 
     public class PageRepository : IPageRepository
@@ -330,6 +331,16 @@ namespace DarkFactorCoreNet.Repository
 
             int insertedRows = database.ExecuteInsert(insertSql, insertVariables);
             return (insertedRows == 1);
+        }
+
+        public bool DeleteImage(int imageId)
+        {
+            string insertSql = @"delete from images where id = @imageid ";
+            var insertVariables = DFDataBase.CreateVariables();
+            insertVariables.Add("@imageid", imageId);
+
+            int deletedRows = database.ExecuteDelete(insertSql, insertVariables);
+            return (deletedRows == 1);
         }
     }
 }
