@@ -3,8 +3,8 @@
     font-size: small;
     font-weight: normal;
     font-style: normal;
-    background: black;
-    color: white;
+    background: #cccccc;
+    color: black;
     padding-top:10px;
 }
 
@@ -87,7 +87,7 @@ li {
 .menu {
     background: #272727;
     border: solid #777777 1px;
-    bordercolor: black;
+    border-color: black;
     padding: 4px;
     text-align: right;
     opacity: 0.8;
@@ -99,11 +99,12 @@ li {
 }
 
 .articletitle {
-    background: #eb2d1c;
+    background: #28235b;
     padding: 10px;
     font-family:'Times New Roman', Times, serif;
-    background-image: linear-gradient(to top, #d92212, #c43e2f);
-    font-size:x-large;
+    /* background-image: linear-gradient(to top, #28235b, #28235b); */
+    /* font-size:x-large; */
+    color:#fff
 }
 
 .articlesubtitle {
@@ -198,7 +199,7 @@ li {
 .submenu {
     background: #272727;
     border: solid #777777 1px;
-    bordercolor: black;
+    border-color: black;
     padding: 4px;
     text-align: right;
     opacity: 0.3;
@@ -207,7 +208,7 @@ li {
 .disabledsubmenu {
     background: #272727;
     border: solid #777777 1px;
-    bordercolor: black;
+    border-color: black;
     padding: 4px;
     text-align: right;
 }
@@ -220,7 +221,7 @@ li {
 .selectedsubmenu {
     background: #272727;
     border: solid #FFFFFF 1px;
-    bordercolor: black;
+    border-color: black;
     padding: 4px;
     text-align: right;
     font-size: small;
@@ -228,7 +229,7 @@ li {
 }
 
 .topmenu {
-    background: #d21339;
+    background: #28235b;
     padding: 4px;
     text-align: right;
     opacity: 0.8;
@@ -531,6 +532,12 @@ li {
         text-decoration: underline;
         color: #666666
     }
+
+.dfnavbg
+{
+    color: #555;
+    background-color: #edeff8;
+}
 
 .test {
     cellpadding =0;
