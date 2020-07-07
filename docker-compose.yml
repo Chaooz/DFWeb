@@ -9,20 +9,24 @@ services:
       - "8080:80"
 
   database:
-    image: mysql/mysql-server:8.0.17
+    image: mariadb
+    container_name: darkfactorweb_database
     user: root
+    restart: always
     environment:
-    - "MYSQL_ROOT_PASSWORD=secret"
-    - "MYSQL_DATABASE=dfweb"
-    - "MYSQL_USER=webuser"
-    - "MYSQL_PASSWORD=secretpwd"
+      - "MYSQL_ROOT_PASSWORD=secret"
+      - "MYSQL_DATABASE=dfweb"
+      - "MYSQL_USER=webuser"
+      - "MYSQL_PASSWORD=secretpwd"
     volumes:
-    - darkfactorweb-mysqldb:/var/lib/mysql
-    #- ./MySqlServer/my.cnf:/etc/my.cnf
-    - ./MySqlServer/darkfactorweb.sql:/darkfactorweb.sql
+      - darkfactorweb-mariadb:/var/lib/mysql
+      #- ./MySqlServer/darkfactorweb.sql:/darkfactorweb.sql
+      #- ./MySqlServer/createdb.sql:/createdb.sql
+      - ./database/my.cnf:/etc/my.cnf
     ports:
-    - "5306:3306"
-  
+      - "5306:3306"
+
 volumes:
-  darkfactorweb-mysqldb:
-    external: true
+  # docker volume create darkfactorweb-mariadb
+  darkfactorweb-mariadb:
+    external: true  
