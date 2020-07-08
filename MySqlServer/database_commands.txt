@@ -1,9 +1,0 @@
-
-# Import database
-docker exec -i darkfactorweb_database mysql -uroot -psecret < MySqlServer/createdb.sql
-docker exec -i darkfactorweb_database mysql -uroot -psecret dfweb < MySqlServer/darkfactorweb.sql
-
-# Export database
-docker exec -it darkfactorweb_database mysqldump --complete-insert --extended-insert=FALSE -uroot -psecret dfweb > MySqlServer/darkfactorweb.sql 
-
-
