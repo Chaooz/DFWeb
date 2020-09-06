@@ -20,8 +20,8 @@ services:
       - "MYSQL_PASSWORD=secretpwd"
     volumes:
       - darkfactorweb-mariadb:/var/lib/mysql
-      #- ./MySqlServer/darkfactorweb.sql:/darkfactorweb.sql
-      #- ./MySqlServer/createdb.sql:/createdb.sql
+      #- ./database/darkfactorweb.sql:/darkfactorweb.sql
+      #- ./database/createdb.sql:/createdb.sql
       #- ./database/my.cnf:/etc/my.cnf
     ports:
       - "5306:3306"
