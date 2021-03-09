@@ -10,6 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger; 
 using Microsoft.AspNetCore.Http;
 
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.Extensions.Hosting;
+
+
 using DarkFactorCoreNet.Repository;
 using DarkFactorCoreNet.Repository.Database;
 using DarkFactorCoreNet.Api;
@@ -31,13 +35,12 @@ namespace DarkFactorCoreNet
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-
-            // register the swagger generator
-            services.AddSwaggerGen(c =>
+            services.AddMvc( options =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+                options.EnableEndpointRouting = false;
             });
+
+            services.AddSwaggerGen();
 
             services.AddSession(options =>
             {
@@ -70,7 +73,7 @@ namespace DarkFactorCoreNet
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -81,18 +84,21 @@ namespace DarkFactorCoreNet
                 app.UseExceptionHandler("/Error");
             }
 
-            app.UseStaticFiles();
             //app.UseHttpsRedirection();
+            //app.UseRouting();
+
+            app.UseStaticFiles();
 
 
             // Enable Swagger middleware 
             app.UseSwagger(); 
 
             // specify the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
+            /*app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            }); 
+            });
+            */
 
             app.UseSession();  
             app.UseMvc();
