@@ -6,7 +6,7 @@ services:
       context: ./
       dockerfile: ./DarkFactorWeb/Dockerfile
     ports:
-      - "8080:80"
+      - "8090:80"
 
   database:
     image: mariadb
@@ -20,11 +20,11 @@ services:
       - "MYSQL_PASSWORD=secretpwd"
     volumes:
       - darkfactorweb-mariadb:/var/lib/mysql
-      #- ./database/darkfactorweb.sql:/darkfactorweb.sql
+      - ./database/darkfactorweb.sql:/darkfactorweb.sql
       #- ./database/createdb.sql:/createdb.sql
       #- ./database/my.cnf:/etc/my.cnf
     ports:
-      - "5306:3306"
+      - "5906:3306"
 
 volumes:
   # docker volume create darkfactorweb-mariadb
