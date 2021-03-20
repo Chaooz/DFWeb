@@ -5,7 +5,7 @@
    "version": "0.2.0",
    "configurations": [
         {
-            "name": ".NET Core Launch (web)",
+            "name": "DFWeb Launch",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -27,7 +27,7 @@
             }
         },
         {
-            "name": ".NET Core Attach",
+            "name": "DFWeb Attach",
             "type": "coreclr",
             "request": "attach",
             "processId": "${command:pickProcess}"
