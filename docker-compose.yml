@@ -1,18 +1,23 @@
 version: '3.6'
 services:
   dfweb:
+    container_name: darkfactorweb_web
     build:
       network: host
       context: ./
       dockerfile: ./DarkFactorWeb/Dockerfile
     ports:
-      - "8090:80"
+      - "4000:80"
+    networks:
+      - net_dfweb_backend
 
-  database:
+  dfwebdb:
     image: mariadb
     container_name: darkfactorweb_database
     user: root
     restart: always
+    networks: 
+      - net_dfweb_backend
     environment:
       - "MYSQL_ROOT_PASSWORD=secret"
       - "MYSQL_DATABASE=dfweb"
@@ -23,8 +28,21 @@ services:
       - ./database/darkfactorweb.sql:/darkfactorweb.sql
       #- ./database/createdb.sql:/createdb.sql
       #- ./database/my.cnf:/etc/my.cnf
+
+  dfwebadmin:
+    container_name: darkfactorweb_adminer
+    image: adminer
+    restart: always
+    networks: 
+      - net_dfweb_backend
+    environment: 
+      ADMINER_DEFAULT_SERVER: dfwebdb
     ports:
-      - "5906:3306"
+      - 4001:8080
+
+networks:
+  net_dfweb_backend:
+    name: dfweb_backend
 
 volumes:
   # docker volume create darkfactorweb-mariadb
