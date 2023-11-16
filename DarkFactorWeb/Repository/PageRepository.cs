@@ -83,8 +83,7 @@ namespace DarkFactorCoreNet.Repository
 
         private List<PageContentModel> GetPageList(string sql, int bindVariable)
         {
-            var bindString = string.Format("%d",bindVariable);
-            return GetPageList(sql, bindString);
+            return GetPageList(sql, bindVariable.ToString());
         }
 
         private List<PageContentModel> GetPageList(string sql, string bindVariable)
@@ -100,7 +99,7 @@ namespace DarkFactorCoreNet.Repository
 
                 using (var reader = cmd.ExecuteReader())
                 {
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         PageContentModel pageContent = new PageContentModel();
 
@@ -110,9 +109,12 @@ namespace DarkFactorCoreNet.Repository
                         pageContent.PromoText       = reader["promo_text"].ToString();
                         pageContent.ContentTitle    = reader["content_title"].ToString();
                         pageContent.ContentText     = reader["content_text"].ToString();
-                        pageContent.Image           = reader["inage"].ToString();
+                        pageContent.Image           = reader["image"].ToString();
                         pageContent.SortId          = Convert.ToInt32(reader["sort"]);
                         pageContent.Acl             = Convert.ToInt32(reader["published"]);
+
+                        pageContent.HtmlContent     = new HtmlString(pageContent.ContentText);
+                        pageContent.HtmlTeaser      = new HtmlString(pageContent.PromoText);
 
                         // TODO: Remove this hack
                         /*
@@ -169,7 +171,7 @@ namespace DarkFactorCoreNet.Repository
                 cmd.AddParameter("@pageid", pageId);
                 using (var reader = cmd.ExecuteReader())
                 {
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         int index = reader.GetOrdinal("data");
 
@@ -306,7 +308,7 @@ namespace DarkFactorCoreNet.Repository
                 cmd.AddParameter("@pageid", pageId);
                 using (var reader = cmd.ExecuteReader())
                 {
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         TagModel tag = new TagModel()
                         {

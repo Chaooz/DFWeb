@@ -40,7 +40,10 @@ namespace DarkFactorCoreNet.Provider
             foreach( var id in selectedTree)
             {
                 var menuItem = GetMenuItem(id);
-                menuTreeList.Add(menuItem);
+                if ( menuItem != null )
+                {
+                    menuTreeList.Add(menuItem);
+                }
             }
             return menuTreeList;
         }
