@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Html;
 using DarkFactorCoreNet.Models;
-using DarkFactorCoreNet.Repository.Database;
+using DFCommonLib.DataAccess;
+using Org.BouncyCastle.Security;
+using System.Data.SqlTypes;
 
 namespace DarkFactorCoreNet.Repository
 {
@@ -12,7 +14,7 @@ namespace DarkFactorCoreNet.Repository
         PageContentModel GetPage(int pageId);
         List<PageContentModel> GetPagesWithParentId(int parentId);
         List<PageContentModel> GetPagesWithTag(string tag);
-        List<TagModel> GetTagsForPage( int pageId );
+        List<TagModel> GetTagsForPage(int pageId );
         List<String> GetRelatedTags(int pageId);
         List<ImageModel> GetImages(int pageId);
 
@@ -20,130 +22,117 @@ namespace DarkFactorCoreNet.Repository
         bool SaveMainPage(PageContentModel pageModel);
         bool SavePromoPage(PageContentModel pageModel);
         int DeletePage(int pageId);
-        bool CreatePage( int pageId );
-        bool CreateChildPage( int parentPageId );
+        bool CreatePage(int pageId, string pageTitle );
+        bool CreateChildPage(int parentPageId, string pageTotle );
         bool AddImage(int pageId, String filename, byte[] data);
         bool DeleteImage(int imageId);
     }
 
     public class PageRepository : IPageRepository
     {
-        private IDFDatabase database;
+        private IDbConnectionFactory _connection;
 
-        public PageRepository(IDFDatabase database)
+        public PageRepository(IDbConnectionFactory connection)
         {
-            this.database = database;
+            _connection = connection;
         }
 
         public PageContentModel GetPage(int pageId)
         {
-            string sql = string.Format("select id, parentid, promo_title, promo_text, content_title, content_text, image, sort, published from content where id = @id");
+            var sql = @"select id, parentid, promo_title, promo_text, content_title, content_text, image, sort, published " +
+                    "from content where id = @bindVariable";
 
-            var variables = DFDataBase.CreateVariables();
-            variables.Add("@id", pageId);
+            List<PageContentModel> pageList = GetPageList(sql,pageId);
 
-            PageContentModel pageModel = null;
-
-            using (DFStatement statement = database.ExecuteSelect(sql, variables))
-            {
-                if (statement.ReadNext())
-                {
-                    pageModel = ReadPage(statement);
-                }
-            }
-
+            /*
             if ( pageModel != null )
             {
                 pageModel.Tags = GetTagsForPage(pageModel.ID);
             }
+            */
 
-            return pageModel;
+            if ( pageList.Count > 0 )
+            {
+                return pageList.First();
+            }
+
+            return null;
         }
 
         public List<PageContentModel> GetPagesWithParentId(int parentId)
         {
-            string sql = string.Format("select id, parentid, promo_title, promo_text, content_title, content_text, image, sort, published from content where parentid = @parentid order by sort");
-
-            var variables = DFDataBase.CreateVariables();
-            variables.Add("@parentid", parentId);
-
-            List<PageContentModel> pageList = new List<PageContentModel>();
-
-            using (DFStatement statement = database.ExecuteSelect(sql, variables))
-            {
-                while (statement.ReadNext())
-                {
-                    var page = ReadPage(statement);
-                    pageList.Add(page);
-                }
-            }
-            return pageList;
+            string sql = @"select id, parentid, promo_title, promo_text, content_title, content_text, image, sort, published " +
+                        "from content where parentid = @bindVariable order by sort";
+            return GetPageList(sql, parentId);
         }
 
         public List<PageContentModel> GetPagesWithTag(string tag)
         {
+            // TODO : Remove this hackj
             var lowerTag = tag.ToLower();
 
-            string sql = string.Format("select c.id, c.parentid, c.promo_title, c.promo_text, c.content_title, " +
+            string sql = @"select c.id, c.parentid, c.promo_title, c.promo_text, c.content_title, " +
                                        "c.content_text, c.image, c.sort, c.published " +
                                        "from content c, contenttags, tags " +
                                        "where c.id = contenttags.contentid " +
                                        "and contenttags.tagid = tags.id " +
-                                       "and tags.tag = @tag");
+                                       "and tags.tag = @bindVariable";
 
-            var variables = DFDataBase.CreateVariables();
-            variables.Add("@tag", lowerTag);
+            return GetPageList(sql, tag);
+        }
 
+        private List<PageContentModel> GetPageList(string sql, int bindVariable)
+        {
+            var bindString = string.Format("%d",bindVariable);
+            return GetPageList(sql, bindString);
+        }
+
+        private List<PageContentModel> GetPageList(string sql, string bindVariable)
+        {
             List<PageContentModel> pageList = new List<PageContentModel>();
-
-            using (DFStatement statement = database.ExecuteSelect(sql, variables))
+            
+            using (var cmd = _connection.CreateCommand(sql))
             {
-                while (statement.ReadNext())
+                if ( !string.IsNullOrEmpty( bindVariable ))
                 {
-                    var page = ReadPage(statement);
-                    pageList.Add(page);
+                    cmd.AddParameter("@bindVariable", bindVariable);
+                }
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        PageContentModel pageContent = new PageContentModel();
+
+                        pageContent.ID              = Convert.ToInt32(reader["id"]);
+                        pageContent.ParentId        = Convert.ToInt32(reader["parentid"]);
+                        pageContent.PromoTitle      = reader["promo_title"].ToString();
+                        pageContent.PromoText       = reader["promo_text"].ToString();
+                        pageContent.ContentTitle    = reader["content_title"].ToString();
+                        pageContent.ContentText     = reader["content_text"].ToString();
+                        pageContent.Image           = reader["inage"].ToString();
+                        pageContent.SortId          = Convert.ToInt32(reader["sort"]);
+                        pageContent.Acl             = Convert.ToInt32(reader["published"]);
+
+                        // TODO: Remove this hack
+                        /*
+                        if (pageContent.ContentText != null)
+                        {
+                            pageContent.ContentText = pageContent.ContentText.Replace("\"/img/", "\"http://www.darkfactor.net/img/");
+                        }
+
+                        // TODO: Remove this hack
+                        if (pageContent.ContentText != null)
+                        {
+                            pageContent.ContentText = pageContent.ContentText.Replace("\"/img/", "\"http://www.darkfactor.net/img/");
+                        }
+                        */
+
+                        pageList.Add(pageContent);
+                    }
                 }
             }
             return pageList;
-        }
-
-        private PageContentModel ReadPage(DFStatement statement)
-        {
-            int id = statement.ReadUInt32("id");
-            int parentId = statement.ReadUInt32("parentid");
-            string promoTitle = statement.ReadString("promo_title");
-            string promoText = statement.ReadString("promo_text");
-            string contentTitle = statement.ReadString("content_title");
-            string contentText = statement.ReadString("content_text");
-            string image = statement.ReadString("image");
-            int sortId = statement.ReadUInt32("sort");
-            int acl = statement.ReadUInt32("published");
-
-            // Transition hack for now
-            if (contentText != null)
-            {
-                contentText = contentText.Replace("\"/img/", "\"http://www.darkfactor.net/img/");
-            }
-
-            if (promoText != null)
-            {
-                promoText = promoText.Replace("\"/img/", "\"http://www.darkfactor.net/img/");
-            }
-            
-            return new PageContentModel()
-            {
-                ID = id,
-                ParentId = parentId,
-                PromoTitle = promoTitle,
-                PromoText = promoText,
-                ContentTitle = contentTitle,
-                ContentText = contentText,
-                Image = image,
-                HtmlContent = new HtmlString(contentText),
-                HtmlTeaser = new HtmlString(promoText),
-                SortId = sortId,
-                Acl = acl
-            };
         }
 
         public List<String> GetRelatedTags(int pageId)
@@ -155,14 +144,16 @@ namespace DarkFactorCoreNet.Repository
                                        "where rt.contentid = @pageid " +
                                        "and rt.tagid = t.id " );
 
-            var variables = DFDataBase.CreateVariables();
-            variables.Add("@pageid", pageId);
-            using (DFStatement statement = database.ExecuteSelect(sql, variables))
+            using (var cmd = _connection.CreateCommand(sql))
             {
-                while (statement.ReadNext())
+                cmd.AddParameter("@pageid", pageId);
+                using (var reader = cmd.ExecuteReader())
                 {
-                    string tag = statement.ReadString("tag");
-                    tagList.Add(tag);
+                    if (reader.Read())
+                    {
+                        string tag = reader["tag"].ToString();
+                        tagList.Add(tag);
+                    }
                 }
             }
             return tagList;
@@ -173,25 +164,26 @@ namespace DarkFactorCoreNet.Repository
             List<ImageModel> imageList = new List<ImageModel>();
 
             string sql = string.Format("select id, filename, data from images where pageid=@pageid" );
-
-            var variables = DFDataBase.CreateVariables();
-            variables.Add("@pageid", pageId);
-            using (DFStatement statement = database.ExecuteSelect(sql, variables))
+            using (var cmd = _connection.CreateCommand(sql))
             {
-                while (statement.ReadNext())
+                cmd.AddParameter("@pageid", pageId);
+                using (var reader = cmd.ExecuteReader())
                 {
-                    ImageModel imageModel = new ImageModel()
+                    if (reader.Read())
                     {
-                        Id = statement.ReadUInt32("id"),
-                        Filename = statement.ReadString("filename"),
-                        Data = statement.ReadBlob("data")
-                    };
-                    imageList.Add(imageModel);
+                        int index = reader.GetOrdinal("data");
+
+                        ImageModel imageModel = new ImageModel();
+                        imageModel.Id = Convert.ToInt32(reader["id"]);
+                        imageModel.Filename = reader["filename"].ToString();
+                        reader.GetBytes(index, 0, imageModel.Data, 0, 16);
+
+                        imageList.Add(imageModel);
+                    }
                 }
             }
             return imageList;
         }
-
 
         public bool SavePromoPage(PageContentModel pageModel)
         {
@@ -225,19 +217,21 @@ namespace DarkFactorCoreNet.Repository
                          + " published = @published "
                          + "where id = @id ";
 
-            var variables = DFDataBase.CreateVariables();
-            variables.Add("@parentid", pageModel.ParentId);
-            variables.Add("@promo_title", pageModel.PromoTitle);
-            variables.Add("@promo_text", pageModel.PromoText);
-            variables.Add("@content_title", pageModel.ContentTitle);
-            variables.Add("@content_text", pageModel.ContentText);
-            variables.Add("@image", pageModel.Image);
-            variables.Add("@sort", pageModel.SortId);
-            variables.Add("@published", pageModel.Acl);
-            variables.Add("@id", pageModel.ID);
+            using (var cmd = _connection.CreateCommand(sql))
+            {
+                cmd.AddParameter("@parentid", pageModel.ParentId);
+                cmd.AddParameter("@promo_title", pageModel.PromoTitle);
+                cmd.AddParameter("@promo_text", pageModel.PromoText);
+                cmd.AddParameter("@content_title", pageModel.ContentTitle);
+                cmd.AddParameter("@content_text", pageModel.ContentText);
+                cmd.AddParameter("@image", pageModel.Image);
+                cmd.AddParameter("@sort", pageModel.SortId);
+                cmd.AddParameter("@published", pageModel.Acl);
 
-            int updatedRows = database.ExecuteUpdate(sql, variables);
-            return ( updatedRows == 1);
+                cmd.AddParameter("@id", pageModel.ID);
+                int numRows = cmd.ExecuteNonQuery();
+                return (numRows == 1);
+            }
         }
 
         public int DeletePage(int pageId)
@@ -254,28 +248,28 @@ namespace DarkFactorCoreNet.Repository
             {
                 return pageId;
             }
-
+            
+            // Do the delete
             string sql = @"delete from content where id = @id ";
-
-            var variables = DFDataBase.CreateVariables();
-            variables.Add("@id", pageId);
-
-            database.ExecuteDelete(sql, variables);
+            using (var cmd = _connection.CreateCommand(sql))
+            {
+                cmd.AddParameter("@id", pageId);
+                int numRows = cmd.ExecuteNonQuery();
+            }
 
             return page.ParentId;
         }
-
-        public bool CreatePage( int pageId )
+        public bool CreatePage( int pageId, string pageTitle )
         {
             var page = GetPage(pageId);
             if ( page != null )
             {
-                return CreateChildPage(page.ParentId);
+                return CreateChildPage(page.ParentId,pageTitle);
             }
             return false;
         }
 
-        public bool CreateChildPage( int parentPageId )
+        public bool CreateChildPage( int parentPageId, string pageTitle )
         {
             List<PageContentModel> pageList = GetPagesWithParentId(parentPageId);
             PageContentModel page = pageList.OrderBy(x => x.SortId).LastOrDefault();
@@ -286,61 +280,68 @@ namespace DarkFactorCoreNet.Repository
             }
 
             // Create page in database
-            string insertSql = @"insert into content(parentid,content_title,sort,content_text,published,externurl) values(@parentid,@content_title, @sortid, null, false, null) ";
-            var insertVariables = DFDataBase.CreateVariables();
-            insertVariables.Add("@parentid", parentPageId);
-            insertVariables.Add("@content_title", @"new page");
-            insertVariables.Add("@sortid", sortId + 1);
+            string sql = @"insert into content(parentid,content_title,sort,content_text,published,externurl) " + 
+                        "values(@parentid,@content_title, @sortid, null, false, null) ";
 
-            int insertedRows = database.ExecuteInsert(insertSql, insertVariables);
-            return (insertedRows == 1);
+            using (var cmd = _connection.CreateCommand(sql))
+            {
+                cmd.AddParameter("@parentid", parentPageId);
+                cmd.AddParameter("@content_title", pageTitle);
+                cmd.AddParameter("@sortid", sortId + 1);
+                int numRows = cmd.ExecuteNonQuery();
+                return (numRows == 1);
+            }
         }
 
         public List<TagModel> GetTagsForPage( int pageId )
         {
-            List<TagModel> list = new List<TagModel>();
+            List<TagModel> tagList = new List<TagModel>();
             string sql = string.Format("select t.id, t.tag " +
                             "from tags t, contenttags ct " +
                             "where ct.tagid = t.id " +
                             "and ct.contentid = @pageId " );
 
-            var variables = DFDataBase.CreateVariables();
-            variables.Add("@pageId", pageId);
-
-            using (DFStatement statement = database.ExecuteSelect(sql, variables))
+            using (var cmd = _connection.CreateCommand(sql))
             {
-                while (statement.ReadNext())
+                cmd.AddParameter("@pageid", pageId);
+                using (var reader = cmd.ExecuteReader())
                 {
-                    int tagId = statement.ReadUInt32("id");
-                    string tagName = statement.ReadString("tag");
-
-                    list.Add( new TagModel() { id = tagId, name = tagName } );
+                    if (reader.Read())
+                    {
+                        TagModel tag = new TagModel()
+                        {
+                            id = Convert.ToInt32(reader["id"]),
+                            name = reader["name"].ToString()
+                        };
+                        tagList.Add(tag);
+                    }
                 }
             }
-
-            return list;
+            return tagList;
         }
 
         public bool AddImage(int pageId, String filename, byte[] data)
         {
-            string insertSql = @"insert into images(pageId,filename,data, uploadeddate) values(@pageId,@filename, @data, now()) ";
-            var insertVariables = DFDataBase.CreateVariables();
-            insertVariables.Add("@pageId", pageId);
-            insertVariables.Add("@filename", filename);
-            insertVariables.Add("@data", data);
-
-            int insertedRows = database.ExecuteInsert(insertSql, insertVariables);
-            return (insertedRows == 1);
+            string sql = @"insert into images(pageId,filename,data, uploadeddate) values(@pageId,@filename, @data, now()) ";
+            using (var cmd = _connection.CreateCommand(sql))
+            {
+                cmd.AddParameter("@pageId", pageId);
+                cmd.AddParameter("@filename", filename);
+                cmd.AddParameter("@data", data);
+                int numRows = cmd.ExecuteNonQuery();
+                return (numRows == 1);
+            }
         }
 
         public bool DeleteImage(int imageId)
         {
-            string insertSql = @"delete from images where id = @imageid ";
-            var insertVariables = DFDataBase.CreateVariables();
-            insertVariables.Add("@imageid", imageId);
-
-            int deletedRows = database.ExecuteDelete(insertSql, insertVariables);
-            return (deletedRows == 1);
+            string sql = @"delete from images where id = @imageid ";
+            using (var cmd = _connection.CreateCommand(sql))
+            {
+                cmd.AddParameter("@imageid", imageId);
+                int numRows = cmd.ExecuteNonQuery();
+                return (numRows == 1);
+            }
         }
     }
 }
