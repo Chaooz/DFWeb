@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DarkFactorCoreNet.Models;
-using DarkFactorCoreNet.Repository.Database;
+using DFCommonLib.DataAccess;
 
 namespace DarkFactorCoreNet.Repository
 {
@@ -12,38 +12,37 @@ namespace DarkFactorCoreNet.Repository
 
     public class MenuRepository : IMenuRepository
     {
-        private IDFDatabase database;
+        private IDbConnectionFactory _connection;
 
-        public MenuRepository(IDFDatabase database)
+        public MenuRepository(IDbConnectionFactory connection)
         {
-            this.database = database;
+            _connection = connection;
         }
 
         public List<MenuItem> GetAllItems()
         {
             List<MenuItem> itemList = new List<MenuItem>();
 
-            using (DFStatement statement = database
-                .ExecuteSelect("select id, parentid, content_title, published from content order by sort"))
+            var sql = @"select id, parentid, content_title, published from content order by sort";
+            using (var cmd = _connection.CreateCommand(sql))
             {
-                while (statement.ReadNext())
+                using (var reader = cmd.ExecuteReader())
                 {
-                    int id = statement.ReadUInt32("id");
-                    int parentId = statement.ReadUInt32("parentid");
-                    string name = statement.ReadString("content_title");
-                    bool published = statement.ReadUInt32("published") == 1;
-
-                    itemList.Add(new MenuItem()
+                    if (reader.Read())
                     {
-                        ID = id,
-                        ParentID = parentId,
-                        Name = name,
-                        IsPublished = published
-                    });
-                }
+                        MenuItem menuItem = new MenuItem();
 
-                return itemList;
+                        menuItem.ID         = Convert.ToInt32(reader["id"]);
+                        menuItem.ParentID   = Convert.ToInt32(reader["parentid"]);
+                        menuItem.Name       = reader["content_title"].ToString();
+                        menuItem.IsPublished= Convert.ToUInt32(reader["published"]) == 1;
+
+                        itemList.Add(menuItem);
+                    }
+                }
             }
+
+            return itemList;
         }
     }
 }
