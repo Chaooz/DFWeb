@@ -19,6 +19,9 @@ using DarkFactorCoreNet.Repository.Database;
 using DarkFactorCoreNet.Api;
 using DarkFactorCoreNet.ConfigModel;
 using DarkFactorCoreNet.Provider;
+using DFCommonLib.Utils;
+using DFCommonLib.Config;
+using DFCommonLib.DataAccess;
 
 [assembly: ApiController]
 namespace DarkFactorCoreNet
@@ -53,8 +56,18 @@ namespace DarkFactorCoreNet
 
             services.AddOptions();
             services.AddHttpContextAccessor();
-            services.Configure<DatabaseConfig>(Configuration.GetSection("DatabaseConfigModel"));
-            services.Configure<EmailConfiguration>(Configuration.GetSection("EmailConfiguration"));
+            //services.Configure<DatabaseConfig>(Configuration.GetSection("DatabaseConfigModel"));
+            //services.Configure<EmailConfiguration>(Configuration.GetSection("EmailConfiguration"));
+
+            //DFServices.Create(services);
+            services.AddTransient<IConfigurationHelper, ConfigurationHelper<Customer> >();
+
+            services.AddScoped<IDbConnectionFactory, LocalMysqlConnectionFactory>();
+            services.AddScoped<IDBPatcher, MySQLDBPatcher>();
+            //services.BuildServiceProvider();
+
+            //new DFServices(services)
+            //        .SetupMySql();
 
             services.AddSingleton(typeof(IEmailConfiguration), typeof(EmailConfiguration));
 
@@ -67,9 +80,9 @@ namespace DarkFactorCoreNet
             services.AddScoped(typeof(IUserSessionProvider), typeof(UserSessionProvider));
             services.AddScoped(typeof(IEmailProvider), typeof(EmailProvider));
 
-            services.AddSingleton(typeof(IMenuRepository), typeof(MenuRepository));
-            services.AddSingleton(typeof(IPageRepository), typeof(PageRepository));
-            services.AddSingleton(typeof(IDFDatabase), typeof(DFDataBase));
+            services.AddScoped(typeof(IMenuRepository), typeof(MenuRepository));
+            services.AddScoped(typeof(IPageRepository), typeof(PageRepository));
+            services.AddScoped(typeof(IDFDatabase), typeof(DFDataBase));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
