@@ -6,8 +6,9 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.6"/>
     <PackageReference Include="MailKit" Version="2.10.1"/>
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0"/>
-    <PackageReference Include="MySql.Data" Version="8.0.16"/>
+    <PackageReference Include="MySql.Data" Version="8.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0"/>
+    <PackageReference Include="DarkFactor.Common.Lib" Version="1.2.10" />
   </ItemGroup>
 </Project>
