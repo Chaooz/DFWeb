@@ -22,6 +22,9 @@ using DarkFactorCoreNet.Provider;
 using DFCommonLib.Utils;
 using DFCommonLib.Config;
 using DFCommonLib.DataAccess;
+using AccountClientModule.Client;
+using AccountClientModule.RestClient;
+using DFCommonLib.Logger;
 
 [assembly: ApiController]
 namespace DarkFactorCoreNet
@@ -58,16 +61,21 @@ namespace DarkFactorCoreNet
             services.AddHttpContextAccessor();
             //services.Configure<DatabaseConfig>(Configuration.GetSection("DatabaseConfigModel"));
             //services.Configure<EmailConfiguration>(Configuration.GetSection("EmailConfiguration"));
-
-            //DFServices.Create(services);
-            services.AddTransient<IConfigurationHelper, ConfigurationHelper<Customer> >();
+            services.AddTransient<IConfigurationHelper, ConfigurationHelper<WebConfig> >();
 
             services.AddScoped<IDbConnectionFactory, LocalMysqlConnectionFactory>();
             services.AddScoped<IDBPatcher, MySQLDBPatcher>();
             //services.BuildServiceProvider();
 
-            //new DFServices(services)
-            //        .SetupMySql();
+            // Create Logger + service
+            DFServices.Create(services);
+            new DFServices(services)
+                .SetupLogger()
+                .SetupMySql()
+                .LogToConsole(DFLogLevel.INFO)
+                .LogToMySQL(DFLogLevel.WARNING)
+                //.LogToEvent(DFLogLevel.ERROR, AppName);
+                ;
 
             services.AddSingleton(typeof(IEmailConfiguration), typeof(EmailConfiguration));
 
@@ -83,6 +91,8 @@ namespace DarkFactorCoreNet
             services.AddScoped(typeof(IMenuRepository), typeof(MenuRepository));
             services.AddScoped(typeof(IPageRepository), typeof(PageRepository));
             services.AddScoped(typeof(IDFDatabase), typeof(DFDataBase));
+
+            AccountClient.SetupService(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

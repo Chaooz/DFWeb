@@ -6,13 +6,18 @@ using System.Linq;
 
 using DarkFactorCoreNet.Repository;
 using DarkFactorCoreNet.Models;
+using AccountClientModule.Client;
+using AccountClientModule.Model;
+using DFCommonLib.Config;
+using DFCommonLib.Utils;
+using DarkFactorCoreNet.ConfigModel;
 
 namespace DarkFactorCoreNet.Provider
 {
     public interface ILoginProvider
     {
         UserInfoModel GetLoginInfo();
-        UserModel.UserErrorCode LoginUser(string username, string password);
+        AccountData.ErrorCode LoginUser(string username, string password);
         void Logout();
         UserModel CreatePasswordToken(string email);
 
@@ -30,10 +35,22 @@ namespace DarkFactorCoreNet.Provider
         const int CODE_LENGTH = 10;
         private static Random random = new Random();
 
-        public LoginProvider(IUserSessionProvider userSession, ILoginRepository loginRepository)
+        IAccountClient _accountClient;
+
+        public LoginProvider(IUserSessionProvider userSession, 
+                            IAccountClient accountClient,
+                            ILoginRepository loginRepository)
         {
             _userSession = userSession;
+            _accountClient = accountClient;
             _loginRepository = loginRepository;
+
+            IConfigurationHelper configuration = DFServices.GetService<IConfigurationHelper>();
+            var customer = configuration.GetFirstCustomer() as WebConfig;
+            if ( customer != null )
+            {
+                _accountClient.SetEndpoint(customer.AccountServer);
+            }
         }
 
         public UserInfoModel GetLoginInfo()
@@ -66,34 +83,28 @@ namespace DarkFactorCoreNet.Provider
             return null;
         }
 
-        public UserModel.UserErrorCode LoginUser(string username, string password)
+        public AccountData.ErrorCode LoginUser(string username, string password)
         {
-            if ( string.IsNullOrEmpty( username ) || string.IsNullOrEmpty( password ) ) 
+            LoginData loginData = new LoginData()
             {
-                return UserModel.UserErrorCode.UserDoesNotExist;
-            }
-
-            var user = _loginRepository.GetUserWithUsername(username);
-            if ( user == null )
+                username = username,
+                password = password
+            };
+            var returnData = _accountClient.LoginAccount(loginData);
+            if  ( returnData.errorCode == AccountData.ErrorCode.OK )
             {
-                return UserModel.UserErrorCode.UserDoesNotExist;
+                AccessLevel accessLevel = _loginRepository.GetAccessForUser( returnData.nickname );
+
+                UserModel userModel = new UserModel()
+                {
+                    Username = returnData.nickname,
+                    IsLoggedIn = true,
+                    UserAccessLevel = accessLevel
+                };
+
+                _userSession.SetUser(userModel);
             }
-
-            if ( string.IsNullOrEmpty( user.Password ) || user.MustChangePassword ) 
-            {
-                return UserModel.UserErrorCode.MustChangePassword;
-            }
-
-            string hashedPassword = generateHash(password, user.Salt);
-            if ( !user.Password.Equals( hashedPassword ) )
-            {
-                return UserModel.UserErrorCode.WrongPassword;
-            }
-
-            user.IsLoggedIn = true;
-            _userSession.SetUser(user);
-
-            return UserModel.UserErrorCode.OK;
+            return returnData.errorCode;
         }
 
         public void Logout()

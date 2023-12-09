@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Core;
 using DarkFactorCoreNet.Models;
 using DarkFactorCoreNet.Provider;
+using AccountClientModule.Client;
+using AccountClientModule.Model;
 
 namespace DarkFactorCoreNet.Api
 {
@@ -15,8 +17,6 @@ namespace DarkFactorCoreNet.Api
     {
         ILoginProvider _loginProvider;
         IEmailProvider _emailProvider;
-
-        Microsoft.AspNetCore.Http.HttpContext _context;
 
         public LoginController(ILoginProvider loginProvider, IEmailProvider emailProvider)
         {
@@ -28,13 +28,15 @@ namespace DarkFactorCoreNet.Api
         [Route("LoginUser")]
         public IActionResult LoginUser([FromForm] string username, [FromForm] string password)
         {
-            var ret = _loginProvider.LoginUser(username,password);
-            switch(ret)
+            var errorCode = _loginProvider.LoginUser(username, password);
+            switch(errorCode)
             {
-                case UserModel.UserErrorCode.UserDoesNotExist:
+                case AccountData.ErrorCode.UserDoesNotExist:
                     return Redirect("/Login/LoginFailed");
-                case UserModel.UserErrorCode.WrongPassword:
+                case AccountData.ErrorCode.WrongPassword:
                     return Redirect("/Login/LoginFailed");
+                case AccountData.ErrorCode.OK:
+                    return Redirect("/");
                 default:
                     return Redirect("/");
            }

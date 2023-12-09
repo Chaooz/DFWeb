@@ -16,6 +16,7 @@ namespace DarkFactorCoreNet.Repository
 {
     public interface ILoginRepository
     {
+        AccessLevel GetAccessForUser(string username);
         UserModel GetUserWithUsername(string username);
         UserModel GetUserWithEmail(string email);
         UserModel.UserErrorCode ChangePassword(string username, string password, byte[] salt);
@@ -30,6 +31,32 @@ namespace DarkFactorCoreNet.Repository
         public LoginRepository( IDFDatabase database )
         {
             _database = database;
+        }
+
+        public AccessLevel GetAccessForUser(string username)
+        {
+            AccessLevel accessLevel = AccessLevel.Public;
+
+            if ( string.IsNullOrEmpty(username) )
+            {
+                return accessLevel;
+            }
+
+            string sql = string.Format("select acl from users where username = @username");
+
+            var variables = DFDataBase.CreateVariables();
+            variables.Add("@username", username);
+
+            List<PageContentModel> pageList = new List<PageContentModel>();
+            using (DFStatement statement = _database.ExecuteSelect(sql, variables))
+            {
+                if (statement.ReadNext())
+                {
+                    accessLevel = (AccessLevel) statement.ReadUInt32("acl");
+                }
+            }
+
+            return accessLevel;
         }
 
 
