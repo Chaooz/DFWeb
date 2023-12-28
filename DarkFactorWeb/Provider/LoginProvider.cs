@@ -4,12 +4,14 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Linq;
 
-using DarkFactorCoreNet.Repository;
-using DarkFactorCoreNet.Models;
-using AccountClientModule.Client;
-using AccountClientModule.Model;
 using DFCommonLib.Config;
 using DFCommonLib.Utils;
+
+using AccountClientModule.Client;
+using AccountCommon.SharedModel;
+
+using DarkFactorCoreNet.Repository;
+using DarkFactorCoreNet.Models;
 using DarkFactorCoreNet.ConfigModel;
 
 namespace DarkFactorCoreNet.Provider
@@ -19,22 +21,16 @@ namespace DarkFactorCoreNet.Provider
         UserInfoModel GetLoginInfo();
         AccountData.ErrorCode LoginUser(string username, string password);
         void Logout();
-        UserModel CreatePasswordToken(string email);
-
-        bool VerifyPasswordToken(string token);
-        UserModel.UserErrorCode ChangePassword(string password);
+        
+        ReturnData ResetPasswordWithEmail(string email);
+        ReturnData ResetPasswordWithCode(string code);
+        ReturnData ResetPasswordWithToken(string password);
     }
 
     public class LoginProvider : ILoginProvider
     {
         IUserSessionProvider _userSession;
-
         ILoginRepository _loginRepository;
-
-        const string CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        const int CODE_LENGTH = 10;
-        private static Random random = new Random();
-
         IAccountClient _accountClient;
 
         public LoginProvider(IUserSessionProvider userSession, 
@@ -112,73 +108,19 @@ namespace DarkFactorCoreNet.Provider
             _userSession.RemoveSession();
         }
 
-        public UserModel CreatePasswordToken(string email)
+        public ReturnData ResetPasswordWithEmail(string email)
         {
-            _userSession.RemoveSession();
-
-            UserModel userModel = _loginRepository.GetUserWithEmail(email);
-            if ( userModel == null )
-            {
-                return null;
-            }
-
-            // Generate random activation code
-            userModel.Token = new string(Enumerable.Repeat(CHARS, CODE_LENGTH)
-            .Select(s => s[random.Next(s.Length)]).ToArray());
-
-            // Remember this user
-            _userSession.SetUser(userModel);
-
-            return userModel;
+            return _accountClient.ResetPasswordWithEmail(email);
         }
 
-        public bool VerifyPasswordToken(string token)
+        public ReturnData ResetPasswordWithCode(string code)
         {
-            var user = GetLoggedInUser();
-            if ( user != null )
-            {
-                if ( user.Token.Equals(token ) )
-                {
-                    return true;
-                }
-            }
-            return false;
+            return _accountClient.ResetPasswordWithCode(code);
         }
 
-        public UserModel.UserErrorCode ChangePassword(string password)
+        public ReturnData ResetPasswordWithToken(string password)
         {
-            if ( string.IsNullOrEmpty( password ) )
-            {
-                return UserModel.UserErrorCode.PasswordDoesNotMatch;
-            }
-
-            byte[] salt = generateSalt();
-            string encryptedPassword = generateHash(password,salt);
-            string username = _userSession.GetUsername();
-            return _loginRepository.ChangePassword(username, encryptedPassword, salt);
-        }
-
-        public static string generateHash(string password, byte[] condiment) 
-        {
-            // derive a 256-bit subkey (use HMACSHA1 with 10,000 iterations)
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: password,
-                salt: condiment,
-                prf: KeyDerivationPrf.HMACSHA1,
-                iterationCount: 10000,
-                numBytesRequested: 256 / 8));
-            return hashed;
-        }
-
-        public static byte[] generateSalt() 
-        {
-            // generate a 128-bit (16*8) salt using a secure PRNG
-            byte[] salt = new byte[16];
-            using (var rng = RandomNumberGenerator.Create()) 
-            {
-                rng.GetBytes(salt);
-            }
-            return salt; 
+            return _accountClient.ResetPasswordWithToken(password);
         }
     }
 }

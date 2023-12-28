@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Core;
 using DarkFactorCoreNet.Models;
 using DarkFactorCoreNet.Provider;
+
+using AccountCommon.SharedModel;
 using AccountClientModule.Client;
-using AccountClientModule.Model;
 
 namespace DarkFactorCoreNet.Api
 {
@@ -54,31 +55,24 @@ namespace DarkFactorCoreNet.Api
         [Route("ChangePassStep1")]
         public IActionResult ChangePassStep1([FromForm] string email)
         {
-            var userModel = _loginProvider.CreatePasswordToken(email);
-            if( userModel != null )
+            var ret = _loginProvider.ResetPasswordWithEmail(email);
+            if ( ret.code == ReturnData.ReturnCode.OK )
             {
-                // Send code on email
-                EmailMessage message = new EmailMessage();
-                message.ToAddresses.Add( new EmailAddress(){ Name = "Bla", Address = userModel.Email } );
-                message.FromAddresses.Add( new EmailAddress() { Name = "DarkFactor", Address = "darkfactor@altibox.no" } );
-                message.Subject = "DarkFactor : Code";
-                message.Content = "Your code to reset your password is : " + userModel.Token;
-
-                _emailProvider.Send( message );
+                return Redirect("/Login/ChangePassStep2");
             }
-            return Redirect("/Login/ChangePassStep2");
+            return Redirect("/Login/ChangePassStep1?msg=" + ret.message);
         }
 
         [HttpPost]
         [Route("ChangePassStep2")]
         public IActionResult ChangePassStep2([FromForm] string code)
         {
-            var didSucceed = _loginProvider.VerifyPasswordToken(code);
-            if ( didSucceed )
+            var ret = _loginProvider.ResetPasswordWithCode(code);
+            if ( ret.code == ReturnData.ReturnCode.OK )
             {
                 return Redirect("/Login/ChangePassStep3");
             }
-            return Redirect("/Login/ChangePassStep1");
+            return Redirect("/Login/ChangePassStep1?msg=" + ret.message);
         }
 
         [HttpPost]
@@ -87,15 +81,18 @@ namespace DarkFactorCoreNet.Api
         {
             if ( string.IsNullOrEmpty( password ) || string.IsNullOrEmpty( password2 ) || !password.Equals(password2) )
             {
-                return Redirect("/Login/ChangePassStep3");
+                return Redirect("/Login/ChangePassStep3?msg=Passwords do not match");
             }
 
-            var errorCode = _loginProvider.ChangePassword(password);
-            if ( errorCode == UserModel.UserErrorCode.OK )
+            var ret = _loginProvider.ResetPasswordWithToken(password);
+            if ( ret.code == ReturnData.ReturnCode.OK )
             {
                 _loginProvider.Logout();
+
+                // TODO: Go to login page
                 return Redirect("/");
             }
+
             return Redirect("/Login/ChangePassStep1");
        }
     }
