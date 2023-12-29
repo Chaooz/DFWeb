@@ -3,7 +3,7 @@ using System;
 
 namespace DarkFactorCoreNet.Repository.Database
 {
-    public class DFStatement : IDisposable
+    public class DepricatedDFStatement : IDisposable
     {
         // Track whether Dispose has been called.
         private bool disposed = false;
@@ -11,13 +11,13 @@ namespace DarkFactorCoreNet.Repository.Database
         private MySqlDataReader reader;
         private int index;
 
-        public DFStatement(MySqlDataReader reader)
+        public DepricatedDFStatement(MySqlDataReader reader)
         {
             this.reader = reader;
             this.index = 0;
         }
 
-        ~DFStatement()
+        ~DepricatedDFStatement()
         {
             // Do not re-create Dispose clean-up code here.
             // Calling Dispose(false) is optimal in terms of

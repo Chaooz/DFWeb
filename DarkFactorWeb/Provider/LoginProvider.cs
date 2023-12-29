@@ -4,36 +4,54 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Linq;
 
+using DFCommonLib.Config;
+using DFCommonLib.Utils;
+
+using AccountClientModule.Client;
+using AccountCommon.SharedModel;
+
 using DarkFactorCoreNet.Repository;
 using DarkFactorCoreNet.Models;
+using DarkFactorCoreNet.ConfigModel;
 
 namespace DarkFactorCoreNet.Provider
 {
     public interface ILoginProvider
     {
         UserInfoModel GetLoginInfo();
-        UserModel.UserErrorCode LoginUser(string username, string password);
+        AccountData.ErrorCode LoginUser(string username, string password);
         void Logout();
-        UserModel CreatePasswordToken(string email);
-
-        bool VerifyPasswordToken(string token);
-        UserModel.UserErrorCode ChangePassword(string password);
+        
+        ReturnData ResetPasswordWithEmail(string email);
+        ReturnData ResetPasswordWithCode(string code);
+        ReturnData ResetPasswordWithToken(string password);
     }
 
     public class LoginProvider : ILoginProvider
     {
         IUserSessionProvider _userSession;
-
         ILoginRepository _loginRepository;
+        IAccountClient _accountClient;
+        ICookieProvider _cookieProvider;
 
-        const string CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        const int CODE_LENGTH = 10;
-        private static Random random = new Random();
+        const string COOKIE_NAME = "DFToken";
 
-        public LoginProvider(IUserSessionProvider userSession, ILoginRepository loginRepository)
+        public LoginProvider(IUserSessionProvider userSession, 
+                            IAccountClient accountClient,
+                            ILoginRepository loginRepository,
+                            ICookieProvider cookieProvider)
         {
             _userSession = userSession;
+            _accountClient = accountClient;
             _loginRepository = loginRepository;
+            _cookieProvider = cookieProvider;
+
+            IConfigurationHelper configuration = DFServices.GetService<IConfigurationHelper>();
+            var customer = configuration.GetFirstCustomer() as WebConfig;
+            if ( customer != null )
+            {
+                _accountClient.SetEndpoint(customer.AccountServer);
+            }
         }
 
         public UserInfoModel GetLoginInfo()
@@ -46,128 +64,95 @@ namespace DarkFactorCoreNet.Provider
                 userInfo.IsLoggedIn = user.IsLoggedIn;
                 userInfo.UserAccessLevel = (int) user.UserAccessLevel; 
                 userInfo.Handle = user.Username;
+                return userInfo;
             }
+
+            var loginToken = _cookieProvider.GetCookie(COOKIE_NAME);
+            if ( !string.IsNullOrEmpty(loginToken) )
+            {
+                LoginTokenData loginTokenData = new LoginTokenData()
+                {
+                    token = loginToken
+                };
+                var accountData = _accountClient.LoginToken(loginTokenData);
+                var loggedInUser = SetLoggedInAccount(accountData);
+                if ( loggedInUser != null )
+                {
+                    return loggedInUser;
+                }
+            }
+
             return userInfo;
         }
         
         public UserModel GetLoggedInUser()
         {
-            string username = _userSession.GetUsername();
-            if ( username != null )
+            return _userSession.GetUser();
+        }
+
+        public AccountData.ErrorCode LoginUser(string username, string password)
+        {
+            LoginData loginData = new LoginData()
             {
-                var user = _loginRepository.GetUserWithUsername(username);
-                if ( user != null )
+                username = username,
+                password = password
+            };
+            var accountData = _accountClient.LoginAccount(loginData);
+            SetLoggedInAccount(accountData);
+            return accountData.errorCode;
+        }
+
+        private UserInfoModel SetLoggedInAccount(AccountData accountData)
+        {
+            if  ( accountData.errorCode == AccountData.ErrorCode.OK )
+            {
+                AccessLevel accessLevel = _loginRepository.GetAccessForUser(accountData.nickname);
+
+                UserModel userModel = new UserModel()
                 {
-                    user.IsLoggedIn = _userSession.IsLoggedIn();
-                    user.Token = _userSession.GetToken();
-                }
-                return user;
+                    Username = accountData.nickname,
+                    IsLoggedIn = true,
+                    UserAccessLevel = accessLevel,
+                    Token = accountData.token
+                };
+
+                _userSession.SetUser(userModel);
+                _cookieProvider.RemoveCookie(COOKIE_NAME);
+                _cookieProvider.SetCookie(COOKIE_NAME, accountData.token);
+
+                UserInfoModel userInfo = new UserInfoModel()
+                {
+                    IsLoggedIn = true,
+                    UserAccessLevel = (int) userModel.UserAccessLevel,
+                    Handle = userModel.Username
+                };
+                return userInfo;
             }
+            _userSession.RemoveSession();
+            _cookieProvider.RemoveCookie(COOKIE_NAME);
             return null;
         }
 
-        public UserModel.UserErrorCode LoginUser(string username, string password)
-        {
-            if ( string.IsNullOrEmpty( username ) || string.IsNullOrEmpty( password ) ) 
-            {
-                return UserModel.UserErrorCode.UserDoesNotExist;
-            }
-
-            var user = _loginRepository.GetUserWithUsername(username);
-            if ( user == null )
-            {
-                return UserModel.UserErrorCode.UserDoesNotExist;
-            }
-
-            if ( string.IsNullOrEmpty( user.Password ) || user.MustChangePassword ) 
-            {
-                return UserModel.UserErrorCode.MustChangePassword;
-            }
-
-            string hashedPassword = generateHash(password, user.Salt);
-            if ( !user.Password.Equals( hashedPassword ) )
-            {
-                return UserModel.UserErrorCode.WrongPassword;
-            }
-
-            user.IsLoggedIn = true;
-            _userSession.SetUser(user);
-
-            return UserModel.UserErrorCode.OK;
-        }
 
         public void Logout()
         {
             _userSession.RemoveSession();
+            _cookieProvider.RemoveCookie(COOKIE_NAME);
         }
 
-        public UserModel CreatePasswordToken(string email)
+        public ReturnData ResetPasswordWithEmail(string email)
         {
-            _userSession.RemoveSession();
-
-            UserModel userModel = _loginRepository.GetUserWithEmail(email);
-            if ( userModel == null )
-            {
-                return null;
-            }
-
-            // Generate random activation code
-            userModel.Token = new string(Enumerable.Repeat(CHARS, CODE_LENGTH)
-            .Select(s => s[random.Next(s.Length)]).ToArray());
-
-            // Remember this user
-            _userSession.SetUser(userModel);
-
-            return userModel;
+            return _accountClient.ResetPasswordWithEmail(email);
         }
 
-        public bool VerifyPasswordToken(string token)
+        public ReturnData ResetPasswordWithCode(string code)
         {
-            var user = GetLoggedInUser();
-            if ( user != null )
-            {
-                if ( user.Token.Equals(token ) )
-                {
-                    return true;
-                }
-            }
-            return false;
+            return _accountClient.ResetPasswordWithCode(code);
         }
 
-        public UserModel.UserErrorCode ChangePassword(string password)
+        public ReturnData ResetPasswordWithToken(string password)
         {
-            if ( string.IsNullOrEmpty( password ) )
-            {
-                return UserModel.UserErrorCode.PasswordDoesNotMatch;
-            }
-
-            byte[] salt = generateSalt();
-            string encryptedPassword = generateHash(password,salt);
-            string username = _userSession.GetUsername();
-            return _loginRepository.ChangePassword(username, encryptedPassword, salt);
-        }
-
-        public static string generateHash(string password, byte[] condiment) 
-        {
-            // derive a 256-bit subkey (use HMACSHA1 with 10,000 iterations)
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: password,
-                salt: condiment,
-                prf: KeyDerivationPrf.HMACSHA1,
-                iterationCount: 10000,
-                numBytesRequested: 256 / 8));
-            return hashed;
-        }
-
-        public static byte[] generateSalt() 
-        {
-            // generate a 128-bit (16*8) salt using a secure PRNG
-            byte[] salt = new byte[16];
-            using (var rng = RandomNumberGenerator.Create()) 
-            {
-                rng.GetBytes(salt);
-            }
-            return salt; 
+            return _accountClient.ResetPasswordWithToken(password);
         }
     }
 }

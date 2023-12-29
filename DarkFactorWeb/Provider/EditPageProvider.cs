@@ -109,13 +109,8 @@ namespace DarkFactorCoreNet.Provider
             }
 
             string username = _userSession.GetUsername();
-            UserModel userModel = _loginRepository.GetUserWithUsername(username);
-            if ( userModel == null )
-            {
-                return false;
-            }
-
-            if ( userModel.UserAccessLevel < AccessLevel.Editor )
+            var userAccessLevel = _loginRepository.GetAccessForUser(username);
+            if ( userAccessLevel < AccessLevel.Editor )
             {
                 return false;
             }
