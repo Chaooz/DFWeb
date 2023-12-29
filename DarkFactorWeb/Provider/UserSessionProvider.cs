@@ -9,6 +9,8 @@ namespace DarkFactorCoreNet.Provider
         void RemoveSession();
         void SetUser(UserModel user);
 
+        UserModel GetUser();
+
         string GetUsername();
         string GetToken();
         bool IsLoggedIn();
@@ -37,6 +39,15 @@ namespace DarkFactorCoreNet.Provider
             SetConfigString(SessionUsernameKey, user.Username);
             SetConfigString(SessionTokenKey, user.Token);
             SetConfigInt(SessionIsLoggedIn, user.IsLoggedIn ? 1 : 0);
+        }
+
+        public UserModel GetUser()
+        {
+            UserModel user = new UserModel();
+            user.Username = GetConfigString(SessionUsernameKey);
+            user.Token = GetConfigString(SessionTokenKey);
+            user.IsLoggedIn = GetConfigInt(SessionIsLoggedIn) == 1 ? true : false;
+            return user;
         }
 
         public string GetUsername()

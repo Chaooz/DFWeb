@@ -65,18 +65,7 @@ namespace DarkFactorCoreNet.Provider
         
         public UserModel GetLoggedInUser()
         {
-            string username = _userSession.GetUsername();
-            if ( username != null )
-            {
-                var user = _loginRepository.GetUserWithUsername(username);
-                if ( user != null )
-                {
-                    user.IsLoggedIn = _userSession.IsLoggedIn();
-                    user.Token = _userSession.GetToken();
-                }
-                return user;
-            }
-            return null;
+            return _userSession.GetUser();
         }
 
         public AccountData.ErrorCode LoginUser(string username, string password)

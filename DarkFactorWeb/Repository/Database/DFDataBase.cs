@@ -14,23 +14,23 @@ using DarkFactorCoreNet.ConfigModel;
 
 namespace DarkFactorCoreNet.Repository.Database
 {
-    public interface IDFDatabase
+    public interface DepricatedIDFDatabase
     {
         bool IsConnected();
-        DFStatement ExecuteSelect( string sql );
-        DFStatement ExecuteSelect(string sqlString, Dictionary<string, object> variables);
+        DepricatedDFStatement ExecuteSelect( string sql );
+        DepricatedDFStatement ExecuteSelect(string sqlString, Dictionary<string, object> variables);
         int ExecuteUpdate(string sqlString, Dictionary<string,object> variables);
         int ExecuteInsert(string sqlString, Dictionary<string, object> variables);
         int ExecuteDelete(string sqlString, Dictionary<string, object> variables);
     }
 
-    public class DFDataBase : IDFDatabase
+    public class DepricatedDFDataBase : DepricatedIDFDatabase
     { 
         private MySqlConnection conn;
 
         private DatabaseConfig dbOptions;
 
-        public DFDataBase ( IOptions<DatabaseConfig> options )
+        public DepricatedDFDataBase ( IOptions<DatabaseConfig> options )
         {
             conn = null;
             dbOptions = options.Value;
@@ -119,7 +119,7 @@ namespace DarkFactorCoreNet.Repository.Database
         *
         * @author Thor Richard Hansen
         *************************************************************************************************/
-        public DFStatement ExecuteSelect( string sql )
+        public DepricatedDFStatement ExecuteSelect( string sql )
         {
             return ExecuteSelect(sql, null);
         }
@@ -133,7 +133,7 @@ namespace DarkFactorCoreNet.Repository.Database
         *
         * @author Thor Richard Hansen
         *************************************************************************************************/
-        public DFStatement ExecuteSelect(string sqlString, Dictionary<string, object> variables)
+        public DepricatedDFStatement ExecuteSelect(string sqlString, Dictionary<string, object> variables)
         {
             ReConnect();
 
@@ -152,7 +152,7 @@ namespace DarkFactorCoreNet.Repository.Database
             MySqlDataReader reader = cmd.ExecuteReader();
             if (reader != null)
             {
-                return new DFStatement(reader);
+                return new DepricatedDFStatement(reader);
             }
             return null;
         }

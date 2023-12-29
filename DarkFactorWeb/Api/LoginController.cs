@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Mvc.Core;
 using DarkFactorCoreNet.Models;
 using DarkFactorCoreNet.Provider;
 
+using DFCommonLib.Utils;
+
 using AccountCommon.SharedModel;
-using AccountClientModule.Client;
 
 namespace DarkFactorCoreNet.Api
 {
@@ -29,7 +30,8 @@ namespace DarkFactorCoreNet.Api
         [Route("LoginUser")]
         public IActionResult LoginUser([FromForm] string username, [FromForm] string password)
         {
-            var errorCode = _loginProvider.LoginUser(username, password);
+            var encryptedPassword = DFCrypt.EncryptInput(password);
+            var errorCode = _loginProvider.LoginUser(username, encryptedPassword);
             switch(errorCode)
             {
                 case AccountData.ErrorCode.UserDoesNotExist:
