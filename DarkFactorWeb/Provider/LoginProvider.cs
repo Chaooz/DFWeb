@@ -34,6 +34,8 @@ namespace DarkFactorCoreNet.Provider
         IAccountClient _accountClient;
         ICookieProvider _cookieProvider;
 
+        const string COOKIE_NAME = "DFToken";
+
         public LoginProvider(IUserSessionProvider userSession, 
                             IAccountClient accountClient,
                             ILoginRepository loginRepository,
@@ -65,15 +67,19 @@ namespace DarkFactorCoreNet.Provider
                 return userInfo;
             }
 
-            var loginToken = _cookieProvider.GetCookie("DFToken");
-            if ( loginToken != null )
+            var loginToken = _cookieProvider.GetCookie(COOKIE_NAME);
+            if ( !string.IsNullOrEmpty(loginToken) )
             {
                 LoginTokenData loginTokenData = new LoginTokenData()
                 {
                     token = loginToken
                 };
                 var accountData = _accountClient.LoginToken(loginTokenData);
-                return SetLoggedInAccount(accountData);
+                var loggedInUser = SetLoggedInAccount(accountData);
+                if ( loggedInUser != null )
+                {
+                    return loggedInUser;
+                }
             }
 
             return userInfo;
@@ -111,8 +117,8 @@ namespace DarkFactorCoreNet.Provider
                 };
 
                 _userSession.SetUser(userModel);
-                _cookieProvider.RemoveCookie("DFToken");
-                _cookieProvider.SetCookie("DFToken", accountData.token);
+                _cookieProvider.RemoveCookie(COOKIE_NAME);
+                _cookieProvider.SetCookie(COOKIE_NAME, accountData.token);
 
                 UserInfoModel userInfo = new UserInfoModel()
                 {
@@ -123,7 +129,7 @@ namespace DarkFactorCoreNet.Provider
                 return userInfo;
             }
             _userSession.RemoveSession();
-            _cookieProvider.RemoveCookie("DFToken");
+            _cookieProvider.RemoveCookie(COOKIE_NAME);
             return null;
         }
 
@@ -131,6 +137,7 @@ namespace DarkFactorCoreNet.Provider
         public void Logout()
         {
             _userSession.RemoveSession();
+            _cookieProvider.RemoveCookie(COOKIE_NAME);
         }
 
         public ReturnData ResetPasswordWithEmail(string email)
