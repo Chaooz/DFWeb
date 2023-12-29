@@ -20,12 +20,8 @@
     </div>
 
     <div class="row">
-        <div class="col-md-8">
-            @await Html.PartialAsync("/Pages/Views/MainElements/MainEdit.cshtml", Model.pageModel)
-        </div>
+        @await Html.PartialAsync("/Pages/Views/MainElements/MainEdit.cshtml", Model.pageModel)
         <div class="col-md-4">
-            @await Html.PartialAsync("/Pages/Views/RightSideElements/RightEdit.cshtml", Model.pageModel)
-            <div>&nbsp;</div>
             @await Html.PartialAsync("/Pages/Views/RightSideElements/AdminMenu.cshtml", Model.pageId)
         </div>
     </div>

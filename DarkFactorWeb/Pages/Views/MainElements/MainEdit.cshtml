@@ -1,27 +1,107 @@
 ﻿@using DarkFactorCoreNet.Models
 @model PageContentModel
 
-<div class="articletitle" style="width:100%">
-    Main Article
+@{
+    var acl = new Dictionary<int, string>();
+    acl[0] = "Public";
+    acl[1] = "Member";
+    acl[2] = "Editor";
+    acl[3] = "Admin";    
+
+    var layout = new Dictionary<string, string>();
+    layout[""] = "Default";
+    layout["2x4"] = "2 x 4";
+    layout["1x8"] = "1 x 8";
+}
+
+<div class="col-md-4">
+    <div class="article">
+    <form  method='POST' style='display: inline;'>
+
+        <input type='hidden' name='ID' value='@Model.ID'>
+        <input type='hidden' name='ParentId' value='@Model.ParentId'>
+        <input type='hidden' name='SortId' value='@Model.SortId'>
+        <input type='hidden' name='command' value='save'>
+
+        <div class='edit_header'>Title</div>
+        <input name='ContentTitle' type='text' class='edit_input' style='padding:2px' value='@Model.ContentTitle' placeholder='Enter title'><br>
+
+        <div class='edit_header'>Promo Text</div>
+        <textarea rows=5 name='PromoText' class='edit_input'>@Model.PromoText</textarea><br>
+
+        <div class='edit_header'>Content</div>
+        <textarea rows=15 name='ContentText' class='edit_input'>@Model.ContentText</textarea><br>
+
+        <div class='edit_header'>Tags</div>
+        @foreach (var tag in Model.Tags)
+        {
+            <span> @tag.name [<a href="">X</a>]</span>
+        }
+        <input name='NewTag' type='text' class='edit_input' value=''>
+        <br>
+        <input class=toolbutton type='submit' value='Save Article'>
+
+    </form>
+    </div>
 </div>
 
-<div class="article" style="width:100%;display:flex">
+<div class="col-md-4">
+    <div class="article" style="width:100%">
+        <form  method='POST' action="/api/Edit/ChangeLayout" style='display: inline;'>
+            <div class='edit_header'>Layout</div>
+            <select name='layout' class='edit_input' style="width:75%">
+                @foreach (var layoutKv in layout)
+                {
+                    <option value=@layoutKv.Key> @layoutKv.Value </option>
+                }
+            </select>
+            <input type='submit' value='Update'>
+        </form>
 
-<form  method='POST' style='display: inline;'>
 
-    <input type='hidden' name='ID' value='@Model.ID'>
-    <input type='hidden' name='ParentId' value='@Model.ParentId'>
-    <input type='hidden' name='SortId' value='@Model.SortId'>
-    <input type='hidden' name='command' value='save'>
+        <form  method='POST' action="/api/Edit/ChangeAccess" style='display: inline;'>
+            <div class='edit_header'>Access Control</div>
+            <select name='acl' class='edit_input' style="width:75%">
+                @foreach (var aclKv in acl)
+                {
+                    if ( aclKv.Key == Model.Acl )
+                    {
+                        <option value=@aclKv.Key selected> @aclKv.Value </option>
+                    }   
+                    else
+                    {
+                        <option value=@aclKv.Key> @aclKv.Value </option>
+                    }
+                }
+            </select>
+            <input type='submit' value='Update'>
+        </form>
+    </div>
 
-    <div class='edit_header'>Title</div>
-    <input name='ContentTitle' type='text' class='edit_input' value='@Model.ContentTitle' placeholder='Enter title'><br>
+    <div class="article" style="width:100%">
 
-    <div class='edit_header'>Content</div>
-    <textarea rows=15 name='ContentText' class='edit_input'>@Model.ContentText</textarea><br>
+@foreach( var imageModel in Model.ImageList)
+{
+        <div> @imageModel.Filename
+            <form  method='POST' action="/api/Edit/DeleteImage" style='display: inline;'>
+                    <input type='hidden' name='pageId' value='@Model.ID'>
+                    <input type='hidden' name='imageId' value='@imageModel.Id'>
+                    <input type='submit' value='X'>
+            </form>
+        </div>
+}
+@if (Model.ImageList.Count == 0)
+{
+        <form  method='POST' action="/api/Edit/AddImage" enctype="multipart/form-data" style='display: inline;'>
+            <input type='hidden' name='pageId' value='@Model.ID'>
+            <input type="file" name="files" />
+            <input type='submit' value='Upload'>
+        </form>
+}
+    </div>
 
-    <input class=toolbutton type='submit' value='Save'>
-    <input class=toolbutton type='submit' value='Preview'>
 
-</form>
 </div>
+
+
+
