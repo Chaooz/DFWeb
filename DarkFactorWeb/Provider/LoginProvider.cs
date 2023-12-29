@@ -32,14 +32,17 @@ namespace DarkFactorCoreNet.Provider
         IUserSessionProvider _userSession;
         ILoginRepository _loginRepository;
         IAccountClient _accountClient;
+        ICookieProvider _cookieProvider;
 
         public LoginProvider(IUserSessionProvider userSession, 
                             IAccountClient accountClient,
-                            ILoginRepository loginRepository)
+                            ILoginRepository loginRepository,
+                            ICookieProvider cookieProvider)
         {
             _userSession = userSession;
             _accountClient = accountClient;
             _loginRepository = loginRepository;
+            _cookieProvider = cookieProvider;
 
             IConfigurationHelper configuration = DFServices.GetService<IConfigurationHelper>();
             var customer = configuration.GetFirstCustomer() as WebConfig;
@@ -59,7 +62,20 @@ namespace DarkFactorCoreNet.Provider
                 userInfo.IsLoggedIn = user.IsLoggedIn;
                 userInfo.UserAccessLevel = (int) user.UserAccessLevel; 
                 userInfo.Handle = user.Username;
+                return userInfo;
             }
+
+            var loginToken = _cookieProvider.GetCookie("DFToken");
+            if ( loginToken != null )
+            {
+                LoginTokenData loginTokenData = new LoginTokenData()
+                {
+                    token = loginToken
+                };
+                var accountData = _accountClient.LoginToken(loginTokenData);
+                return SetLoggedInAccount(accountData);
+            }
+
             return userInfo;
         }
         
@@ -75,22 +91,42 @@ namespace DarkFactorCoreNet.Provider
                 username = username,
                 password = password
             };
-            var returnData = _accountClient.LoginAccount(loginData);
-            if  ( returnData.errorCode == AccountData.ErrorCode.OK )
+            var accountData = _accountClient.LoginAccount(loginData);
+            SetLoggedInAccount(accountData);
+            return accountData.errorCode;
+        }
+
+        private UserInfoModel SetLoggedInAccount(AccountData accountData)
+        {
+            if  ( accountData.errorCode == AccountData.ErrorCode.OK )
             {
-                AccessLevel accessLevel = _loginRepository.GetAccessForUser( returnData.nickname );
+                AccessLevel accessLevel = _loginRepository.GetAccessForUser(accountData.nickname);
 
                 UserModel userModel = new UserModel()
                 {
-                    Username = returnData.nickname,
+                    Username = accountData.nickname,
                     IsLoggedIn = true,
-                    UserAccessLevel = accessLevel
+                    UserAccessLevel = accessLevel,
+                    Token = accountData.token
                 };
 
                 _userSession.SetUser(userModel);
+                _cookieProvider.RemoveCookie("DFToken");
+                _cookieProvider.SetCookie("DFToken", accountData.token);
+
+                UserInfoModel userInfo = new UserInfoModel()
+                {
+                    IsLoggedIn = true,
+                    UserAccessLevel = (int) userModel.UserAccessLevel,
+                    Handle = userModel.Username
+                };
+                return userInfo;
             }
-            return returnData.errorCode;
+            _userSession.RemoveSession();
+            _cookieProvider.RemoveCookie("DFToken");
+            return null;
         }
+
 
         public void Logout()
         {

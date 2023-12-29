@@ -47,9 +47,15 @@ namespace DarkFactorCoreNet.Provider
 
         public UserModel GetUser()
         {
+            var token = GetConfigString(SessionTokenKey);
+            if ( token == null )
+            {
+                return null;
+            }
+
             UserModel user = new UserModel();
+            user.Token = token;
             user.Username = GetConfigString(SessionUsernameKey);
-            user.Token = GetConfigString(SessionTokenKey);
             user.IsLoggedIn = GetConfigInt(SessionIsLoggedIn) == 1 ? true : false;
 
             var accessLevel = GetConfigInt(SessionAccessLevel);

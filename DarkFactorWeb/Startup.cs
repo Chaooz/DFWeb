@@ -91,6 +91,8 @@ namespace DarkFactorCoreNet
             services.AddScoped(typeof(IMenuRepository), typeof(MenuRepository));
             services.AddScoped(typeof(IPageRepository), typeof(PageRepository));
 
+            services.AddScoped(typeof(ICookieProvider), typeof(CookieProvider));
+
             AccountClient.SetupService(services);
         }
 
