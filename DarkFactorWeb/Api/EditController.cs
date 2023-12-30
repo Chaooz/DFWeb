@@ -76,37 +76,5 @@ namespace DarkFactorCoreNet.Api
             }
             return Redirect("/mainpage?id=" + pageId);
         }
-
-        // This action handles the form POST and the upload
-        [HttpPost]
-        [Route("AddImage")]
-        public async Task<IActionResult> AddImage([FromForm] int pageId, [FromForm] List<IFormFile> files)
-        {
-            foreach (var formFile in files)
-            {
-                if (formFile.Length > 0)
-                {
-                    var filePath = Path.GetTempFileName();
-
-                    //using (var memoryStream = System.IO.File.Create(filePath))
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await formFile.CopyToAsync(memoryStream);
-                        var fileArray = memoryStream.ToArray();
-
-                        _editPageProvider.AddImage(pageId, formFile.FileName, fileArray);
-                    }
-                }
-            }
-            return Redirect("/admin/edit?id=" + pageId);
-        }
-
-        [HttpPost]
-        [Route("DeleteImage")]
-        public IActionResult DeleteImage([FromForm] int pageId, [FromForm] int imageId)
-        {
-            _editPageProvider.DeleteImage(imageId);
-            return Redirect("/admin/edit?id=" + pageId);
-        }
     }
 }

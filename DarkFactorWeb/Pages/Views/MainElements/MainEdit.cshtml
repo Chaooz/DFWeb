@@ -78,28 +78,7 @@
         </form>
     </div>
 
-    <div class="article" style="width:100%">
-
-@foreach( var imageModel in Model.ImageList)
-{
-        <div> @imageModel.Filename
-            <form  method='POST' action="/api/Edit/DeleteImage" style='display: inline;'>
-                    <input type='hidden' name='pageId' value='@Model.ID'>
-                    <input type='hidden' name='imageId' value='@imageModel.Id'>
-                    <input type='submit' value='X'>
-            </form>
-        </div>
-}
-@if (Model.ImageList.Count == 0)
-{
-        <form  method='POST' action="/api/Edit/AddImage" enctype="multipart/form-data" style='display: inline;'>
-            <input type='hidden' name='pageId' value='@Model.ID'>
-            <input type="file" name="files" />
-            <input type='submit' value='Upload'>
-        </form>
-}
-    </div>
-
+    @await Html.PartialAsync("/Pages/Views/Components/ImageComponent.cshtml", Model)
 
 </div>
 

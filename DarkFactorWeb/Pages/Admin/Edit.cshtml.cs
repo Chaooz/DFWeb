@@ -17,9 +17,10 @@ namespace DarkFactorCoreNet.Pages
 
         public EditModel(
             IPageRepository pageRepository, 
+            IImageProvider imageProvider,
             IPageProvider pageProvider, 
             IMenuProvider menuProvider,
-            ILoginProvider loginProvider) : base(pageProvider,menuProvider, loginProvider)
+            ILoginProvider loginProvider) : base(pageProvider,menuProvider, loginProvider,imageProvider)
         {
             this.pageRepository = pageRepository;
         }
@@ -28,8 +29,6 @@ namespace DarkFactorCoreNet.Pages
         public void OnGet(int id)
         {
             base.OnGet(id);
-
-            pageModel.ImageList = pageRepository.GetImages( pageModel.ID );
         }
 
         public IActionResult OnPostAsync([FromForm] PageContentModel pageContentModel)

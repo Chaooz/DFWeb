@@ -6,7 +6,8 @@ namespace DarkFactorCoreNet.Pages
 {
     public class PreviewModel : BasePageModel
     {
-        public PreviewModel(IPageProvider pageProvider, IMenuProvider menuProvider, ILoginProvider loginProvider) : base(pageProvider,menuProvider, loginProvider)
+        public PreviewModel(IPageProvider pageProvider, IMenuProvider menuProvider, ILoginProvider loginProvider,IImageProvider imageProvider) 
+        : base(pageProvider,menuProvider, loginProvider, imageProvider)
         {
         }
 

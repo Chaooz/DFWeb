@@ -87,9 +87,11 @@ namespace DarkFactorCoreNet
             services.AddScoped(typeof(ILoginProvider), typeof(LoginProvider));
             services.AddScoped(typeof(IUserSessionProvider), typeof(UserSessionProvider));
             services.AddScoped(typeof(IEmailProvider), typeof(EmailProvider));
+            services.AddScoped(typeof(IImageProvider), typeof(ImageProvider));
 
             services.AddScoped(typeof(IMenuRepository), typeof(MenuRepository));
             services.AddScoped(typeof(IPageRepository), typeof(PageRepository));
+            services.AddScoped(typeof(IImageRepository), typeof(ImageRepository));
 
             services.AddScoped(typeof(ICookieProvider), typeof(CookieProvider));
 

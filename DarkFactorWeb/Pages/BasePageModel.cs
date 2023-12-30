@@ -17,16 +17,20 @@ namespace DarkFactorCoreNet.Pages
 
         protected IMenuProvider menuProvider;
         protected IPageProvider pageProvider;
-
         protected ILoginProvider _loginProvider;
+        protected IImageProvider _imageProvider;
 
         public UserInfoModel UserInfoModel { get; set; }
 
-        public BasePageModel(IPageProvider pageProvider, IMenuProvider menuProvider, ILoginProvider loginProvider)
+        public BasePageModel(   IPageProvider pageProvider, 
+                                IMenuProvider menuProvider, 
+                                ILoginProvider loginProvider,
+                                IImageProvider imageProvider)
         {
             this.menuProvider = menuProvider;
             this.pageProvider = pageProvider;
             _loginProvider = loginProvider;
+            _imageProvider = imageProvider;
             pageId = 0;
         }
 
@@ -38,6 +42,11 @@ namespace DarkFactorCoreNet.Pages
             pageModel = pageProvider.GetPage(id);
             articleSectionModel = GetArticleSection(id);
             UserInfoModel = _loginProvider.GetLoginInfo();
+
+            if ( pageModel != null)
+            {
+                pageModel.ImageList = _imageProvider.GetImageList(id);
+            }
             pageId = id;
         }
 

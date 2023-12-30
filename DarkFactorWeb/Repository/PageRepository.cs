@@ -16,7 +16,6 @@ namespace DarkFactorCoreNet.Repository
         List<PageContentModel> GetPagesWithTag(string tag);
         List<TagModel> GetTagsForPage(int pageId );
         List<String> GetRelatedTags(int pageId);
-        List<ImageModel> GetImages(int pageId);
 
         bool SavePage(PageContentModel pageModel);
         bool SaveMainPage(PageContentModel pageModel);
@@ -24,8 +23,6 @@ namespace DarkFactorCoreNet.Repository
         int DeletePage(int pageId);
         bool CreatePage(int pageId, string pageTitle );
         bool CreateChildPage(int parentPageId, string pageTotle );
-        bool AddImage(int pageId, String filename, byte[] data);
-        bool DeleteImage(int imageId);
     }
 
     public class PageRepository : IPageRepository
@@ -159,32 +156,6 @@ namespace DarkFactorCoreNet.Repository
                 }
             }
             return tagList;
-        }
-
-        public List<ImageModel> GetImages(int pageId)
-        {
-            List<ImageModel> imageList = new List<ImageModel>();
-
-            string sql = string.Format("select id, filename, data from images where pageid=@pageid" );
-            using (var cmd = _connection.CreateCommand(sql))
-            {
-                cmd.AddParameter("@pageid", pageId);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        int index = reader.GetOrdinal("data");
-
-                        ImageModel imageModel = new ImageModel();
-                        imageModel.Id = Convert.ToInt32(reader["id"]);
-                        imageModel.Filename = reader["filename"].ToString();
-                        reader.GetBytes(index, 0, imageModel.Data, 0, 16);
-
-                        imageList.Add(imageModel);
-                    }
-                }
-            }
-            return imageList;
         }
 
         public bool SavePromoPage(PageContentModel pageModel)
@@ -322,28 +293,8 @@ namespace DarkFactorCoreNet.Repository
             return tagList;
         }
 
-        public bool AddImage(int pageId, String filename, byte[] data)
-        {
-            string sql = @"insert into images(pageId,filename,data, uploadeddate) values(@pageId,@filename, @data, now()) ";
-            using (var cmd = _connection.CreateCommand(sql))
-            {
-                cmd.AddParameter("@pageId", pageId);
-                cmd.AddParameter("@filename", filename);
-                cmd.AddParameter("@data", data);
-                int numRows = cmd.ExecuteNonQuery();
-                return (numRows == 1);
-            }
-        }
+   
 
-        public bool DeleteImage(int imageId)
-        {
-            string sql = @"delete from images where id = @imageid ";
-            using (var cmd = _connection.CreateCommand(sql))
-            {
-                cmd.AddParameter("@imageid", imageId);
-                int numRows = cmd.ExecuteNonQuery();
-                return (numRows == 1);
-            }
-        }
+
     }
 }

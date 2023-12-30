@@ -4,7 +4,8 @@ namespace DarkFactorCoreNet.Pages
 {
     public class IndexModel : BasePageModel
     {
-        public IndexModel(IPageProvider pageProvider, IMenuProvider menuProvider, ILoginProvider loginProvider) : base(pageProvider,menuProvider, loginProvider)
+        public IndexModel(IPageProvider pageProvider, IMenuProvider menuProvider, ILoginProvider loginProvider, IImageProvider imageProvider)
+         : base(pageProvider,menuProvider, loginProvider, imageProvider)
         {
         }
     }
