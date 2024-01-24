@@ -213,7 +213,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (`id`, `username`, `password`, `email`, `salt`, `acl`) VALUES (1,'Chaoz','/KmWBCICXd13uwzZPjCgBc2qXpLcicFqS1fvpGCkE6Y=','thor@gale-huset.net',_binary '�j\�<B#Z���[%PU',2);
+INSERT INTO `users` (`id`, `acl`) VALUES (1,'Chaoz',2);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
