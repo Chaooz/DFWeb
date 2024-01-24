@@ -24,9 +24,12 @@ namespace DarkFactorCoreNet.Models
 
         public IList<TagModel> Tags{ get; set; }
 
+        public bool IsEdit;
+
         public PageContentModel()
         {
             Tags = new List<TagModel>();
+            IsEdit = false;
         }
     }
 }

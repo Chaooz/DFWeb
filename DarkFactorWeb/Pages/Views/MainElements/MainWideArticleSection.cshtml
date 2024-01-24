@@ -28,12 +28,9 @@
 
         <div class="article" style="width:100%;display:flex">
 
-        @if (!String.IsNullOrEmpty(relPage.Image))
-        {
-            <div style="width:25%;align-items:center">
-                <center><a href="/page?id=@relPage.ID"><img src="@relPage.Image" class="imagefitwide" /></a></center>
-            </div>
-        }
+        <div style="width:50%;align-items:center">
+            @await Html.PartialAsync("/Pages/Views/Components/ImageComponent.cshtml", relPage)
+        </div>
 
         <div class="articletext" style="width:75%;margin-left:20px;">
 

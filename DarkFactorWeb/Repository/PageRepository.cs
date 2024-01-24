@@ -41,13 +41,6 @@ namespace DarkFactorCoreNet.Repository
 
             List<PageContentModel> pageList = GetPageList(sql,pageId);
 
-            /*
-            if ( pageModel != null )
-            {
-                pageModel.Tags = GetTagsForPage(pageModel.ID);
-            }
-            */
-
             if ( pageList.Count > 0 )
             {
                 return pageList.First();
