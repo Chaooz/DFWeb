@@ -1,34 +1,52 @@
 @using DarkFactorCoreNet.Models
 @model PageContentModel
 
-@if  (Model.ImageList != null )
-{
-    <div class="article" style="width:100%">
-    <h2>IMAGES</h2>
-    @foreach( var imageModel in Model.ImageList)
-    {    
-        @if ( Model.IsEdit == true )
-        {
-            <div> @imageModel.Filename
-                <form  method='POST' action="/api/Image/DeleteImage" style='display: inline;'>
-                        <input type='hidden' name='pageId' value='@Model.ID'>
-                        <input type='hidden' name='imageId' value='@imageModel.Id'>
-                        <input type='submit' value='X'>
-                </form>
-            </div>
-        }
-            <div>
-                <center><a href="/page?id=@Model.ID"><img width=100% height=100% src="data:image/png;base64,@imageModel.Filedata"></a></center>
-            </div>
-    }
-    @if (Model.ImageList.Count == 0 && Model.IsEdit == true)
+<div class="article" style="width:100%">
+
+    @* Show delete icon to remove image *@    
+    @if ( Model.IsEdit && Model.ImageModel != null && !string.IsNullOrEmpty(Model.ImageModel.Filedata) )
     {
-            <form  method='POST' action="/api/Image/AddImage" enctype="multipart/form-data" style='display: inline;'>
-                <input type='hidden' name='pageId' value='@Model.ID'>
-                <input type="file" name="files" />
-                <input type='submit' value='Upload'>
+        <div> @Model.ImageModel.Filename
+            <form  method='POST' action="/api/Image/DeleteImage" style='display: inline;'>
+                    <input type='hidden' name='pageId' value='@Model.ID'>
+                    <input type='hidden' name='imageId' value='@Model.ImageModel.Id'>
+                    <input type='submit' value='X'>
             </form>
+        </div>
+    }
+    else
+    {
+        <form  method='POST' action="/api/Edit/AddImage" style='display: inline;'>
+            <input type='hidden' name='pageId' value='@Model.ID'>
+            <select name="imageType">
+                <option value="0">No Image</option>
+                <option value="1">thor_portrail_photo.jpg</option>
+                <option value="2">DarkFactorLogo.png</option>
+                <option value="8">BOTS 2019-08-16 at 07.36.18.png</option>
+                <option value="9">DarkFactor_WebLogo.png</option>
+            </select>
+            <input type='submit' value='Add'>
+        </form>
+    }
+
+    @* Show Image if we have data *@    
+    @if ( Model.ImageModel != null && !string.IsNullOrEmpty(Model.ImageModel.Filedata) )
+    {
+        <div>
+            <center><a href="/page?id=@Model.ID"><img width=100% height=100% src="data:image/png;base64,@Model.ImageModel.Filedata"></a></center>
+        </div>        
     }
     </div>
 
-}
+    @* Show Add button to upload new image *@    
+    @if (Model.IsEdit)
+    {
+        <div class="article" style="width:100%">
+        <form  method='POST' action="/api/Image/AddImage" enctype="multipart/form-data" style='display: inline;'>
+            <input type='hidden' name='pageId' value='@Model.ID'>
+            <input type="file" name="files" />
+            <input type='submit' value='Upload Image'>
+        </form>
+        </div>
+    }
+

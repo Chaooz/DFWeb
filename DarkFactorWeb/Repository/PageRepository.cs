@@ -23,6 +23,7 @@ namespace DarkFactorCoreNet.Repository
         int DeletePage(int pageId);
         bool CreatePage(int pageId, string pageTitle );
         bool CreateChildPage(int parentPageId, string pageTotle );
+        bool AddImage(int pageID, int imageId);
     }
 
     public class PageRepository : IPageRepository
@@ -36,7 +37,7 @@ namespace DarkFactorCoreNet.Repository
 
         public PageContentModel GetPage(int pageId)
         {
-            var sql = @"select id, parentid, promo_title, promo_text, content_title, content_text, image, sort, published " +
+            var sql = @"select id, parentid, promo_title, promo_text, content_title, content_text, imageid, sort, published " +
                     "from content where id = @bindVariable";
 
             List<PageContentModel> pageList = GetPageList(sql,pageId);
@@ -51,7 +52,7 @@ namespace DarkFactorCoreNet.Repository
 
         public List<PageContentModel> GetPagesWithParentId(int parentId)
         {
-            string sql = @"select id, parentid, promo_title, promo_text, content_title, content_text, image, sort, published " +
+            string sql = @"select id, parentid, promo_title, promo_text, content_title, content_text, imageid, sort, published " +
                         "from content where parentid = @bindVariable order by sort";
             return GetPageList(sql, parentId);
         }
@@ -62,7 +63,7 @@ namespace DarkFactorCoreNet.Repository
             var lowerTag = tag.ToLower();
 
             string sql = @"select c.id, c.parentid, c.promo_title, c.promo_text, c.content_title, " +
-                                       "c.content_text, c.image, c.sort, c.published " +
+                                       "c.content_text, c.imageid, c.sort, c.published " +
                                        "from content c, contenttags, tags " +
                                        "where c.id = contenttags.contentid " +
                                        "and contenttags.tagid = tags.id " +
@@ -99,7 +100,7 @@ namespace DarkFactorCoreNet.Repository
                         pageContent.PromoText       = reader["promo_text"].ToString();
                         pageContent.ContentTitle    = reader["content_title"].ToString();
                         pageContent.ContentText     = reader["content_text"].ToString();
-                        pageContent.Image           = reader["image"].ToString();
+                        pageContent.ImageId         = Convert.ToInt32(reader["imageid"]);
                         pageContent.SortId          = Convert.ToInt32(reader["sort"]);
                         pageContent.Acl             = Convert.ToInt32(reader["published"]);
 
@@ -156,7 +157,7 @@ namespace DarkFactorCoreNet.Repository
             var editPage = GetPage( pageModel.ID );
             editPage.Acl = pageModel.Acl;
             editPage.Tags = pageModel.Tags;
-            editPage.Image = pageModel.Image;
+            editPage.ImageId = pageModel.ImageId;
             editPage.PromoText = pageModel.PromoText;
             editPage.PromoTitle = pageModel.PromoTitle;
             return SavePage(editPage);
@@ -178,7 +179,7 @@ namespace DarkFactorCoreNet.Repository
                          + " promo_text = @promo_text, "
                          + " content_title =@content_title, "
                          + " content_text = @content_text, "
-                         + " image = @image, "
+                         + " imageid = @imageid, "
                          + " sort =@sort, "
                          + " published = @published "
                          + "where id = @id ";
@@ -190,7 +191,7 @@ namespace DarkFactorCoreNet.Repository
                 cmd.AddParameter("@promo_text", pageModel.PromoText);
                 cmd.AddParameter("@content_title", pageModel.ContentTitle);
                 cmd.AddParameter("@content_text", pageModel.ContentText);
-                cmd.AddParameter("@image", pageModel.Image);
+                cmd.AddParameter("@imageid", pageModel.ImageId);
                 cmd.AddParameter("@sort", pageModel.SortId);
                 cmd.AddParameter("@published", pageModel.Acl);
 
@@ -285,9 +286,17 @@ namespace DarkFactorCoreNet.Repository
             }
             return tagList;
         }
-
    
-
-
+        public bool AddImage(int pageId, int imageId)
+        {
+            var sql = @"update content set imageid = @imageid where id = @pageid "; 
+            using (var cmd = _connection.CreateCommand(sql))
+            {
+                cmd.AddParameter("@pageid", pageId);
+                cmd.AddParameter("@imageid", imageId);
+                int numRows = cmd.ExecuteNonQuery();
+                return (numRows == 1);
+            }
+        }
     }
 }

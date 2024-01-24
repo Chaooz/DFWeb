@@ -12,10 +12,10 @@ namespace DarkFactorCoreNet.Models
         public string PromoText { get; set; }
         public string ContentTitle { get; set; }
         public string ContentText { get; set; }
-        public string Image { get; set; }
+        public int ImageId { get; set; }
+        public ImageModel ImageModel{ get; set; }
         public int SortId { get; set; }
         public int Acl { get; set; }
-        public List<ImageModel> ImageList { get; set; }
 
         // Additional html properties
         public HtmlString HtmlContent { get; set; }

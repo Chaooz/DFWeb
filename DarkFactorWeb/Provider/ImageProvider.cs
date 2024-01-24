@@ -13,8 +13,7 @@ namespace DarkFactorCoreNet.Provider
     {
         bool AddImage(int pageId, String filename, byte[] data);
         bool DeleteImage(int imageId);
-        string GetImage(int imageId);
-        List<ImageModel> GetImageList(int pageId);
+        ImageModel GetImage(int imageId);
     }
 
     public class ImageProvider : IImageProvider
@@ -69,14 +68,9 @@ namespace DarkFactorCoreNet.Provider
             return _imageRepository.DeleteImage(imageId);
         }
 
-        public string GetImage(int imageId)
+        public ImageModel GetImage(int imageId)
         {
             return _imageRepository.GetImage(imageId);
-        }
-
-        public List<ImageModel> GetImageList(int pageId)
-        {
-            return _imageRepository.GetImageList(pageId);
         }
     }
 }

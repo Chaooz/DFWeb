@@ -59,10 +59,9 @@ namespace DarkFactorCoreNet.Api
 
         [HttpPost]
         [Route("GetImage")]
-        public string GetImage([FromForm] int imageId)
+        public ImageModel GetImage([FromForm] int imageId)
         {
             return _imageProvider.GetImage(imageId);
         }
-
     }
 }

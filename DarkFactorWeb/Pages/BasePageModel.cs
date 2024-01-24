@@ -42,11 +42,6 @@ namespace DarkFactorCoreNet.Pages
             pageModel = pageProvider.GetPage(id);
             articleSectionModel = GetArticleSection(id);
             UserInfoModel = _loginProvider.GetLoginInfo();
-
-            if ( pageModel != null)
-            {
-                pageModel.ImageList = _imageProvider.GetImageList(id);
-            }
             pageId = id;
         }
 

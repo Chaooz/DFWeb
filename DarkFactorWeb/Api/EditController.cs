@@ -76,5 +76,16 @@ namespace DarkFactorCoreNet.Api
             }
             return Redirect("/mainpage?id=" + pageId);
         }
+
+        [HttpPost]
+        [Route("AddImage")]
+        public IActionResult AddImage([FromForm] int pageId, [FromForm] int imageId)
+        {
+            if ( _editPageProvider.AddImage(pageId, imageId) )
+            {
+                return Redirect("/admin/edit?id=" + pageId);
+            }
+            return Redirect("/admin/edit?id=" + pageId + "&error=1");
+        }
     }
 }

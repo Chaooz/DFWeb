@@ -12,17 +12,16 @@
         {
         <div class="article">
 
-            @if (!String.IsNullOrEmpty(relPage.Image))
-    {
-        <center><a href="/page?id=@relPage.ID"><img src="@relPage.Image" class="imagefit" /></a></center>
-        <br />
-}
-
+            @if (relPage.ImageModel != null && !String.IsNullOrEmpty(relPage.ImageModel.Filedata))
+            {
+                <center><a href="/page?id=@relPage.ID"><img width=100% height=100% src="data:image/png;base64,@relPage.ImageModel.Filedata" class="imagefit"></a></center>
+                <br />
+            }
 
             @if (!string.IsNullOrEmpty(relPage.PromoTitle))
             {
-        <a href="/page?id=@relPage.ID" class="articlesubtitle">@relPage.PromoTitle</a><br />
-        <br />
+                <a href="/page?id=@relPage.ID" class="articlesubtitle">@relPage.PromoTitle</a><br />
+                <br />
             }
 
             @relPage.HtmlTeaser
