@@ -17,8 +17,8 @@
                 </p>
             </div>
         </div>
-
-        @Html.Partial("Views/Carousel/CarouselItem")
+        
+        @await Html.PartialAsync("Views/Carousel/CarouselItem", null)
 
     </div>
     <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
