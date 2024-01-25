@@ -71,7 +71,7 @@ namespace DarkFactorCoreNet.Repository
 
         public ImageModel GetImage(int imageId)
         {
-            string sql = @"select filename, data from images where id = @imageid ";
+            string sql = @"select filename, data, length(data) as datalen from images where id = @imageid ";
             using (var cmd = _connection.CreateCommand(sql))
             {
                 cmd.AddParameter("@imageid", imageId);
@@ -81,8 +81,14 @@ namespace DarkFactorCoreNet.Repository
                     if (reader.Read())
                     {
                         string fileName = reader["filename"].ToString();
+                        int dataSize = Convert.ToInt32(reader["datalen"]);
 
-                        int dataSize = 100000;
+                        // Hardcap the filesize to 5 mb
+                        if ( dataSize > 5000000 )
+                        {
+                            return null;
+                        }
+
                         var fileData = new byte[dataSize];
                         int index = reader.GetOrdinal("data");
                         long numBytes = reader.GetBytes(index, 0, fileData, 0, dataSize);
