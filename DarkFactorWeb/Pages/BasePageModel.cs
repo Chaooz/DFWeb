@@ -43,6 +43,11 @@ namespace DarkFactorCoreNet.Pages
             articleSectionModel = GetArticleSection(id);
             UserInfoModel = _loginProvider.GetLoginInfo();
             pageId = id;
+
+            if ( pageModel != null )
+            {
+                pageModel.ImageModel = _imageProvider.GetImage(pageModel.ImageId);
+            }
         }
 
         virtual

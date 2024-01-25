@@ -1,20 +1,21 @@
 @using DarkFactorCoreNet.Models
 @model PageContentModel
 
-<div class="article" style="width:100%">
+<div class="article" style="width:100%;padding:5px">
 
     @* Show delete icon to remove image *@    
     @if ( Model.IsEdit && Model.ImageModel != null && !string.IsNullOrEmpty(Model.ImageModel.Filedata) )
     {
-        <div> @Model.ImageModel.Filename
+        <div style="width=100%;padding:2px;background-color:lightgray" >
             <form  method='POST' action="/api/Image/DeleteImage" style='display: inline;'>
                     <input type='hidden' name='pageId' value='@Model.ID'>
                     <input type='hidden' name='imageId' value='@Model.ImageModel.Id'>
                     <input type='submit' value='X'>
             </form>
+            @Model.ImageModel.Filename
         </div>
     }
-    else
+    else if ( Model.IsEdit )
     {
         <form  method='POST' action="/api/Edit/AddImage" style='display: inline;'>
             <input type='hidden' name='pageId' value='@Model.ID'>
@@ -44,8 +45,8 @@
         <div class="article" style="width:100%">
         <form  method='POST' action="/api/Edit/UploadImage" enctype="multipart/form-data" style='display: inline;'>
             <input type='hidden' name='pageId' value='@Model.ID'>
-            <input type="file" name="files" />
-            <input type='submit' value='Upload Image'>
+            <input type="file" name="files" text="Upload1" alt="Upload2"/>
+            <input type='submit' value='Save'>
         </form>
         </div>
     }
