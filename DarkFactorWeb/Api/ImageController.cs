@@ -27,26 +27,11 @@ namespace DarkFactorCoreNet.Api
       
         // This action handles the form POST and the upload
         [HttpPost]
-        [Route("AddImage")]
-        public async Task<IActionResult> AddImage([FromForm] int pageId, [FromForm] List<IFormFile> files)
-        {
-            foreach (var formFile in files)
-            {
-                if (formFile.Length > 0)
-                {
-                    var filePath = Path.GetTempFileName();
-
-                    //using (var memoryStream = System.IO.File.Create(filePath))
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await formFile.CopyToAsync(memoryStream);
-                        var fileArray = memoryStream.ToArray();
-
-                        _imageProvider.AddImage(pageId, formFile.FileName, fileArray);
-                    }
-                }
-            }
-            return Redirect("/admin/edit?id=" + pageId);
+        [Route("UploadImage")]
+        public async Task<uint> UploadImage([FromForm] int pageId, [FromForm] List<IFormFile> files)
+        {        
+            var ret = await _imageProvider.UploadImage(pageId,files);
+            return ret;
         }
 
         [HttpPost]

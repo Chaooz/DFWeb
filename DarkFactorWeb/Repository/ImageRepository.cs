@@ -13,7 +13,7 @@ namespace DarkFactorCoreNet.Repository
 {
     public interface IImageRepository
     {
-        bool AddImage(int pageId, String filename, byte[] data);
+        uint UploadImage(int pageId, String filename, byte[] data);
         bool DeleteImage(int imageId);
         ImageModel GetImage(int imageId);
     }
@@ -27,7 +27,7 @@ namespace DarkFactorCoreNet.Repository
             _connection = connection;
         }
 
-        public bool AddImage(int pageId, String filename, byte[] data)
+        public uint UploadImage(int pageId, String filename, byte[] data)
         {
             string sql = @"insert into images(pageId,filename,data, uploadeddate) values(@pageId,@filename, @data, now()) ";
             using (var cmd = _connection.CreateCommand(sql))
@@ -36,9 +36,27 @@ namespace DarkFactorCoreNet.Repository
                 cmd.AddParameter("@filename", filename);
                 cmd.AddClobParameter("@data", data);
                 int numRows = cmd.ExecuteNonQuery();
-                return (numRows == 1);
             }
+            return GetId();
         }
+
+        private uint GetId()
+        {
+            var sql = @"SELECT LAST_INSERT_ID() as id";
+            using (var cmd = _connection.CreateCommand(sql))
+            {
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        uint id = Convert.ToUInt32(reader["id"]);
+                        return id;
+                    }
+                }
+            }
+            return 0;
+        }
+
 
         public bool DeleteImage(int imageId)
         {

@@ -42,7 +42,7 @@
     @if (Model.IsEdit)
     {
         <div class="article" style="width:100%">
-        <form  method='POST' action="/api/Image/AddImage" enctype="multipart/form-data" style='display: inline;'>
+        <form  method='POST' action="/api/Edit/UploadImage" enctype="multipart/form-data" style='display: inline;'>
             <input type='hidden' name='pageId' value='@Model.ID'>
             <input type="file" name="files" />
             <input type='submit' value='Upload Image'>

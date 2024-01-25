@@ -20,11 +20,13 @@ namespace DarkFactorCoreNet.Api
     {
         IPageProvider _pageProvider;
         IEditPageProvider _editPageProvider;
+        IImageProvider _imageProvider;
 
-        public EditController(IEditPageProvider editPageProvider, IPageProvider pageProvider)
+        public EditController(IEditPageProvider editPageProvider, IPageProvider pageProvider, IImageProvider imageProvider)
         {
             _editPageProvider = editPageProvider;
             _pageProvider = pageProvider;
+            _imageProvider = imageProvider;
         }
 
         [HttpPost]
@@ -79,9 +81,21 @@ namespace DarkFactorCoreNet.Api
 
         [HttpPost]
         [Route("AddImage")]
-        public IActionResult AddImage([FromForm] int pageId, [FromForm] int imageId)
+        public IActionResult AddImage([FromForm] int pageId, [FromForm] uint imageId)
         {
             if ( _editPageProvider.AddImage(pageId, imageId) )
+            {
+                return Redirect("/admin/edit?id=" + pageId);
+            }
+            return Redirect("/admin/edit?id=" + pageId + "&error=1");
+        }
+
+        [HttpPost]
+        [Route("UploadImage")]
+        public async Task<IActionResult> UploadImage([FromForm] int pageId, [FromForm] List<IFormFile> files)
+        {
+            uint imageId = await _imageProvider.UploadImage(pageId,files);
+            if ( imageId != 0 &&  _editPageProvider.AddImage(pageId, imageId) )
             {
                 return Redirect("/admin/edit?id=" + pageId);
             }

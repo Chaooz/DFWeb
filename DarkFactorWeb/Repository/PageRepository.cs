@@ -23,7 +23,7 @@ namespace DarkFactorCoreNet.Repository
         int DeletePage(int pageId);
         bool CreatePage(int pageId, string pageTitle );
         bool CreateChildPage(int parentPageId, string pageTotle );
-        bool AddImage(int pageID, int imageId);
+        bool AddImage(int pageID, uint imageId);
     }
 
     public class PageRepository : IPageRepository
@@ -287,7 +287,7 @@ namespace DarkFactorCoreNet.Repository
             return tagList;
         }
    
-        public bool AddImage(int pageId, int imageId)
+        public bool AddImage(int pageId, uint imageId)
         {
             var sql = @"update content set imageid = @imageid where id = @pageid "; 
             using (var cmd = _connection.CreateCommand(sql))

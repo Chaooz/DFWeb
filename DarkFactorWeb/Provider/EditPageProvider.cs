@@ -14,7 +14,7 @@ namespace DarkFactorCoreNet.Provider
         bool MovePageUp(PageContentModel page);
         bool MovePageDown(PageContentModel page);
         bool EditPage(int pageId);
-        bool AddImage(int pageID, int imageId);
+        bool AddImage(int pageID, uint imageId);
     }
 
     public class EditPageProvider : IEditPageProvider
@@ -117,7 +117,7 @@ namespace DarkFactorCoreNet.Provider
             return true;
         }
 
-        public bool AddImage(int pageID, int imageId)
+        public bool AddImage(int pageID, uint imageId)
         {
             return _pageRepository.AddImage(pageID,imageId);
         }

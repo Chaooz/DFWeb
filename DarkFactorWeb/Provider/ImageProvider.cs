@@ -6,12 +6,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using DarkFactorCoreNet.Repository;
 using DarkFactorCoreNet.Models;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace DarkFactorCoreNet.Provider
 {
     public interface IImageProvider
     {
-        bool AddImage(int pageId, String filename, byte[] data);
+        Task<uint> UploadImage(int pageId,  List<IFormFile> files);
         bool DeleteImage(int imageId);
         ImageModel GetImage(int imageId);
     }
@@ -49,14 +51,30 @@ namespace DarkFactorCoreNet.Provider
             return true;
         }
 
-        public bool AddImage(int pageId, String filename, byte[] data)
+
+        public async Task<uint> UploadImage(int pageId,  List<IFormFile> files)
         {
             if ( !CanEditPage() )
             {
-                return false;
+                return 0;
             }
- 
-            return _imageRepository.AddImage(pageId,filename, data);
+
+            // Only upload the first file
+            foreach (var formFile in files)
+            {
+                if (formFile.Length > 0)
+                {
+                    //using (var memoryStream = System.IO.File.Create(filePath))
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await formFile.CopyToAsync(memoryStream);
+                        var fileArray = memoryStream.ToArray();
+
+                        return _imageRepository.UploadImage(pageId,formFile.FileName, fileArray);
+                    }
+                }
+            }
+            return 0;
         }
 
         public bool DeleteImage(int imageId)
