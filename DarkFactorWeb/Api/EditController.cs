@@ -67,6 +67,13 @@ namespace DarkFactorCoreNet.Api
         }
 
         [HttpPost]
+        [Route("DeletePage")]
+        public IActionResult DeletePage([FromForm] int pageId)
+        {
+            return Redirect("/page?id=" + pageId);
+        }
+
+        [HttpPost]
         [Route("SavePromo")]
         public IActionResult SavePromo([FromForm] int pageId)
         {
