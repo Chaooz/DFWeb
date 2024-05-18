@@ -1,8 +1,28 @@
 ﻿@using DarkFactorCoreNet.Models
 @model PageContentModel
 
+<div style="col-lg-8 col-md-8">
+    <div style="article">
+        <div>
+            <H2>@Model.ContentTitle</H2>
+        </div>
 
-<div class="col-md-8">
-    <B>@Model.HtmlTeaser</B>
-    @Model.HtmlContent
+        <div>
+            <i>@Model.HtmlTeaser</i>
+        </div>
+
+        <div>
+        @* Show Image if we have data *@    
+        @if ( Model.ImageModel != null && !string.IsNullOrEmpty(Model.ImageModel.Filedata) )
+        {
+            <div>
+                <center><a href="/page?id=@Model.ID"><img width=50% height=50% src="data:image/png;base64,@Model.ImageModel.Filedata"></a></center>
+            </div>        
+        }
+        </div>
+
+        <div>
+            @Model.HtmlContent
+        </div>
+    </div>
 </div>

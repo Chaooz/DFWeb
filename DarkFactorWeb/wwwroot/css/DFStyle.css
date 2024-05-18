@@ -29,19 +29,19 @@
 a:link {
     font-weight: bold;
  /*   text-decoration: underline;*/
-    color: #FFFFFF
+ color: darkgray
 }
 
 a:visited {
     font-weight: bold;
 /*    text-decoration: underline;*/
-    color: #FFFFFF
+    color: darkgray
 }
 
 a:hover {
     font-weight: bold;
     text-decoration: none;
-    color: #FFFFFF;
+    color: darkgray
 }
 
 /*
