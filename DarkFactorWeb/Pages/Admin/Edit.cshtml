@@ -22,6 +22,7 @@
     <div class="row">
         @await Html.PartialAsync("/Pages/Views/MainElements/MainEdit.cshtml", Model.pageModel)
         <div class="col-md-4">
+            @await Html.PartialAsync("/Pages/Views/RightSideElements/EditMenu.cshtml", Model.menuItems)
             @await Html.PartialAsync("/Pages/Views/RightSideElements/AdminMenu.cshtml", Model.pageId)
         </div>
     </div>
