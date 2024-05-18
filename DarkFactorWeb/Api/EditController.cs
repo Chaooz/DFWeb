@@ -70,6 +70,10 @@ namespace DarkFactorCoreNet.Api
         [Route("DeletePage")]
         public IActionResult DeletePage([FromForm] int pageId)
         {
+            if ( _editPageProvider.DeletePage(pageId) )
+            {
+                return Redirect("/");
+            }            
             return Redirect("/page?id=" + pageId);
         }
 
