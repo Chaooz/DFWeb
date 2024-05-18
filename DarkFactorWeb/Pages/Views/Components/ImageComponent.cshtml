@@ -1,7 +1,7 @@
 @using DarkFactorCoreNet.Models
 @model PageContentModel
 
-<div class="article" style="width:100%;padding:5px">
+<div class="article" style="width:100%">
 
     @* Show delete icon to remove image *@    
     @if ( Model.IsEdit && Model.ImageModel != null && !string.IsNullOrEmpty(Model.ImageModel.Filedata) )

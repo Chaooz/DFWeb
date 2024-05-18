@@ -3,7 +3,7 @@
     font-size: small;
     font-weight: normal;
     font-style: normal;
-    background: #cccccc;
+/*    background: #cccccc; */
     color: black;
     padding-top:10px;
 }
@@ -123,8 +123,7 @@ li {
 }
 
 .article {
-    padding: 20px;
-    margin-bottom: 10px;
+/*    margin-bottom: 10px;*/
     font-size: small;
     text-decoration: none;
     background: #f1f1f1;
