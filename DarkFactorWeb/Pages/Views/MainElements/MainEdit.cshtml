@@ -5,8 +5,7 @@
     var acl = new Dictionary<int, string>();
     acl[0] = "Public";
     acl[1] = "Member";
-    acl[2] = "Editor";
-    acl[3] = "Admin";    
+    acl[2] = "Unpublished";
 
     var layout = new Dictionary<string, string>();
     layout[""] = "Default";
@@ -15,7 +14,8 @@
 }
 
 <div class="col-md-4">
-    <div class="article">
+    <div class="article" style="padding:10px">
+
     <form  method='POST' style='display: inline;'>
 
         <input type='hidden' name='ID' value='@Model.ID'>
@@ -37,31 +37,19 @@
         {
             <span> @tag.name [<a href="">X</a>]</span>
         }
-        <input name='NewTag' type='text' class='edit_input' value=''>
+        <input name='NewTag' type='text' class='edit_input' value=''><br>
         <br>
         <input class=toolbutton type='submit' value='Save Article'>
 
     </form>
     </div>
 </div>
-
+<BR>
 <div class="col-md-4">
-    <div class="article" style="width:100%">
-        <form  method='POST' action="/api/Edit/ChangeLayout" style='display: inline;'>
-            <div class='edit_header'>Layout</div>
-            <select name='layout' class='edit_input' style="width:75%">
-                @foreach (var layoutKv in layout)
-                {
-                    <option value=@layoutKv.Key> @layoutKv.Value </option>
-                }
-            </select>
-            <input type='submit' value='Update'>
-        </form>
-
-
+    <div class="article" style="width:100%" >
         <form  method='POST' action="/api/Edit/ChangeAccess" style='display: inline;'>
             <div class='edit_header'>Access Control</div>
-            <select name='acl' class='edit_input' style="width:75%">
+            <select name='acl' class='edit_input' style="width:75%" align="center">
                 @foreach (var aclKv in acl)
                 {
                     if ( aclKv.Key == Model.Acl )
@@ -77,6 +65,7 @@
             <input type='submit' value='Update'>
         </form>
     </div>
+    <BR>
 
     @await Html.PartialAsync("/Pages/Views/Components/ImageComponent.cshtml", Model)
 
