@@ -16,6 +16,7 @@ namespace DarkFactorCoreNet.Provider
         Task<uint> UploadImage(int pageId,  List<IFormFile> files);
         bool DeleteImage(int imageId);
         ImageModel GetImage(int imageId);
+        IList<ImageModel> GetImages(int maxImages);
     }
 
     public class ImageProvider : IImageProvider
@@ -89,6 +90,15 @@ namespace DarkFactorCoreNet.Provider
         public ImageModel GetImage(int imageId)
         {
             return _imageRepository.GetImage(imageId);
+        }
+
+        public IList<ImageModel> GetImages(int maxImages)
+        {
+            if ( CanEditPage() )
+            {
+                return _imageRepository.GetImages(maxImages);
+            } 
+            return null;
         }
     }
 }

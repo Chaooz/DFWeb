@@ -39,7 +39,7 @@ namespace DarkFactorCoreNet.Api
         public IActionResult DeleteImage([FromForm] int pageId, [FromForm] int imageId)
         {
             _imageProvider.DeleteImage(imageId);
-            return Redirect("/admin/edit?id=" + pageId);
+            return Redirect("/Editor/ImageSelector?pageId=" + pageId);
         }
 
         [HttpPost]

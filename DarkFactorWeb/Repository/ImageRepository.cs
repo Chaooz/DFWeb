@@ -16,6 +16,7 @@ namespace DarkFactorCoreNet.Repository
         uint UploadImage(int pageId, String filename, byte[] data);
         bool DeleteImage(int imageId);
         ImageModel GetImage(int imageId);
+        List<ImageModel> GetImages(int maxImages);
     }
 
     public class ImageRepository : IImageRepository
@@ -104,6 +105,45 @@ namespace DarkFactorCoreNet.Repository
                 }
             }
             return null;
+        }
+
+        public List<ImageModel> GetImages(int maxImages)
+        {
+            List<ImageModel> model = new List<ImageModel>();
+            string sql = @"select id, filename, data, length(data) as datalen from images limit @maxImages ";
+            using (var cmd = _connection.CreateCommand(sql))
+            {
+                cmd.AddParameter("@maxImages", maxImages);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int imageId = Convert.ToInt32(reader["id"]);
+                        string fileName = reader["filename"].ToString();
+                        int dataSize = Convert.ToInt32(reader["datalen"]);
+
+                        // Hardcap the filesize to 5 mb
+                        if (dataSize > 5000000)
+                        {
+                            continue;
+                        }
+
+                        var fileData = new byte[dataSize];
+                        int index = reader.GetOrdinal("data");
+                        long numBytes = reader.GetBytes(index, 0, fileData, 0, dataSize);
+
+                        ImageModel image = new ImageModel()
+                        {
+                            Id = imageId,
+                            Filename = fileName,
+                            Filedata = Convert.ToBase64String(fileData)
+                        };
+                        model.Add(image);
+                    }
+                }
+            }
+            return model;
         }
     }
 }
