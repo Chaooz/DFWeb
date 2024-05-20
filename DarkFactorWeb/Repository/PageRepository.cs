@@ -166,6 +166,7 @@ namespace DarkFactorCoreNet.Repository
         public bool SaveMainPage(PageContentModel pageModel)
         {
             var editPage = GetPage( pageModel.ID );
+            editPage.PromoText = pageModel.PromoText;
             editPage.ContentTitle = pageModel.ContentTitle;
             editPage.ContentText = pageModel.ContentText;
             return SavePage(editPage);
