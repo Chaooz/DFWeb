@@ -48,5 +48,14 @@ namespace DarkFactorCoreNet.Api
         {
             return _imageProvider.GetImage(imageId);
         }
+
+        // This action handles the form POST and the upload
+        [HttpPost]
+        [Route("UploadImageData")]
+        public async Task<IActionResult> UploadImageData([FromForm] int pageId, [FromForm] int imageId, [FromForm] List<IFormFile> files)
+        {        
+            var ret = await _imageProvider.UpdateImageData(imageId,files);
+            return Redirect("/Editor/EditImage?pageId=" + pageId + "&imageId=" + imageId);
+        }
     }
 }

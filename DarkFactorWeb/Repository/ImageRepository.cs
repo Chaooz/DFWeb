@@ -18,6 +18,7 @@ namespace DarkFactorCoreNet.Repository
         ImageModel GetImage(int imageId);
         List<ImageModel> GetImages(int maxImages);
         bool UpdateImage(int imageId, string filename);
+        bool UpdateImageData(int imageId, String filename, byte[] data);
     }
 
     public class ImageRepository : IImageRepository
@@ -153,6 +154,18 @@ namespace DarkFactorCoreNet.Repository
             using (var cmd = _connection.CreateCommand(sql))
             {
                 cmd.AddParameter("@filename", filename);
+                cmd.AddParameter("@imageId", imageId);
+                int numRows = cmd.ExecuteNonQuery();
+                return numRows == 1;
+            }
+        }
+
+        public bool UpdateImageData(int imageId, String filename, byte[] data)
+        {
+            string sql = @"update images set data = @data where id = @imageId";
+            using (var cmd = _connection.CreateCommand(sql))
+            {
+                cmd.AddClobParameter("@data", data);
                 cmd.AddParameter("@imageId", imageId);
                 int numRows = cmd.ExecuteNonQuery();
                 return numRows == 1;

@@ -14,6 +14,7 @@ namespace DarkFactorCoreNet.Provider
     public interface IImageProvider
     {
         Task<uint> UploadImage(int pageId,  List<IFormFile> files);
+        Task<bool> UpdateImageData(int imageId,  List<IFormFile> files);
         bool DeleteImage(int imageId);
         ImageModel GetImage(int imageId);
         IList<ImageModel> GetImages(int maxImages);
@@ -78,6 +79,33 @@ namespace DarkFactorCoreNet.Provider
             }
             return 0;
         }
+
+        public async Task<bool> UpdateImageData(int imageId,  List<IFormFile> files)
+        {
+            if ( !CanEditPage() )
+            {
+                return false;
+            }
+
+            // Only upload the first file
+            foreach (var formFile in files)
+            {
+                if (formFile.Length > 0)
+                {
+                    //using (var memoryStream = System.IO.File.Create(filePath))
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await formFile.CopyToAsync(memoryStream);
+                        var fileArray = memoryStream.ToArray();
+
+                        return _imageRepository.UpdateImageData(imageId,formFile.FileName, fileArray);
+                    }
+                }
+            }
+            return false;
+
+        }
+
 
         public bool DeleteImage(int imageId)
         {
