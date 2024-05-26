@@ -17,6 +17,7 @@ namespace DarkFactorCoreNet.Provider
         bool DeleteImage(int imageId);
         ImageModel GetImage(int imageId);
         IList<ImageModel> GetImages(int maxImages);
+        bool UpdateImage(int imageId, string filename);
     }
 
     public class ImageProvider : IImageProvider
@@ -99,6 +100,11 @@ namespace DarkFactorCoreNet.Provider
                 return _imageRepository.GetImages(maxImages);
             } 
             return null;
+        }
+
+        public bool UpdateImage(int imageId, string filename)
+        {
+            return _imageRepository.UpdateImage(imageId, filename);
         }
     }
 }

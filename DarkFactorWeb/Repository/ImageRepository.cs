@@ -17,6 +17,7 @@ namespace DarkFactorCoreNet.Repository
         bool DeleteImage(int imageId);
         ImageModel GetImage(int imageId);
         List<ImageModel> GetImages(int maxImages);
+        bool UpdateImage(int imageId, string filename);
     }
 
     public class ImageRepository : IImageRepository
@@ -144,6 +145,18 @@ namespace DarkFactorCoreNet.Repository
                 }
             }
             return model;
+        }
+
+        public bool UpdateImage(int imageId, string filename)
+        {
+            string sql = @"update images set filename = @filename where id = @imageId ";
+            using (var cmd = _connection.CreateCommand(sql))
+            {
+                cmd.AddParameter("@filename", filename);
+                cmd.AddParameter("@imageId", imageId);
+                int numRows = cmd.ExecuteNonQuery();
+                return numRows == 1;
+            }
         }
     }
 }

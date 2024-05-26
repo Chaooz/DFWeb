@@ -7,29 +7,22 @@ using DarkFactorCoreNet.Provider;
 
 namespace DarkFactorCoreNet.Pages
 {
-    public class BasePageModel : PageModel
+    public class BasePageModel : MenuPageModel
     {
-        public List<MenuItem> treeList;
-        public List<MenuItem> menuItems;
         public PageContentModel pageModel;
         public List<PageListModel> articleSectionModel;
         public int pageId;
 
-        protected IMenuProvider menuProvider;
         protected IPageProvider pageProvider;
-        protected ILoginProvider _loginProvider;
         protected IImageProvider _imageProvider;
 
-        public UserInfoModel UserInfoModel { get; set; }
 
         public BasePageModel(   IPageProvider pageProvider, 
                                 IMenuProvider menuProvider, 
                                 ILoginProvider loginProvider,
-                                IImageProvider imageProvider)
+                                IImageProvider imageProvider) : base(menuProvider, loginProvider)
         {
-            this.menuProvider = menuProvider;
             this.pageProvider = pageProvider;
-            _loginProvider = loginProvider;
             _imageProvider = imageProvider;
             pageId = 0;
         }
@@ -37,11 +30,10 @@ namespace DarkFactorCoreNet.Pages
         virtual
         public void OnGet(int id)
         {
-            menuItems = menuProvider.SelectItem(id);
-            treeList = menuProvider.GetTree(id);
+            base.GetMenuData(id);
+
             pageModel = pageProvider.GetPage(id);
             articleSectionModel = GetArticleSection(id);
-            UserInfoModel = _loginProvider.GetLoginInfo();
             pageId = id;
 
             if ( pageModel != null )
@@ -73,14 +65,5 @@ namespace DarkFactorCoreNet.Pages
             pageListModel.Pages = pageProvider.GetPagesWithTag(tag);
             return pageListModel;
         }
-
-        public ActionResult OnGetPartial() =>
-
-            new PartialViewResult
-            {
-                ViewName = "Menu",
-                ViewData = ViewData,
-            };
-
     }
 }
