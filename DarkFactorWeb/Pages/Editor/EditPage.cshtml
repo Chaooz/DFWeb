@@ -4,6 +4,18 @@
     ViewData["Title"] = Model.pageModel.ContentTitle;
 }
 
+@{
+    var acl = new Dictionary<int, string>();
+    acl[0] = "Public";
+    acl[1] = "Member";
+    acl[2] = "Unpublished";
+
+    var layout = new Dictionary<string, string>();
+    layout[""] = "Default";
+    layout["2x4"] = "2 x 4";
+    layout["1x8"] = "1 x 8";
+}
+
 <div>
 
     <div class="row">
@@ -13,7 +25,67 @@
     </div>
 
     <div class="row">
-        @await Html.PartialAsync("/Pages/Views/MainElements/MainEdit.cshtml", Model.pageModel)
+
+        <div class="col-md-4">
+            <div class="article" style="padding:10px">
+
+            <form  method='POST' style='display: inline;'>
+
+                <input type='hidden' name='ID' value='@Model.pageModel.ID'>
+                <input type='hidden' name='ParentId' value='@Model.pageModel.ParentId'>
+                <input type='hidden' name='SortId' value='@Model.pageModel.SortId'>
+                <input type='hidden' name='command' value='save'>
+
+                <div class='edit_header'>Title</div>
+                <input name='ContentTitle' type='text' class='edit_input' style='padding:2px' value='@Model.pageModel.ContentTitle' placeholder='Enter title'><br>
+
+                <div class='edit_header'>Promo Text</div>
+                <textarea rows=5 name='PromoText' class='edit_input'>@Model.pageModel.PromoText</textarea><br>
+
+                <div class='edit_header'>Content</div>
+                <textarea rows=15 name='ContentText' class='edit_input'>@Model.pageModel.ContentText</textarea><br>
+
+                <div class='edit_header'>Tags</div>
+                @foreach (var tag in Model.pageModel.Tags)
+                {
+                    <span> @tag.name [<a href="">X</a>]</span>
+                }
+                <input name='NewTag' type='text' class='edit_input' value=''><br>
+                <br>
+                <input class=toolbutton type='submit' value='Save Article'>
+
+            </form>
+            </div>
+        </div>
+        <BR>
+        <div class="col-md-4">
+            <div class="article" style="width:100%" >
+                <form  method='POST' action="/api/Edit/ChangeAccess" style='display: inline;'>
+                    <input type='hidden' name='pageId' value='@Model.pageModel.ID'>
+                    <div class='edit_header'>Access Control</div>
+                    <select name='acl' class='edit_input' style="width:75%" align="center">
+                        @foreach (var aclKv in acl)
+                        {
+                            if ( aclKv.Key == Model.pageModel.Acl )
+                            {
+                                <option value=@aclKv.Key selected> @aclKv.Value </option>
+                            }   
+                            else
+                            {
+                                <option value=@aclKv.Key> @aclKv.Value </option>
+                            }
+                        }
+                    </select>
+                    <input type='submit' value='Update'>
+                </form>
+            </div>
+            <BR>
+
+            @await Html.PartialAsync("/Pages/Views/Components/ImageComponent.cshtml", Model.pageModel)
+
+        </div>
+
+
         <div class="col-md-4">
             @await Html.PartialAsync("/Pages/Views/RightSideElements/EditMenu.cshtml", Model.menuItems)
             @await Html.PartialAsync("/Pages/Views/RightSideElements/AdminMenu.cshtml", Model.pageId)
