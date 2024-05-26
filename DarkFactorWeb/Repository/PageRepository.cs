@@ -24,6 +24,7 @@ namespace DarkFactorCoreNet.Repository
         bool CreatePage(int pageId, string pageTitle );
         bool CreateChildPage(int parentPageId, string pageTotle );
         bool AddImage(int pageID, uint imageId);
+        bool ChangeAccess(int pageId, int accessLevel);
     }
 
     public class PageRepository : IPageRepository
@@ -295,6 +296,18 @@ namespace DarkFactorCoreNet.Repository
             {
                 cmd.AddParameter("@pageid", pageId);
                 cmd.AddParameter("@imageid", imageId);
+                int numRows = cmd.ExecuteNonQuery();
+                return (numRows == 1);
+            }
+        }
+
+        public bool ChangeAccess(int pageId, int accessLevel)
+        {
+            var sql = @"update content set published = @accessLevel where id = @pageid "; 
+            using (var cmd = _connection.CreateCommand(sql))
+            {
+                cmd.AddParameter("@pageid", pageId);
+                cmd.AddParameter("@accessLevel", accessLevel);
                 int numRows = cmd.ExecuteNonQuery();
                 return (numRows == 1);
             }

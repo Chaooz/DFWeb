@@ -112,5 +112,16 @@ namespace DarkFactorCoreNet.Api
             }
             return Redirect("/admin/edit?id=" + pageId + "&error=1");
         }
+
+        [HttpPost]
+        [Route("ChangeAccess")]
+        public IActionResult ChangeAccess([FromForm] int pageId, [FromForm] int acl)
+        {
+            if ( _editPageProvider.ChangeAccess(pageId, acl) )
+            {
+                return Redirect("/admin/edit?id=" + pageId);
+            }
+            return Redirect("/admin/edit?id=" + pageId + "&error=2");
+       }
     }
 }

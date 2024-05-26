@@ -48,6 +48,7 @@
 <div class="col-md-4">
     <div class="article" style="width:100%" >
         <form  method='POST' action="/api/Edit/ChangeAccess" style='display: inline;'>
+            <input type='hidden' name='pageId' value='@Model.ID'>
             <div class='edit_header'>Access Control</div>
             <select name='acl' class='edit_input' style="width:75%" align="center">
                 @foreach (var aclKv in acl)
