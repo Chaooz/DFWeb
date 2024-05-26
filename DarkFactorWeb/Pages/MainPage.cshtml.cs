@@ -18,27 +18,13 @@ namespace DarkFactorCoreNet.Pages
         public void OnGet(int id)
         {
             base.OnGet(id);
-
             mainPageItems = GetSubPages(id);
         }
 
-        override
-        protected List<PageListModel> GetArticleSection(int id)
-        {
-            List<PageListModel> model = new List<PageListModel>();
-
-            List<String> tagList = GetRelatedTags(id);
-            foreach( String tag in tagList)
-            {
-                var tagPage = GetPagesWithTag(tag);
-                if (tagPage.Pages.Count > 0)
-                {
-                    model.Add(tagPage);
-                }
-            }
-            return model;
-        }
-
+        //
+        // Get all articles on this page
+        // TODO: Rename this to ArticleTeaserModel
+        //
         private PageListModel GetSubPages(int parentId)
         {
             PageListModel model = new PageListModel();

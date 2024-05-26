@@ -14,13 +14,63 @@
         <div class="col-md-12">
             @await Html.PartialAsync("Views/TopElements/TopNavigation.cshtml", Model)
         </div>
+    using System.Diagnostics;
     </div>
 
     <div class="row">
-        @await Html.PartialAsync("Views/MainElements/Page.cshtml", Model.pageModel)
-        <div class="col-lg-4 col-md-4" >
-            @await Html.PartialAsync("Views/RightSideElements/ArticleSection.cshtml", Model.articleSectionModel)
+
+        <div style="col-lg-8 col-md-8">
+            <div style="article;padding:15px">
+                <div>
+                    <H2>@Model.pageModel.ContentTitle</H2>
+                </div>
+
+                <div>
+                    <i>@Model.pageModel.HtmlTeaser</i>
+                </div>
+
+                <div>
+                @* Show Image if we have data *@    
+                @if ( Model.pageModel.ImageModel != null && !string.IsNullOrEmpty(Model.pageModel.ImageModel.Filedata) )
+                {
+                    <div>
+                        &nbsp;
+                    </div>
+                    <div>
+                        <center><a href="/page?id=@Model.pageModel.ID"><img width=100% height=100% src="data:image/png;base64,@Model.pageModel.ImageModel.Filedata"></a></center>
+                    </div>        
+                }
+                </div>
+                <BR>
+                <div>
+                    @Model.pageModel.HtmlContent
+                </div>
+            </div>
         </div>
+
+        @foreach (var articleSection in Model.articleSections)
+        {
+            <div class="col-lg-4 col-md-4" >
+                <div class="articleedit" style="width:100%;display:flex">
+                    @if (articleSection.Layout == 0)
+                    {
+                        @articleSection.Text
+                    }
+                    else if (articleSection.Layout == 1 && articleSection.ImageModel != null && !string.IsNullOrEmpty(articleSection.ImageModel.Filedata))
+                    {
+                        <center><img width=100% height=100% alt="@articleSection.ImageId - @articleSection.ImageModel.Filename" src="data:image/png;base64,@articleSection.ImageModel.Filedata"></center>
+                    }
+                    else
+                    {
+                        <center>Unknown layout</center>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="col-lg-4 col-md-4" >
+        @await Html.PartialAsync("Views/RightSideElements/ArticleSection.cshtml", Model.relatedPages)
     </div>
 
 </div>

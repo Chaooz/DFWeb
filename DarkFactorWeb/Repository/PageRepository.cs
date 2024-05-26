@@ -16,6 +16,7 @@ namespace DarkFactorCoreNet.Repository
         List<PageContentModel> GetPagesWithTag(string tag);
         List<TagModel> GetTagsForPage(int pageId );
         List<String> GetRelatedTags(int pageId);
+        IList<ArticleSectionModel> GetArticleSections(int pageId);
 
         bool SavePage(PageContentModel pageModel);
         bool SaveMainPage(PageContentModel pageModel);
@@ -288,7 +289,37 @@ namespace DarkFactorCoreNet.Repository
             }
             return tagList;
         }
-   
+
+        public IList<ArticleSectionModel> GetArticleSections(int pageId)
+        {
+            IList<ArticleSectionModel> list = new List<ArticleSectionModel>();
+
+            var sql = @"select id, text, imageid, sort, layout " +
+                    "from articlesection where pageid = @pageId order by sort";
+
+            using (var cmd = _connection.CreateCommand(sql))
+            {
+                cmd.AddParameter("@pageid", pageId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        ArticleSectionModel articleSection = new ArticleSectionModel()
+                        {
+                            ID = Convert.ToInt32(reader["id"]),
+                            Text = reader["text"].ToString(),
+                            ImageId = Convert.ToInt32(reader["imageid"]),
+                            SortId = Convert.ToInt32(reader["sort"]),
+                            Layout = Convert.ToInt32(reader["layout"])
+                        };
+                        list.Add(articleSection);
+                    }
+                }
+            }
+            return list;
+        }
+
+
         public bool AddImage(int pageId, uint imageId)
         {
             var sql = @"update content set imageid = @imageid where id = @pageid "; 

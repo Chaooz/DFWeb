@@ -10,7 +10,7 @@ namespace DarkFactorCoreNet.Pages
     public class BasePageModel : MenuPageModel
     {
         public PageContentModel pageModel;
-        public List<PageListModel> articleSectionModel;
+        public List<PageListModel> relatedPages;
         public int pageId;
 
         protected IPageProvider pageProvider;
@@ -33,7 +33,7 @@ namespace DarkFactorCoreNet.Pages
             base.GetMenuData(id);
 
             pageModel = pageProvider.GetPage(id);
-            articleSectionModel = GetArticleSection(id);
+            relatedPages = GetRelatedPages(id);
             pageId = id;
 
             if ( pageModel != null )
@@ -42,11 +42,21 @@ namespace DarkFactorCoreNet.Pages
             }
         }
 
-        virtual
-        protected List<PageListModel> GetArticleSection(int id)
+        protected List<PageListModel> GetRelatedPages(int id)
         {
-            return null;
+            List<PageListModel> model = new List<PageListModel>();
+            List<String> tagList = GetRelatedTags(id);
+            foreach( String tag in tagList)
+            {
+                var tagPage = GetPagesWithTag(tag);
+                if (tagPage.Pages.Count > 0)
+                {
+                    model.Add(tagPage);
+                }
+            }
+            return model;
         }
+
 
         protected PageListModel GetPagesWithTag(string tag)
         {

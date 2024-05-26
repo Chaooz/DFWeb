@@ -21,7 +21,7 @@
             @await Html.PartialAsync("/Pages/Views/MainElements/Page.cshtml", Model.pageModel)
         </div>
         <div class="col-lg-4 col-md-4">
-            @await Html.PartialAsync("/Pages/Views/RightSideElements/ArticleSection.cshtml", Model.articleSectionModel)
+            @await Html.PartialAsync("/Pages/Views/RightSideElements/ArticleSection.cshtml", Model.relatedPages)
             <br />
             @await Html.PartialAsync("/Pages/Views/RightSideElements/EditMenu.cshtml", Model.menuItems)
 

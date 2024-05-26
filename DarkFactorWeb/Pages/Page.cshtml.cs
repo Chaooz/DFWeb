@@ -6,32 +6,28 @@ namespace DarkFactorCoreNet.Pages
 {
     public class Page : BasePageModel
     {
+        public IList<ArticleSectionModel> articleSections;
 
         public Page(IPageProvider pageProvider, IMenuProvider menuProvider, ILoginProvider loginProvider, IImageProvider imageProvider)
          : base(pageProvider,menuProvider, loginProvider, imageProvider)
         {
+            articleSections = new List<ArticleSectionModel>();
         }
 
         override
-        protected List<PageListModel> GetArticleSection(int id)
+        public void OnGet(int id)
         {
-            List<PageListModel> model = new List<PageListModel>();
+            base.OnGet(id);
+            articleSections = pageProvider.GetArticleSections(id);
 
-            var subPages = GetSubPages(id);
-            if ( subPages.Pages.Count > 0 )
+            // Load images. TODO: Do this in Javascript
+            foreach (ArticleSectionModel section in articleSections)
             {
-                model.Add(subPages);
+                if (section.ImageId != 0 )
+                {
+                    section.ImageModel = _imageProvider.GetImage(section.ImageId);
+                }
             }
-
-            return model;
-        }
-
-        private PageListModel GetSubPages( int parentId )
-        {
-            PageListModel model = new PageListModel();
-            model.Title = "Related Articles";
-            model.Pages = pageProvider.GetPagesWithParentId(parentId);
-            return model;
         }
     }
 }
