@@ -61,7 +61,7 @@ namespace DarkFactorCoreNet.Api
         {
             if ( _editPageProvider.EditPage(pageId) )
             {
-                return Redirect("/admin/edit?id=" + pageId);
+                return Redirect("/Editor/EditPage?id=" + pageId);
             }
             return Redirect("/mainpage?id=" + pageId);
         }
@@ -96,9 +96,9 @@ namespace DarkFactorCoreNet.Api
         {
             if ( _editPageProvider.AddImage(pageId, imageId) )
             {
-                return Redirect("/admin/edit?id=" + pageId);
+                return Redirect("/Editor/EditPage?id=" + pageId);
             }
-            return Redirect("/admin/edit?id=" + pageId + "&error=1");
+            return Redirect("/Editor/EditPage?id=" + pageId + "&error=1");
         }
 
         [HttpPost]
@@ -108,9 +108,9 @@ namespace DarkFactorCoreNet.Api
             uint imageId = await _imageProvider.UploadImage(pageId,files);
             if ( imageId != 0 &&  _editPageProvider.AddImage(pageId, imageId) )
             {
-                return Redirect("/admin/edit?id=" + pageId);
+                return Redirect("/Editor/EditPage?id=" + pageId);
             }
-            return Redirect("/admin/edit?id=" + pageId + "&error=1");
+            return Redirect("/Editor/EditPage?id=" + pageId + "&error=1");
         }
 
         [HttpPost]
@@ -119,9 +119,9 @@ namespace DarkFactorCoreNet.Api
         {
             if ( _editPageProvider.ChangeAccess(pageId, acl) )
             {
-                return Redirect("/admin/edit?id=" + pageId);
+                return Redirect("/Editor/EditPage?id=" + pageId);
             }
-            return Redirect("/admin/edit?id=" + pageId + "&error=2");
+            return Redirect("/Editor/EditPage?id=" + pageId + "&error=2");
        }
     }
 }
