@@ -43,10 +43,10 @@ namespace DarkFactorCoreNet.Pages
             {
                 case "save":
                     didSuceed = pageRepository.SaveMainPage(pageContentModel);
-                    return Redirect("/admin/preview?id=" + pageContentModel.ID);
+                    return Redirect("/page?id=" + pageContentModel.ID);
                 case "savePromo":
                     didSuceed = pageRepository.SavePromoPage(pageContentModel);
-                    return Redirect("/admin/preview?id=" + pageContentModel.ID);
+                    return Redirect("/page?id=" + pageContentModel.ID);
                 case "create_page":
                     didSuceed = pageRepository.CreatePage(pageContentModel.ID,"New page");
                     break;
