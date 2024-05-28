@@ -8,6 +8,25 @@
     padding-top:10px;
 }
 
+.article_featured
+{
+    display:flex;
+    flex-direction: column;
+}
+
+.article_section
+{
+    width:100%;
+    display:flex;
+    align-items: stretch;
+}
+
+.article_image
+{
+    aspect-ratio: 16 / 9;
+    width:100%;
+}
+
 .buttonrow
 {
     width:100%;
@@ -44,16 +63,6 @@ a:hover {
     color: darkgray
 }
 
-/*
-li {
-    font-size: x-small;
-}
-.topmenu li
-{
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-size: large;
-}
-*/
 .icon-bar
 {
     background-color:black;
@@ -73,11 +82,6 @@ li {
     border-color: #333;
     float: left;
     margin-left: 15px;
-}
-
-@media (max-width: 991px) button.navbar-toggle {
-    float: left;
-    margin-left: 12px!important;
 }
 
 .topnav {
@@ -340,7 +344,7 @@ li {
 .toolmenu {
     background: #272727;
     border: solid #777777 1px;
-    borde-color: black;
+    border-color: black;
     width: 160;
     padding: 4px;
     text-align: center;
@@ -352,7 +356,7 @@ li {
     border-color: black;
     width: 110;
     padding: 4px;
-    align: center;
+/*    align: center;*/
     font-size: small;
     font-style: italic
 }
@@ -363,7 +367,7 @@ li {
     border-color: black;
     width: 100;
     padding: 4px;
-    align: center;
+/*    align: center;*/
 }
 
 .edit_btn {
@@ -544,15 +548,6 @@ li {
 {
     color: #555;
     background-color: #edeff8;
-}
-
-.test {
-    cellpadding =0;
-    cellspacing =0;
-    border =10;
-    nowrap;
-    color: black;
-    bgcolor: black;
 }
 
 .menutitle {

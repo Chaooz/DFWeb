@@ -14,64 +14,76 @@
         <div class="col-md-12">
             @await Html.PartialAsync("Views/TopElements/TopNavigation.cshtml", Model)
         </div>
-    using System.Diagnostics;
     </div>
 
     <div class="row">
-
-        <div style="col-lg-8 col-md-8">
-            <div style="article;padding:15px">
-                <div>
-                    <H2>@Model.pageModel.ContentTitle</H2>
-                </div>
-
-                <div>
-                    <i>@Model.pageModel.HtmlTeaser</i>
-                </div>
-
-                <div>
-                @* Show Image if we have data *@    
-                @if ( Model.pageModel.ImageModel != null && !string.IsNullOrEmpty(Model.pageModel.ImageModel.Filedata) )
-                {
+        <div class="col-lg-8 col-md-8">
+            <div>
+                <div id="content_feature_@Model.pageId" class="article_featured">
                     <div>
-                        &nbsp;
+                        <H2>@Model.pageModel.ContentTitle</H2>
                     </div>
+                    <BR>
                     <div>
-                        <center><a href="/page?id=@Model.pageModel.ID"><img width=100% height=100% src="data:image/png;base64,@Model.pageModel.ImageModel.Filedata"></a></center>
-                    </div>        
+                        <i>@Model.pageModel.HtmlTeaser</i>
+                    </div>
+                    <BR>
+                    <div>
+                        @* Show Image if we have data *@    
+                        @if ( Model.pageModel.ImageModel != null && !string.IsNullOrEmpty(Model.pageModel.ImageModel.Filedata) )
+                        {
+                            <div>
+                                &nbsp;
+                            </div>
+                            <div>
+                                <center><a href="/page?id=@Model.pageModel.ID"><img class="article_image" src="data:image/png;base64,@Model.pageModel.ImageModel.Filedata"></a></center>
+                            </div>        
+                        }
+                    </div>
+                    <BR>
+                    <div>
+                        @Model.pageModel.HtmlContent
+                    </div>
+                </div>
+
+                @foreach (var articleSection in Model.articleSections)
+                {
+                    <div id="content_box_section_@(articleSection.ID)_layout_@articleSection.Layout" class="article_section">
+                        <BR>
+                        @if (articleSection.Layout == 0)
+                        {
+                            <div id="0 full" style="width:100%">@articleSection.Text</div>
+                        }
+                        else if (articleSection.Layout == 1 && articleSection.ImageModel != null && !string.IsNullOrEmpty(articleSection.ImageModel.Filedata))
+                        {
+                            <div id="1 full" style="width:100%"><center><img class="article_image" alt="@articleSection.ImageId - @articleSection.ImageModel.Filename" src="data:image/png;base64,@articleSection.ImageModel.Filedata"></center></div>
+                        }
+                        else if (articleSection.Layout == 2 && articleSection.ImageModel != null && !string.IsNullOrEmpty(articleSection.ImageModel.Filedata))
+                        {
+                            <div id="2_left" style="width:50%;padding:0px">@articleSection.Text</div>
+                            <div id="2_right" style="width:50%;padding:0px"><center><img class="article_image" alt="@articleSection.ImageId - @articleSection.ImageModel.Filename" src="data:image/png;base64,@articleSection.ImageModel.Filedata"></center></div>
+                        }
+                        else if (articleSection.Layout == 3 && articleSection.ImageModel != null && !string.IsNullOrEmpty(articleSection.ImageModel.Filedata))
+                        {
+                            <div id="3_left" style="width:50%;margin-left:10px;margin-right:10px"><center><img class="article_image" alt="@articleSection.ImageId - @articleSection.ImageModel.Filename" src="data:image/png;base64,@articleSection.ImageModel.Filedata"></center></div>
+                            <div id="3_right" style="width:50%;margin-left:10px;margin-right:10px">@articleSection.Text</div>
+                        }
+                        else
+                        {
+                            <center>Unknown layout</center>
+                        }
+                        <BR>
+                    </div>
                 }
-                </div>
-                <BR>
-                <div>
-                    @Model.pageModel.HtmlContent
-                </div>
             </div>
         </div>
 
-        @foreach (var articleSection in Model.articleSections)
-        {
-            <div class="col-lg-4 col-md-4" >
-                <div class="articleedit" style="width:100%;display:flex">
-                    @if (articleSection.Layout == 0)
-                    {
-                        @articleSection.Text
-                    }
-                    else if (articleSection.Layout == 1 && articleSection.ImageModel != null && !string.IsNullOrEmpty(articleSection.ImageModel.Filedata))
-                    {
-                        <center><img width=100% height=100% alt="@articleSection.ImageId - @articleSection.ImageModel.Filename" src="data:image/png;base64,@articleSection.ImageModel.Filedata"></center>
-                    }
-                    else
-                    {
-                        <center>Unknown layout</center>
-                    }
-                </div>
-            </div>
-        }
+        <div class="col-lg-4 col-md-4" >
+            @await Html.PartialAsync("Views/RightSideElements/ArticleSection.cshtml", Model.relatedPages)
+        </div>
+
     </div>
 
-    <div class="col-lg-4 col-md-4" >
-        @await Html.PartialAsync("Views/RightSideElements/ArticleSection.cshtml", Model.relatedPages)
-    </div>
 
 </div>
 
