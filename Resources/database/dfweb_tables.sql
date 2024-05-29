@@ -7,6 +7,18 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
 USE `dfweb`;
 
+DROP TABLE IF EXISTS `articlesection`;
+CREATE TABLE `articlesection` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pageid` int(11) NOT NULL,
+  `text` text NOT NULL,
+  `imageid` int(11) NOT NULL,
+  `sort` int(11) NOT NULL,
+  `layout` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 DROP TABLE IF EXISTS `content`;
 CREATE TABLE `content` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
