@@ -61,5 +61,17 @@ namespace DarkFactorCoreNet.Pages
             }
             return Redirect("/");
         }
+
+        public IActionResult OnPostCreateArticleSection([FromForm] int pageId)
+        {
+            editPageProvider.CreateArticleSection(pageId, "New section", "New content");
+            return Redirect("/Editor/EditPage?id=" + pageId);
+        }
+
+        public IActionResult OnPostUpdateArticleSection([FromForm] int pageId)
+        {
+            editPageProvider.CreateArticleSection(pageId, "New section", "New content");
+            return Redirect("/Editor/EditPage?pageId=" + pageId);
+        }
     }
 }
