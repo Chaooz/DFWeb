@@ -26,16 +26,19 @@ namespace DarkFactorCoreNet.Provider
     {
         private IPageProvider _pageProvider;
         private IPageRepository _pageRepository;
+        private IEditPageRepository _editPageRepository;
         private IUserSessionProvider _userSession;
         private ILoginRepository _loginRepository;
 
         public EditPageProvider(
             IPageProvider pageProvider, 
+            IEditPageRepository editPageRepository,
             IUserSessionProvider userSession, 
             ILoginRepository loginRepository,
             IPageRepository pageRepository)
         {
             _pageProvider = pageProvider;
+            _editPageRepository = editPageRepository;
             _userSession = userSession;
             _loginRepository = loginRepository;
             _pageRepository = pageRepository;
@@ -47,7 +50,13 @@ namespace DarkFactorCoreNet.Provider
             {
                 return false;
             }
-            return _pageRepository.CreatePage(pageId,pageTitle);
+
+            var page = _pageProvider.GetPage(pageId);
+            if ( page != null )
+            {
+                return CreateChildPage(page.ParentId,pageTitle);
+            }
+            return false;
         }
 
         public bool CreateChildPage( int parentPageId, string pageTitle )
@@ -56,7 +65,17 @@ namespace DarkFactorCoreNet.Provider
             {
                 return false;
             }
-            return _pageRepository.CreateChildPage(parentPageId,pageTitle);
+
+            // Fix sort id
+            int sortId = 0;
+            List<TeaserPageContentModel> pageList = _pageProvider.GetPagesWithParentId(parentPageId);
+            TeaserPageContentModel page = pageList.OrderBy(x => x.SortId).LastOrDefault();
+            if ( page != null )
+            {
+                sortId = page.SortId;
+            }
+
+            return _editPageRepository.CreatePageWithParent(parentPageId, pageTitle, sortId);
         }
 
 
@@ -68,7 +87,7 @@ namespace DarkFactorCoreNet.Provider
             editPage.PromoTitle = pageModel.PromoTitle;
             editPage.ContentText = pageModel.ContentText;
             editPage.ContentTitle = pageModel.ContentTitle;
-            return _pageRepository.SavePage(editPage);
+            return _editPageRepository.SavePage(editPage);
         }
 
         public bool MovePageUp(TeaserPageContentModel page)
@@ -123,8 +142,8 @@ namespace DarkFactorCoreNet.Provider
             databasePage1.SortId = page2.SortId;
             databasePage2.SortId = page1.SortId;
 
-            bool didSave1 = _pageRepository.SavePage(databasePage1);
-            bool didSave2 = _pageRepository.SavePage(databasePage2);
+            bool didSave1 = _editPageRepository.SavePage(databasePage1);
+            bool didSave2 = _editPageRepository.SavePage(databasePage2);
             return didSave1 && didSave2;
         }
 
@@ -135,7 +154,7 @@ namespace DarkFactorCoreNet.Provider
 
         public bool AddImage(int pageID, uint imageId)
         {
-            return _pageRepository.AddImage(pageID,imageId);
+            return _editPageRepository.AddImage(pageID,imageId);
         }
 
         public bool DeletePage(int pageId)
@@ -145,8 +164,14 @@ namespace DarkFactorCoreNet.Provider
                 return false;
             }
 
-            _pageRepository.DeletePage(pageId);
-            return true;
+            // Do not delete page if it has children
+            var childList = _pageRepository.GetPagesWithParentId(pageId);
+            if ( childList.Count > 0 )
+            {
+                return false;
+            }
+
+            return _editPageRepository.DeletePage(pageId);
         }
 
         public bool ChangeAccess(int pageId, int accessLevel)
@@ -156,7 +181,7 @@ namespace DarkFactorCoreNet.Provider
                 return false;
             }
 
-            return _pageRepository.ChangeAccess(pageId,accessLevel);
+            return _editPageRepository.ChangeAccess(pageId,accessLevel);
         }
     }
 }
