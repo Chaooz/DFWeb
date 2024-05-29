@@ -10,13 +10,13 @@ namespace DarkFactorCoreNet.Models
     public class PageListModel
     {
         public string Title { get; set; }
-        public List<PageContentModel> Pages;
+        public List<TeaserPageContentModel> Pages;
 
         public bool ShowEditor;
 
         public PageListModel()
         {
-            Pages = new List<PageContentModel>();
+            Pages = new List<TeaserPageContentModel>();
             ShowEditor = false;
         }
     };

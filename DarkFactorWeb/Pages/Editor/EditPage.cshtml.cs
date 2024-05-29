@@ -13,16 +13,16 @@ namespace DarkFactorCoreNet.Pages
 {
     public class EditModel : BasePageModel
     {
-        private IPageRepository pageRepository;
+        private IEditPageProvider editPageProvider;
 
         public EditModel(
-            IPageRepository pageRepository, 
+            IEditPageProvider editPageProvider, 
             IImageProvider imageProvider,
             IPageProvider pageProvider, 
             IMenuProvider menuProvider,
             ILoginProvider loginProvider) : base(pageProvider,menuProvider, loginProvider,imageProvider)
         {
-            this.pageRepository = pageRepository;
+            this.editPageProvider = editPageProvider;
         }
 
         override
@@ -42,19 +42,16 @@ namespace DarkFactorCoreNet.Pages
             switch(pageContentModel.Command )
             {
                 case "save":
-                    didSuceed = pageRepository.SaveMainPage(pageContentModel);
-                    return Redirect("/page?id=" + pageContentModel.ID);
-                case "savePromo":
-                    didSuceed = pageRepository.SavePromoPage(pageContentModel);
+                    didSuceed = editPageProvider.SaveFullPage(pageContentModel);
                     return Redirect("/page?id=" + pageContentModel.ID);
                 case "create_page":
-                    didSuceed = pageRepository.CreatePage(pageContentModel.ID,"New page");
+                    didSuceed = editPageProvider.CreatePage(pageContentModel.ID,"New page");
                     break;
                 case "create_child_page":
-                    didSuceed = pageRepository.CreateChildPage(pageContentModel.ID, "New page");
+                    didSuceed = editPageProvider.CreateChildPage(pageContentModel.ID, "New page");
                     break;
                 case "delete_page":
-                    pageContentModel.ID = pageRepository.DeletePage(pageContentModel.ID);
+                    didSuceed = editPageProvider.DeletePage(pageContentModel.ID);
                     break;
             }
 

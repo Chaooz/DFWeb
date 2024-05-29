@@ -38,7 +38,7 @@ namespace DarkFactorCoreNet.Pages
             }
 
             // Load images. TODO: Do this in Javascript
-            foreach (PageContentModel page in model.Pages)
+            foreach (var page in model.Pages)
             {
                 page.ImageModel = _imageProvider.GetImage(page.ImageId);
             }

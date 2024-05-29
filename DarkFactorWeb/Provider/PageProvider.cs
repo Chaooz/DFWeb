@@ -12,8 +12,8 @@ namespace DarkFactorCoreNet.Provider
     public interface IPageProvider
     {
         PageContentModel GetPage(int pageId);
-        List<PageContentModel> GetPagesWithParentId(int parentId);
-        List<PageContentModel> GetPagesWithTag(string tag);
+        List<TeaserPageContentModel> GetPagesWithParentId(int parentId);
+        List<TeaserPageContentModel> GetPagesWithTag(string tag);
         List<String> GetRelatedTags(int pageId);
         IList<ArticleSectionModel> GetArticleSections(int pageId);
     }
@@ -32,12 +32,12 @@ namespace DarkFactorCoreNet.Provider
             return pageRepository.GetPage(pageId);
         }
 
-        public List<PageContentModel> GetPagesWithParentId(int parentId)
+        public List<TeaserPageContentModel> GetPagesWithParentId(int parentId)
         {
             return pageRepository.GetPagesWithParentId(parentId);
         }
 
-        public List<PageContentModel> GetPagesWithTag(string tag)
+        public List<TeaserPageContentModel> GetPagesWithTag(string tag)
         {
             return pageRepository.GetPagesWithTag(tag);
         }

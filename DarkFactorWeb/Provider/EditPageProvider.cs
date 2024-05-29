@@ -11,8 +11,11 @@ namespace DarkFactorCoreNet.Provider
 {
     public interface IEditPageProvider
     {
-        bool MovePageUp(PageContentModel page);
-        bool MovePageDown(PageContentModel page);
+        bool CreatePage( int pageId, string pageTitle );
+        bool CreateChildPage( int parentPageId, string pageTitle );
+        bool SaveFullPage(PageContentModel pageModel);
+        bool MovePageUp(TeaserPageContentModel page);
+        bool MovePageDown(TeaserPageContentModel page);
         bool EditPage(int pageId);
         bool AddImage(int pageID, uint imageId);
         bool DeletePage(int pageId);
@@ -38,7 +41,37 @@ namespace DarkFactorCoreNet.Provider
             _pageRepository = pageRepository;
         }
 
-        public bool MovePageUp(PageContentModel page)
+        public bool CreatePage( int pageId, string pageTitle )
+        {
+            if ( !CanEditPage() )
+            {
+                return false;
+            }
+            return _pageRepository.CreatePage(pageId,pageTitle);
+        }
+        
+        public bool CreateChildPage( int parentPageId, string pageTitle )
+        {
+            if ( !CanEditPage() )
+            {
+                return false;
+            }
+            return _pageRepository.CreateChildPage(parentPageId,pageTitle);
+        }
+
+
+        public bool SaveFullPage(PageContentModel pageModel)
+        {
+            var editPage = _pageRepository.GetPage( pageModel.ID );
+            editPage.Tags = pageModel.Tags;
+            editPage.PromoText = pageModel.PromoText;
+            editPage.PromoTitle = pageModel.PromoTitle;
+            editPage.ContentText = pageModel.ContentText;
+            editPage.ContentTitle = pageModel.ContentTitle;
+            return _pageRepository.SavePage(editPage);
+        }
+
+        public bool MovePageUp(TeaserPageContentModel page)
         {
             if ( !CanEditPage() )
             {
@@ -51,7 +84,7 @@ namespace DarkFactorCoreNet.Provider
             }
 
             var pageList = _pageProvider.GetPagesWithParentId(page.ParentId);
-            PageContentModel swapPage = pageList.OrderBy(x => x.SortId).Where(x => x.SortId < page.SortId).LastOrDefault();
+            TeaserPageContentModel swapPage = pageList.OrderBy(x => x.SortId).Where(x => x.SortId < page.SortId).LastOrDefault();
             if (swapPage == null)
             {
                 return false;
@@ -60,7 +93,7 @@ namespace DarkFactorCoreNet.Provider
             return SwapSort(page,swapPage);
        }
 
-        public bool MovePageDown(PageContentModel page)
+        public bool MovePageDown(TeaserPageContentModel page)
         {
             if ( !CanEditPage() )
             {
@@ -73,7 +106,7 @@ namespace DarkFactorCoreNet.Provider
             }
 
             var pageList = _pageProvider.GetPagesWithParentId(page.ParentId);
-            PageContentModel swapPage = pageList.OrderBy(x => x.SortId).Where(x => x.SortId > page.SortId).FirstOrDefault();
+            TeaserPageContentModel swapPage = pageList.OrderBy(x => x.SortId).Where(x => x.SortId > page.SortId).FirstOrDefault();
             if (swapPage == null)
             {
                 return false;
@@ -82,14 +115,16 @@ namespace DarkFactorCoreNet.Provider
             return SwapSort(page,swapPage);
         }
 
-        private bool SwapSort(PageContentModel page1, PageContentModel page2)
+        private bool SwapSort(TeaserPageContentModel page1, TeaserPageContentModel page2)
         {
-            int swapSortId = page1.SortId;
-            page1.SortId = page2.SortId;
-            page2.SortId = swapSortId;
+            var databasePage1 = _pageRepository.GetPage( page1.ID );
+            var databasePage2 = _pageRepository.GetPage( page2.ID );
 
-            bool didSave1 = _pageRepository.SavePage(page1);
-            bool didSave2 = _pageRepository.SavePage(page2);
+            databasePage1.SortId = page2.SortId;
+            databasePage2.SortId = page1.SortId;
+
+            bool didSave1 = _pageRepository.SavePage(databasePage1);
+            bool didSave2 = _pageRepository.SavePage(databasePage2);
             return didSave1 && didSave2;
         }
 

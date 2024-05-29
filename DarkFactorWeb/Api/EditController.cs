@@ -78,19 +78,6 @@ namespace DarkFactorCoreNet.Api
         }
 
         [HttpPost]
-        [Route("SavePromo")]
-        public IActionResult SavePromo([FromForm] int pageId)
-        {
-            PageContentModel page = _pageProvider.GetPage(pageId);
-            if ( page != null )
-            {
-                _editPageProvider.MovePageUp(page);
-                return Redirect("/mainpage?id=" + page.ParentId);
-            }
-            return Redirect("/mainpage?id=" + pageId);
-        }
-
-        [HttpPost]
         [Route("AddImage")]
         public IActionResult AddImage([FromForm] int pageId, [FromForm] uint imageId)
         {
