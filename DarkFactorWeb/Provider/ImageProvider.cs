@@ -24,36 +24,20 @@ namespace DarkFactorCoreNet.Provider
     public class ImageProvider : IImageProvider
     {
         private IUserSessionProvider _userSession;
-        private ILoginRepository _loginRepository;
         private IImageRepository _imageRepository;
 
         public ImageProvider(
             IUserSessionProvider userSession, 
-            ILoginRepository loginRepository,
             IImageRepository imageRepository)
         {
             _userSession = userSession;
-            _loginRepository = loginRepository;
             _imageRepository = imageRepository;
         }
 
         private bool CanEditPage()
         {
-            if ( !_userSession.IsLoggedIn() )
-            {
-                return false;
-            }
-
-            string username = _userSession.GetUsername();
-            var userAccessLevel = _loginRepository.GetAccessForUser(username);
-            if ( userAccessLevel < AccessLevel.Editor )
-            {
-                return false;
-            }
-
-            return true;
+            return _userSession.CanEditPage();
         }
-
 
         public async Task<uint> UploadImage(int pageId,  List<IFormFile> files)
         {

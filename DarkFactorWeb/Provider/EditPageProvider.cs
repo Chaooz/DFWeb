@@ -16,7 +16,7 @@ namespace DarkFactorCoreNet.Provider
         bool SaveFullPage(PageContentModel pageModel);
         bool MovePageUp(TeaserPageContentModel page);
         bool MovePageDown(TeaserPageContentModel page);
-        bool EditPage(int pageId);
+        bool CanEditPage();
         bool AddImage(int pageID, uint imageId);
         bool DeletePage(int pageId);
         bool ChangeAccess(int pageId, int accessLevel);
@@ -49,7 +49,7 @@ namespace DarkFactorCoreNet.Provider
             }
             return _pageRepository.CreatePage(pageId,pageTitle);
         }
-        
+
         public bool CreateChildPage( int parentPageId, string pageTitle )
         {
             if ( !CanEditPage() )
@@ -128,30 +128,9 @@ namespace DarkFactorCoreNet.Provider
             return didSave1 && didSave2;
         }
 
-        public bool EditPage(int pageId)
+        public bool CanEditPage()
         {
-            if ( !CanEditPage() )
-            {
-                return false;
-            }
-            return true;
-        }
-
-        private bool CanEditPage()
-        {
-            if ( !_userSession.IsLoggedIn() )
-            {
-                return false;
-            }
-
-            string username = _userSession.GetUsername();
-            var userAccessLevel = _loginRepository.GetAccessForUser(username);
-            if ( userAccessLevel < AccessLevel.Editor )
-            {
-                return false;
-            }
-
-            return true;
+            return _userSession.CanEditPage();
         }
 
         public bool AddImage(int pageID, uint imageId)

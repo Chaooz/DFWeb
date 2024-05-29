@@ -59,7 +59,7 @@ namespace DarkFactorCoreNet.Api
         [Route("EditPage")]
         public IActionResult EditPage([FromForm] int pageId)
         {
-            if ( _editPageProvider.EditPage(pageId) )
+            if ( _editPageProvider.CanEditPage() )
             {
                 return Redirect("/Editor/EditPage?id=" + pageId);
             }
