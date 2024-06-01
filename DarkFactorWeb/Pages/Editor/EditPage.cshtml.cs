@@ -11,7 +11,7 @@ using DarkFactorCoreNet.Provider;
 
 namespace DarkFactorCoreNet.Pages
 {
-    public class EditModel : BasePageModel
+    public class EditModel : FullPageModel
     {
         private IEditPageProvider editPageProvider;
 

@@ -1,0 +1,24 @@
+@using DarkFactorCoreNet.Models
+@model ArticleSectionModel
+
+<div class="article" style="width:100%">
+
+    @if ( Model.ImageModel != null && !string.IsNullOrEmpty(Model.ImageModel.Filedata) )
+    {
+        @* Show Image if we have data *@    
+        <div>
+            <center><a href="/Editor/ImageSelector?pageId=@Model.PageId&sectionId=@Model.ID"><img class="article_image" src="data:image/png;base64,@Model.ImageModel.Filedata"></a></center>
+        </div>        
+    }
+    else
+    {
+        @* Show Add button to upload new image *@    
+        <div class="article" style="width:100%;padding:10px;align:center">
+            <form  method='GET' action="/Editor/ImageSelector" style='display: inline;'>
+                <input type='hidden' name='pageId' value='@Model.PageId'>
+                <input type='submit' value='Select Image'>
+            </form>
+        </div>
+    }
+
+</div>

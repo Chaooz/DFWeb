@@ -10,10 +10,11 @@
     acl[1] = "Member";
     acl[2] = "Unpublished";
 
-    var layout = new Dictionary<string, string>();
-    layout[""] = "Default";
-    layout["2x4"] = "2 x 4";
-    layout["1x8"] = "1 x 8";
+    var layout = new Dictionary<int, string>();
+    layout[0] = "Text Only";
+    layout[1] = "Image Only";
+    layout[2] = "Text Left, Image Right";
+    layout[3] = "Image Left, Text Right";
 }
 
 <div>
@@ -27,7 +28,7 @@
     <div class="row">
 
         <div class="col-md-4">
-            <div class="article" style="padding:10px">
+            <div class="article" style="column;padding:10px">
             <form  method='POST' style='display: inline;'>
                 <input class=toolbutton type='submit' value='Save Article'>
 
@@ -56,9 +57,8 @@
             </form>
             </div>
         </div>
-        <BR>
         <div class="col-md-4">
-            <div class="article" style="width:100%" >
+            <div class="article">
                 <form  method='POST' action="/api/Edit/ChangeAccess" style='display: inline;'>
                     <input type='hidden' name='pageId' value='@Model.pageModel.ID'>
                     <div class='edit_header'>Access Control</div>
@@ -77,10 +77,9 @@
                     </select>
                     <input type='submit' value='Update'>
                 </form>
+                <BR>
+                @await Html.PartialAsync("/Pages/Views/Components/ImageComponent.cshtml", Model.pageModel)
             </div>
-            <BR>
-
-            @await Html.PartialAsync("/Pages/Views/Components/ImageComponent.cshtml", Model.pageModel)
         </div>
 
         <div class="col-md-4">
@@ -88,10 +87,72 @@
             @await Html.PartialAsync("/Pages/Views/RightSideElements/AdminMenu.cshtml", Model.pageId)
         </div>
 
+        @foreach (var articleSection in Model.articleSections)
+        {
+            <div class="col-md-8">
+                <BR>
+                <div style="width=100%;padding:2px;background-color:lightgray" >
+
+                    <form  method='POST' action="/api/Editor/DeleteSection" style='display: inline;verticle-align:right'>
+                        <input type='hidden' name='pageId' value='@articleSection.PageId'>
+                        <input type='hidden' name='sectionId' value='@articleSection.ID'>
+                        <input type='submit' value='X'>
+                    </form>
+                    <form method='POST' action="/api/Editor/ChangeSectionLayout" style='display: inline'>
+                        <select name='layout' class='edit_input' style="width:50%" align="center">
+                        @foreach (var layoutKv in layout)
+                        {
+                            if ( layoutKv.Key == articleSection.Layout )
+                            {
+                                <option value=@layoutKv.Key selected> @layoutKv.Value </option>
+                            }   
+                            else
+                            {
+                                <option value=@layoutKv.Key> @layoutKv.Value </option>
+                            }
+                        }
+                        </select>
+                        <input type='submit' value='Change'>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div>
+                    @if (articleSection.Layout == 0)
+                    {
+                        @await Html.PartialAsync("/Pages/Views/Components/EditSectionText.cshtml", articleSection)
+                    }
+                    else if (articleSection.Layout == 1 )
+                    {
+                        @await Html.PartialAsync("/Pages/Views/Components/EditSectionImage.cshtml", articleSection )
+                    }
+                    else if (articleSection.Layout == 2 )
+                    {
+                        @await Html.PartialAsync("/Pages/Views/Components/EditSectionText.cshtml", articleSection)
+                        @await Html.PartialAsync("/Pages/Views/Components/EditSectionImage.cshtml", articleSection )
+                    }
+                    else if (articleSection.Layout == 3 )
+                    {
+                        @await Html.PartialAsync("/Pages/Views/Components/EditSectionImage.cshtml", articleSection )
+                        @await Html.PartialAsync("/Pages/Views/Components/EditSectionText.cshtml", articleSection)
+                    }
+                    else
+                    {
+                        <center>Unknown layout</center>
+                    }
+                </div>
+            </div>
+        }
+
+        <div>
+            &nbsp;
+        </div>
+
         <div class="col-md-8">
             <form method='POST' asp-page-handler="CreateArticleSection" style='display: inline;'>
                 <input type='hidden' name='PageId' value='@Model.pageModel.ID'>
-                <input class=toolbutton type='submit' value='+ Section'>
+                <input class=toolbutton type='submit' value='+ Add Section'>
             </form>
         </div>
 

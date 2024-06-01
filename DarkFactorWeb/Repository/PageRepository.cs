@@ -173,7 +173,7 @@ namespace DarkFactorCoreNet.Repository
         {
             IList<ArticleSectionModel> list = new List<ArticleSectionModel>();
 
-            var sql = @"select id, text, imageid, sort, layout " +
+            var sql = @"select id, pageid,text, imageid, sort, layout " +
                     "from articlesection where pageid = @pageId order by sort";
 
             using (var cmd = _connection.CreateCommand(sql))
@@ -186,6 +186,7 @@ namespace DarkFactorCoreNet.Repository
                         ArticleSectionModel articleSection = new ArticleSectionModel()
                         {
                             ID = Convert.ToInt32(reader["id"]),
+                            PageId = Convert.ToInt32(reader["pageid"]),
                             Text = reader["text"].ToString(),
                             ImageId = Convert.ToInt32(reader["imageid"]),
                             SortId = Convert.ToInt32(reader["sort"]),

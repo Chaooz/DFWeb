@@ -1,0 +1,11 @@
+@using DarkFactorCoreNet.Models
+@model ArticleSectionModel
+
+<div id="0 full" style="width:100%">
+    <form>
+        <textarea name="text" style="height: 100px;width:100%">@Model.Text</textarea>
+        <input type='hidden' name='PageId' value='@Model.PageId'>
+        <input type='hidden' name='SectionId' value='@Model.ID'>
+        <input class=toolbutton type='submit' value='Save Section'>
+    </form>           
+</div>
