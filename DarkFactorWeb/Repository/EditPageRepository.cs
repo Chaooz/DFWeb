@@ -19,6 +19,7 @@ namespace DarkFactorCoreNet.Repository
         bool CreateArticleSection(int pageId, string title, string content, int sortId);
         bool UpdateArticleSection(ArticleSectionModel articleSectionModel);
         bool AddImage(int pageID, uint imageId);
+        bool AddImageToSection(int sectionId, uint imageId);
         bool ChangeAccess(int pageId, int accessLevel);
     }
 
@@ -162,6 +163,19 @@ namespace DarkFactorCoreNet.Repository
                 return (numRows == 1);
             }
         }
+
+        public bool AddImageToSection(int sectionId, uint imageId)
+        {
+            var sql = @"update articlesection set imageid = @imageid where id = @sectionid "; 
+            using (var cmd = _connection.CreateCommand(sql))
+            {
+                cmd.AddParameter("@sectionid", sectionId);
+                cmd.AddParameter("@imageid", imageId);
+                int numRows = cmd.ExecuteNonQuery();
+                return (numRows == 1);
+            }
+        }
+
 
         public bool ChangeAccess(int pageId, int accessLevel)
         {

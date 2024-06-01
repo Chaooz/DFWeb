@@ -20,6 +20,7 @@ namespace DarkFactorCoreNet.Provider
         bool MovePageDown(TeaserPageContentModel page);
         bool CanEditPage();
         bool AddImage(int pageID, uint imageId);
+        bool AddImageToSection(int sectionId, uint imageId);
         bool DeletePage(int pageId);
         bool ChangeAccess(int pageId, int accessLevel);
     }
@@ -176,7 +177,20 @@ namespace DarkFactorCoreNet.Provider
 
         public bool AddImage(int pageID, uint imageId)
         {
+            if ( !CanEditPage() )
+            {
+                return false;
+            }
             return _editPageRepository.AddImage(pageID,imageId);
+        }
+
+        public bool AddImageToSection(int sectionId, uint imageId)
+        {
+            if ( !CanEditPage() )
+            {
+                return false;
+            }
+            return _editPageRepository.AddImageToSection(sectionId,imageId);
         }
 
         public bool DeletePage(int pageId)

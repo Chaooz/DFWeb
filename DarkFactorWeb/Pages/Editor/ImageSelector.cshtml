@@ -43,6 +43,7 @@
                 <center>
                     <form  method='POST' action="/api/Edit/AddImage" style='display: inline;'>
                     <input type='hidden' name='pageId' value="@Model.pageId">
+                    <input type='hidden' name='sectionId' value="@Model.sectionId">
                     <input type='hidden' name='imageId' value="@image.Id">
                     <input type="image" width=100% height=100% src="data:image/png;base64,@image.Filedata">
                     </form>

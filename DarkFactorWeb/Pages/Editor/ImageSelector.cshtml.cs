@@ -13,6 +13,7 @@ namespace DarkFactorCoreNet.Editor
     public class ImageSelectorModel : PageModel
     {
         public int pageId;
+        public int sectionId;
 
         public IList<ImageModel> imageList;
         private IImageProvider imageProvider;
@@ -23,9 +24,10 @@ namespace DarkFactorCoreNet.Editor
             imageList = new List<ImageModel>();
         }
 
-        public void OnGet(int pageId)
+        public void OnGet(int pageId, int sectionId = 0)
         {
             this.pageId = pageId;
+            this.sectionId = sectionId;
             imageList = imageProvider.GetImages(10);
             if ( imageList == null )
             {
