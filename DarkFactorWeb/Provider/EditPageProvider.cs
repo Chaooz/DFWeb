@@ -16,6 +16,7 @@ namespace DarkFactorCoreNet.Provider
         bool SaveFullPage(PageContentModel pageModel);
         bool CreateArticleSection(int pageId, string title, string content);
         bool UpdateArticleSection(ArticleSectionModel articleSectionModel);
+        bool ChangeSectionLayout(int articleId, int layout);
         bool MovePageUp(TeaserPageContentModel page);
         bool MovePageDown(TeaserPageContentModel page);
         bool CanEditPage();
@@ -112,6 +113,16 @@ namespace DarkFactorCoreNet.Provider
             }
             return _editPageRepository.UpdateArticleSection(articleSectionModel);
         }
+
+        public bool ChangeSectionLayout(int articleId, int layout)
+        {
+            if ( !CanEditPage() )
+            {
+                return false;
+            }
+            return _editPageRepository.ChangeSectionLayout(articleId,layout);            
+        }
+
 
         public bool MovePageUp(TeaserPageContentModel page)
         {

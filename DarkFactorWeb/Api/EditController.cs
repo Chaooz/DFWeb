@@ -105,6 +105,37 @@ namespace DarkFactorCoreNet.Api
         }
 
         [HttpPost]
+        [Route("UpdateSection")]
+        public IActionResult UpdateSection([FromForm] int pageId, [FromForm] int sectionId, [FromForm] string content, [FromForm] int sortId, [FromForm] int layout, [FromForm] int imageId)
+        {
+            ArticleSectionModel model = new ArticleSectionModel()
+            {
+                ID = sectionId,
+                PageId = pageId,
+                Text = content,
+                SortId = sortId,
+                Layout = layout,
+                ImageId = imageId
+            };
+            if ( _editPageProvider.UpdateArticleSection(model) )
+            {
+                return Redirect("/Editor/EditPage?id=" + pageId);
+            }
+            return Redirect("/Editor/EditPage?id=" + pageId + "&error=1");
+        }
+
+        [HttpPost]
+        [Route("ChangeSectionLayout")]
+        public IActionResult ChangeSectionLayout([FromForm] int pageId, [FromForm] int articleId, [FromForm] int layout)
+        {
+            if ( _editPageProvider.ChangeSectionLayout(articleId,layout) )
+            {
+                return Redirect("/Editor/EditPage?id=" + pageId);
+            }
+            return Redirect("/Editor/EditPage?id=" + pageId + "&error=1");
+        }
+
+        [HttpPost]
         [Route("ChangeAccess")]
         public IActionResult ChangeAccess([FromForm] int pageId, [FromForm] int acl)
         {

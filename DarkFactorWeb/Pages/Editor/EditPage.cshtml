@@ -93,12 +93,14 @@
                 <BR>
                 <div style="width=100%;padding:2px;background-color:lightgray" >
 
-                    <form  method='POST' action="/api/Editor/DeleteSection" style='display: inline;verticle-align:right'>
+                    <form  method='POST' action="/api/Edit/DeleteSection" style='display: inline;verticle-align:right'>
                         <input type='hidden' name='pageId' value='@articleSection.PageId'>
                         <input type='hidden' name='sectionId' value='@articleSection.ID'>
                         <input type='submit' value='X'>
                     </form>
-                    <form method='POST' action="/api/Editor/ChangeSectionLayout" style='display: inline'>
+                    <form method='POST' action="/api/Edit/ChangeSectionLayout" style='display: inline'>
+                        <input type='hidden' name='pageId' value='@articleSection.PageId'>
+                        <input type='hidden' name='articleId' value='@articleSection.ID'>
                         <select name='layout' class='edit_input' style="width:50%" align="center">
                         @foreach (var layoutKv in layout)
                         {
