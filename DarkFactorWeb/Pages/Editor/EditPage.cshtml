@@ -119,31 +119,44 @@
                 </div>
             </div>
 
-            <div class="col-md-8">
-                <div>
-                    @if (articleSection.Layout == 0)
-                    {
-                        @await Html.PartialAsync("/Pages/Views/Components/EditSectionText.cshtml", articleSection)
-                    }
-                    else if (articleSection.Layout == 1 )
-                    {
-                        @await Html.PartialAsync("/Pages/Views/Components/EditSectionImage.cshtml", articleSection )
-                    }
-                    else if (articleSection.Layout == 2 )
-                    {
-                        @await Html.PartialAsync("/Pages/Views/Components/EditSectionText.cshtml", articleSection)
-                        @await Html.PartialAsync("/Pages/Views/Components/EditSectionImage.cshtml", articleSection )
-                    }
-                    else if (articleSection.Layout == 3 )
-                    {
-                        @await Html.PartialAsync("/Pages/Views/Components/EditSectionImage.cshtml", articleSection )
-                        @await Html.PartialAsync("/Pages/Views/Components/EditSectionText.cshtml", articleSection)
-                    }
-                    else
-                    {
-                        <center>Unknown layout</center>
-                    }
+            <div class="col-md-4">
+            </div>
+
+            @if (articleSection.Layout == 0)
+            {
+                <div class="col-md-8"><div>
+                @await Html.PartialAsync("/Pages/Views/Components/EditSectionText.cshtml", articleSection)
+                </div></div>
+            }
+            else if (articleSection.Layout == 1 )
+            {
+                <div class="col-md-8"><div>
+                @await Html.PartialAsync("/Pages/Views/Components/EditSectionImage.cshtml", articleSection )
+                </div></div>
+            }
+            else if (articleSection.Layout == 2 )
+            {
+                <div class="col-md-4"><div>
+                @await Html.PartialAsync("/Pages/Views/Components/EditSectionText.cshtml", articleSection)
+                </div></div>
+                <div class="col-md-4"><div>
+                @await Html.PartialAsync("/Pages/Views/Components/EditSectionImage.cshtml", articleSection )
+                </div></div>
+            }
+            else if (articleSection.Layout == 3 )
+            {
+                <div class="col-md-4">
+                @await Html.PartialAsync("/Pages/Views/Components/EditSectionImage.cshtml", articleSection )
                 </div>
+                <div class="col-md-4">
+                @await Html.PartialAsync("/Pages/Views/Components/EditSectionText.cshtml", articleSection)
+                </div>
+            }
+            else
+            {
+                <center>Unknown layout</center>
+            }
+            <div class="col-md-4">
             </div>
         }
 
