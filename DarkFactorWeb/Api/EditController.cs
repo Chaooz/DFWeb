@@ -125,6 +125,17 @@ namespace DarkFactorCoreNet.Api
         }
 
         [HttpPost]
+        [Route("DeleteArticleSection")]
+        public string DeleteArticleSection(ArticleSectionModel sectionModel)
+        {
+            if (_editPageProvider.DeleteArticleSection(sectionModel) )
+            {
+                return "OK";
+            }
+            return "FAILED";
+        }
+
+        [HttpPost]
         [Route("ChangeSectionLayout")]
         public IActionResult ChangeSectionLayout([FromForm] int pageId, [FromForm] int articleId, [FromForm] int layout)
         {

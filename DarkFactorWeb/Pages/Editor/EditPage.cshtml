@@ -88,16 +88,13 @@
         </div>
 
         @foreach (var articleSection in Model.articleSections)
-        {
+        {            
             <div class="col-md-8">
                 <BR>
                 <div style="width=100%;padding:2px;background-color:lightgray" >
 
-                    <form  method='POST' action="/api/Edit/DeleteSection" style='display: inline;verticle-align:right'>
-                        <input type='hidden' name='pageId' value='@articleSection.PageId'>
-                        <input type='hidden' name='sectionId' value='@articleSection.ID'>
-                        <input type='submit' value='X'>
-                    </form>
+                    [<a href="#" onClick="clickDeleteSection(@articleSection.PageId, @articleSection.ID);return false;">X</a>]
+
                     <form method='POST' action="/api/Edit/ChangeSectionLayout" style='display: inline'>
                         <input type='hidden' name='pageId' value='@articleSection.PageId'>
                         <input type='hidden' name='articleId' value='@articleSection.ID'>
@@ -174,11 +171,37 @@
     </div>
 </div>
 
-<script type="javascript">
+<script type="text/javascript">
 
-    function getModel()
+    //
+    // Internal class to post data
+    //
+    function postData(url, postData)
     {
-        // Service call with bootstrap
+        $.ajax(url, 
+        {
+            type: 'POST',
+            data: JSON.stringify(postData),
+            contentType: "application/json; charset=utf-8",
+            //dataType: "json",
+
+            success: function(data){
+                console.debug("PostData[OK]:" + data);
+            },
+            failure: function(errMsg) {
+                console.debug("PostData[ERROR]:"+ errMsg);
+            }
+        });
+    }
+
+    // Delete section
+    function clickDeleteSection(pageId, sectionId)
+    {
+        data = {
+            id:sectionId,
+            pageId: pageId
+        };
+        postData("/api/Edit/DeleteArticleSection", data);
     }
 
 </script>

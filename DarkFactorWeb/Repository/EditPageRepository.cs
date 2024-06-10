@@ -18,6 +18,7 @@ namespace DarkFactorCoreNet.Repository
         int GetArticleSectionMaxSortId(int pageId);
         bool CreateArticleSection(int pageId, string title, string content, int sortId);
         bool UpdateArticleSection(ArticleSectionModel articleSectionModel);
+        bool DeleteArticleSection(ArticleSectionModel articleSectionModel);
         bool ChangeSectionLayout(int articleId, int layout);
         bool AddImage(int pageID, uint imageId);
         bool AddImageToSection(int sectionId, uint imageId);
@@ -148,6 +149,21 @@ namespace DarkFactorCoreNet.Repository
                 cmd.AddParameter("@sort", articleSectionModel.SortId);
                 cmd.AddParameter("@layout", articleSectionModel.Layout);
                 cmd.AddParameter("@id", articleSectionModel.ID);
+                int numRows = cmd.ExecuteNonQuery();
+                return (numRows == 1);
+            }
+        }
+
+        public bool DeleteArticleSection(ArticleSectionModel articleSectionModel)
+        {
+            string sql = @"delete from articlesection "
+                         + "where id = @id "
+                         + "and pageId = @pageId";
+
+            using (var cmd = _connection.CreateCommand(sql))
+            {
+                cmd.AddParameter("@id", articleSectionModel.ID);
+                cmd.AddParameter("@PageId", articleSectionModel.PageId);
                 int numRows = cmd.ExecuteNonQuery();
                 return (numRows == 1);
             }
