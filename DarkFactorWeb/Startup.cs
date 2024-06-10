@@ -121,11 +121,10 @@ namespace DarkFactorCoreNet
             app.UseSwagger(); 
 
             // specify the Swagger JSON endpoint.
-            /*app.UseSwaggerUI(c =>
+            app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-            */
 
             app.UseSession();  
             app.UseMvc();
