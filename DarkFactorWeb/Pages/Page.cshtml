@@ -16,6 +16,16 @@
         </div>
     </div>
 
+    @if ( Model.UserInfoModel.UserAccessLevel == 2 )
+    {
+    <div class="row">
+        <div class="col-md-12">
+                <a href="/Editor/EditPage?id=@Model.pageId" class="navigation-item" style="float:right;">[ Edit Page ]</a>
+        </div>
+        <br />
+    </div>
+    }
+
     <div class="row">
         <div class="col-lg-8 col-md-8">
             <div>
@@ -50,6 +60,9 @@
                 {
                     @foreach (var articleSection in Model.articleSections)
                     {
+                        <div>
+                            &nbsp;
+                        </div>
                         <div id="content_box_section_@(articleSection.ID)_layout_@articleSection.Layout" class="article_section">
                             <BR>
                             @if (articleSection.Layout == 0)
@@ -62,19 +75,23 @@
                             }
                             else if (articleSection.Layout == 2 && articleSection.ImageModel != null && !string.IsNullOrEmpty(articleSection.ImageModel.Filedata))
                             {
-                                <div id="2_left" style="width:50%;padding:0px">@articleSection.Text</div>
-                                <div id="2_right" style="width:50%;padding:0px"><center><img class="article_image" alt="@articleSection.ImageId - @articleSection.ImageModel.Filename" src="data:image/png;base64,@articleSection.ImageModel.Filedata"></center></div>
+                                <div id="2_left" style="width:50%;margin-right:20px">@articleSection.Text</div>
+                                <div id="2_right" style="width:50%;margin-left:10px"><center><img class="article_image" alt="@articleSection.ImageId - @articleSection.ImageModel.Filename" src="data:image/png;base64,@articleSection.ImageModel.Filedata"></center></div>
                             }
                             else if (articleSection.Layout == 3 && articleSection.ImageModel != null && !string.IsNullOrEmpty(articleSection.ImageModel.Filedata))
                             {
-                                <div id="3_left" style="width:50%;margin-left:10px;margin-right:10px"><center><img class="article_image" alt="@articleSection.ImageId - @articleSection.ImageModel.Filename" src="data:image/png;base64,@articleSection.ImageModel.Filedata"></center></div>
-                                <div id="3_right" style="width:50%;margin-left:10px;margin-right:10px">@articleSection.Text</div>
+                                <div id="3_left" style="width:50%;margin-right:10px"><center><img class="article_image" alt="@articleSection.ImageId - @articleSection.ImageModel.Filename" src="data:image/png;base64,@articleSection.ImageModel.Filedata"></center></div>
+                                <div id="3_right" style="width:50%;margin-left:20px">@articleSection.Text</div>
                             }
                             else
                             {
                                 <center>Unknown layout</center>
                             }
                             <BR>
+                        </div>
+
+                        <div>
+                            &nbsp;
                         </div>
                     }
                 }
