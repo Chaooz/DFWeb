@@ -15,15 +15,12 @@ using Microsoft.Extensions.Hosting;
 
 
 using DarkFactorCoreNet.Repository;
-using DarkFactorCoreNet.Repository.Database;
-using DarkFactorCoreNet.Api;
 using DarkFactorCoreNet.ConfigModel;
 using DarkFactorCoreNet.Provider;
 using DFCommonLib.Utils;
 using DFCommonLib.Config;
 using DFCommonLib.DataAccess;
 using AccountClientModule.Client;
-using AccountClientModule.RestClient;
 using DFCommonLib.Logger;
 
 [assembly: ApiController]
