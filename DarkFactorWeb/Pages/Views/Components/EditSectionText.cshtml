@@ -2,13 +2,5 @@
 @model ArticleSectionModel
 
 <div id="0 full" style="width:100%">
-    <form action="/api/Edit/UpdateSection" method="POST">
-        <textarea name="content" style="height: 100px;width:100%">@Model.Text</textarea>
-        <input type='hidden' name='PageId' value='@Model.PageId'>
-        <input type='hidden' name='SectionId' value='@Model.ID'>
-        <input type='hidden' name='SortId' value='@Model.SortId'>
-        <input type='hidden' name='Layout' value='@Model.Layout'>
-        <input type='hidden' name='ImageId' value='@Model.ImageId'>
-        <input class=toolbutton type='submit' value='Save Section'>
-    </form>           
+    <textarea id="content_@Model.ID" style="height: 100px;width:100%">@Model.Text</textarea>
 </div>

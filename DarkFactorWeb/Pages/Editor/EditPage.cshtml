@@ -96,29 +96,30 @@
 
         @foreach (var articleSection in Model.articleSections)
         {            
-            <div class="col-md-8">
+            <div class="col-md-8" id="article_@articleSection.ID">
                 <BR>
                 <div style="width=100%;padding:2px;background-color:lightgray" >
 
                     [<a href="#" onClick="clickDeleteSection(@articleSection.PageId, @articleSection.ID);return false;">X</a>]
 
-                    <form method='POST' action="/api/Edit/ChangeSectionLayout" style='display: inline'>
-                        <input type='hidden' name='pageId' value='@articleSection.PageId'>
-                        <input type='hidden' name='articleId' value='@articleSection.ID'>
-                        <select name='layout' class='edit_input' style="width:50%" align="center">
-                        @foreach (var layoutKv in layout)
+                    <form method='POST' onClick="clickSaveSection(@articleSection.ID);return false" style='display: inline'>
+                        <input type='hidden' id="PageId" name='pageId' value='@articleSection.PageId'>
+                        <input type='hidden' id="ArticleId" name='articleId' value='@articleSection.ID'>
+
+                    <select name='layout' class='edit_input' style="width:50%" align="center">
+                    @foreach (var layoutKv in layout)
+                    {
+                        if ( layoutKv.Key == articleSection.Layout )
                         {
-                            if ( layoutKv.Key == articleSection.Layout )
-                            {
-                                <option value=@layoutKv.Key selected> @layoutKv.Value </option>
-                            }   
-                            else
-                            {
-                                <option value=@layoutKv.Key> @layoutKv.Value </option>
-                            }
+                            <option value=@layoutKv.Key selected> @layoutKv.Value </option>
+                        }   
+                        else
+                        {
+                            <option value=@layoutKv.Key> @layoutKv.Value </option>
                         }
-                        </select>
-                        <input type='submit' value='Change'>
+                    }
+                    </select>
+                    <input type='submit' value='Save'>
                     </form>
                 </div>
             </div>
@@ -201,6 +202,11 @@
         });
     }
 
+    function getSectionValue(sectionId,fieldName)
+    {
+        return $("#" + fieldName + "_" + sectionId).val();
+    }
+
     // Delete section
     function clickDeleteSection(pageId, sectionId)
     {
@@ -209,6 +215,23 @@
             pageId: pageId
         };
         postData("/api/Edit/DeleteArticleSection", data);
+    }
+
+    function clickSaveSection(sectionId)
+    {
+        var pageId = $("#PageId").val();
+        var content = getSectionValue(sectionId, "content");
+
+        data = {
+            id: sectionId,
+            pageId: pageId,
+            content: content
+        }
+
+        //sData = JSON.stringify(data);
+        //console.log("clickSaveSection:" + sData);
+
+        postData("/api/Edit/SaveArticleSection", data);
     }
 
 </script>
