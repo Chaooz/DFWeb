@@ -7,32 +7,12 @@
     acl[1] = "Member";
     acl[2] = "Editor";
     acl[3] = "Admin";    
+
+    var layout = new Dictionary<string, string>();
+    layout[""] = "Default";
+    layout["2x4"] = "2 x 4";
+    layout["1x8"] = "1 x 8";
 }
-
-<div class="articletitle" style="width:100%">
-    Images
-</div>
-
-    <div class="article" style="width:100%">
-
-<ul>
-@foreach( var imageModel in Model.ImageList)
-{
-    <li><div> @imageModel.Filename
-        <form  method='POST' action="/api/Edit/DeleteImage" style='display: inline;'>
-                <input type='hidden' name='pageId' value='@Model.ID'>
-                <input type='hidden' name='imageId' value='@imageModel.Id'>
-                <input class=toolbutton type='submit' value='X'>
-        </form>
-    </div></li>
-}
-</ul>
-    <form  method='POST' action="/api/Edit/AddImage" enctype="multipart/form-data" style='display: inline;'>
-            <input type='hidden' name='pageId' value='@Model.ID'>
-            <input type="file" name="files" />
-            <input class=toolbutton type='submit' value='Upload'>
-    </form>
-</div>
 
 <form  method='POST' style='display: inline;'>
 
@@ -41,10 +21,19 @@
     <input type='hidden' name='SortId' value='@Model.SortId'>
     <input type='hidden' name='command' value='savePromo'>
 
-<div class="articletitle" style="width:100%">
-    Properties
-</div>
+<div class="articletitle" style="width:100%">Properties</div>
+
 <div class="article" style="width:100%">
+
+    <div class='edit_header'>Layout</div>
+    <select name='layout' class='edit_input'>
+        @foreach (var layoutKv in layout)
+        {
+            <option value=@layoutKv.Key> @layoutKv.Value </option>
+        }
+    </select>
+
+    <br>
 
     <div class='edit_header'>Access Control</div>
     <select name='acl' class='edit_input'>
@@ -60,7 +49,9 @@
             }
         }
     </select>
-<br>
+
+    <br>
+
     <div class='edit_header'>Tags</div>
     @foreach (var tag in Model.Tags)
     {
@@ -68,24 +59,12 @@
     }
     <input name='NewTag' type='text' class='edit_input' value=''>
 
-</div>
-
-<div class="articletitle" style="width:100%">
-    Promo section
-</div>
-<div class="article" style="width:100%">
-
-    <div class='edit_header'>Image</div>
-    <input name='Image' type='text' class='edit_input' value='@Model.Image' placeholder=''><br>
-
-    <div class='edit_header'>Promo Title</div>
-    <input name='PromoTitle' type='text' class='edit_input' value='@Model.PromoTitle' placeholder='Enter title'><br>
-
-    <div class='edit_header'>Promo Text</div>
-    <textarea rows=15 cols=15 name='PromoText' class='edit_input'>@Model.PromoText</textarea><br>
     <br>
-</div>
+    <br>
 
     <input class=toolbutton type='submit' value='Save'>
+
+</div>
+
 
 </form>

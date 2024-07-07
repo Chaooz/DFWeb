@@ -16,14 +16,94 @@
         </div>
     </div>
 
+    @if ( Model.UserInfoModel.UserAccessLevel == 2 )
+    {
     <div class="row">
-        <div class="col-md-8">
-            @await Html.PartialAsync("Views/MainElements/Page.cshtml", Model.pageModel)
+        <div class="col-md-12">
+                <a href="/Editor/EditPage?id=@Model.pageId" class="navigation-item" style="float:right;">[ Edit Page ]</a>
         </div>
-        <div class="col-lg-4 col-md-4" >
-            @await Html.PartialAsync("Views/RightSideElements/ArticleSection.cshtml", Model.articleSectionModel)
-        </div>
+        <br />
     </div>
+    }
+
+    <div class="row">
+        <div class="col-lg-8 col-md-8">
+            <div>
+                <div id="content_feature_@Model.pageId" class="article_featured">
+                    <div>
+                        <H2>@Model.pageModel.ContentTitle</H2>
+                    </div>
+                    <BR>
+                    <div>
+                        <i>@Model.pageModel.PromoText </i>
+                    </div>
+                    <BR>
+                    <div>
+                        @* Show Image if we have data *@    
+                        @if ( Model.pageModel.ImageModel != null && !string.IsNullOrEmpty(Model.pageModel.ImageModel.Filedata) )
+                        {
+                            <div>
+                                &nbsp;
+                            </div>
+                            <div>
+                                <center><a href="/page?id=@Model.pageModel.ID"><img class="article_image" src="data:image/png;base64,@Model.pageModel.ImageModel.Filedata"></a></center>
+                            </div>        
+                        }
+                    </div>
+                    <BR>
+                    <div>
+                        @Model.pageModel.ContentText
+                    </div>
+                </div>
+
+                @if ( Model.articleSections != null )
+                {
+                    @foreach (var articleSection in Model.articleSections)
+                    {
+                        <div>
+                            &nbsp;
+                        </div>
+                        <div id="content_box_section_@(articleSection.ID)_layout_@articleSection.Layout" class="article_section">
+                            <BR>
+                            @if (articleSection.Layout == 0)
+                            {
+                                <div id="0 full" style="width:100%">@articleSection.Text</div>
+                            }
+                            else if (articleSection.Layout == 1 && articleSection.ImageModel != null && !string.IsNullOrEmpty(articleSection.ImageModel.Filedata))
+                            {
+                                <div id="1 full" style="width:100%"><center><img class="article_image" alt="@articleSection.ImageId - @articleSection.ImageModel.Filename" src="data:image/png;base64,@articleSection.ImageModel.Filedata"></center></div>
+                            }
+                            else if (articleSection.Layout == 2 && articleSection.ImageModel != null && !string.IsNullOrEmpty(articleSection.ImageModel.Filedata))
+                            {
+                                <div id="2_left" style="width:50%;margin-right:20px">@articleSection.Text</div>
+                                <div id="2_right" style="width:50%;margin-left:10px"><center><img class="article_image" alt="@articleSection.ImageId - @articleSection.ImageModel.Filename" src="data:image/png;base64,@articleSection.ImageModel.Filedata"></center></div>
+                            }
+                            else if (articleSection.Layout == 3 && articleSection.ImageModel != null && !string.IsNullOrEmpty(articleSection.ImageModel.Filedata))
+                            {
+                                <div id="3_left" style="width:50%;margin-right:10px"><center><img class="article_image" alt="@articleSection.ImageId - @articleSection.ImageModel.Filename" src="data:image/png;base64,@articleSection.ImageModel.Filedata"></center></div>
+                                <div id="3_right" style="width:50%;margin-left:20px">@articleSection.Text</div>
+                            }
+                            else
+                            {
+                                <center>Unknown layout</center>
+                            }
+                            <BR>
+                        </div>
+
+                        <div>
+                            &nbsp;
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4" >
+            @await Html.PartialAsync("Views/RightSideElements/ArticleSection.cshtml", Model.relatedPages)
+        </div>
+
+    </div>
+
 
 </div>
 

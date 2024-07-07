@@ -11,33 +11,137 @@ namespace DarkFactorCoreNet.Provider
 {
     public interface IEditPageProvider
     {
-        bool MovePageUp(PageContentModel page);
-        bool MovePageDown(PageContentModel page);
-        bool EditPage(int pageId);
-        bool AddImage(int pageId, String filename, byte[] data);
-        bool DeleteImage(int imageId);
+        bool CreatePage( int pageId, string pageTitle );
+        bool CreateChildPage( int parentPageId, string pageTitle );
+        bool SaveFullPage(PageContentModel pageModel);
+        bool CreateArticleSection(int pageId, string title, string content);
+        bool UpdateArticleSection(ArticleSectionModel articleSectionModel);
+        bool DeleteArticleSection(ArticleSectionModel articleSectionModel);
+        bool ChangeSectionLayout(int articleId, int layout);
+        bool MovePageUp(TeaserPageContentModel page);
+        bool MovePageDown(TeaserPageContentModel page);
+        bool CanEditPage();
+        bool AddImage(int pageID, uint imageId);
+        bool AddImageToSection(int sectionId, uint imageId);
+        bool DeletePage(int pageId);
+        bool ChangeAccess(int pageId, int accessLevel);
     }
 
     public class EditPageProvider : IEditPageProvider
     {
         private IPageProvider _pageProvider;
         private IPageRepository _pageRepository;
+        private IEditPageRepository _editPageRepository;
         private IUserSessionProvider _userSession;
         private ILoginRepository _loginRepository;
 
         public EditPageProvider(
             IPageProvider pageProvider, 
+            IEditPageRepository editPageRepository,
             IUserSessionProvider userSession, 
             ILoginRepository loginRepository,
             IPageRepository pageRepository)
         {
             _pageProvider = pageProvider;
+            _editPageRepository = editPageRepository;
             _userSession = userSession;
             _loginRepository = loginRepository;
             _pageRepository = pageRepository;
         }
 
-        public bool MovePageUp(PageContentModel page)
+        public bool CreatePage( int pageId, string pageTitle )
+        {
+            if ( !CanEditPage() )
+            {
+                return false;
+            }
+
+            var page = _pageProvider.GetPage(pageId);
+            if ( page != null )
+            {
+                return CreateChildPage(page.ParentId,pageTitle);
+            }
+            return false;
+        }
+
+        public bool CreateChildPage( int parentPageId, string pageTitle )
+        {
+            if ( !CanEditPage() )
+            {
+                return false;
+            }
+
+            // Fix sort id
+            int sortId = 0;
+            List<TeaserPageContentModel> pageList = _pageProvider.GetPagesWithParentId(parentPageId);
+            TeaserPageContentModel page = pageList.OrderBy(x => x.SortId).LastOrDefault();
+            if ( page != null )
+            {
+                sortId = page.SortId;
+            }
+
+            return _editPageRepository.CreatePageWithParent(parentPageId, pageTitle, sortId);
+        }
+
+
+        public bool SaveFullPage(PageContentModel pageModel)
+        {
+            var editPage = _pageRepository.GetPage( pageModel.ID );
+            editPage.Tags = pageModel.Tags;
+            editPage.PromoText = pageModel.PromoText;
+            editPage.PromoTitle = pageModel.PromoTitle;
+            editPage.ContentText = pageModel.ContentText;
+            editPage.ContentTitle = pageModel.ContentTitle;
+            return _editPageRepository.SavePage(editPage);
+        }
+
+        public bool CreateArticleSection(int pageId, string title, string content)
+        {
+            if ( !CanEditPage() )
+            {
+                return false;
+            }
+
+            int sortId = _editPageRepository.GetArticleSectionMaxSortId(pageId);
+            return _editPageRepository.CreateArticleSection(pageId,title,content, sortId + 1 );
+        }
+
+        public bool UpdateArticleSection(ArticleSectionModel articleSectionModel)
+        {
+            if ( !CanEditPage() )
+            {
+                return false;
+            }
+            return _editPageRepository.UpdateArticleSection(articleSectionModel);
+        }
+
+        public bool DeleteArticleSection(ArticleSectionModel articleSectionModel)
+        {
+            if ( !CanEditPage() )
+            {
+                return false;
+            }
+
+            if ( articleSectionModel.ID == 0 || articleSectionModel.PageId == 0)
+            {
+                return false;
+            }
+
+            return _editPageRepository.DeleteArticleSection(articleSectionModel);
+        }
+
+
+        public bool ChangeSectionLayout(int articleId, int layout)
+        {
+            if ( !CanEditPage() )
+            {
+                return false;
+            }
+            return _editPageRepository.ChangeSectionLayout(articleId,layout);            
+        }
+
+
+        public bool MovePageUp(TeaserPageContentModel page)
         {
             if ( !CanEditPage() )
             {
@@ -50,7 +154,7 @@ namespace DarkFactorCoreNet.Provider
             }
 
             var pageList = _pageProvider.GetPagesWithParentId(page.ParentId);
-            PageContentModel swapPage = pageList.OrderBy(x => x.SortId).Where(x => x.SortId < page.SortId).LastOrDefault();
+            TeaserPageContentModel swapPage = pageList.OrderBy(x => x.SortId).Where(x => x.SortId < page.SortId).LastOrDefault();
             if (swapPage == null)
             {
                 return false;
@@ -59,7 +163,7 @@ namespace DarkFactorCoreNet.Provider
             return SwapSort(page,swapPage);
        }
 
-        public bool MovePageDown(PageContentModel page)
+        public bool MovePageDown(TeaserPageContentModel page)
         {
             if ( !CanEditPage() )
             {
@@ -72,7 +176,7 @@ namespace DarkFactorCoreNet.Provider
             }
 
             var pageList = _pageProvider.GetPagesWithParentId(page.ParentId);
-            PageContentModel swapPage = pageList.OrderBy(x => x.SortId).Where(x => x.SortId > page.SortId).FirstOrDefault();
+            TeaserPageContentModel swapPage = pageList.OrderBy(x => x.SortId).Where(x => x.SortId > page.SortId).FirstOrDefault();
             if (swapPage == null)
             {
                 return false;
@@ -81,61 +185,67 @@ namespace DarkFactorCoreNet.Provider
             return SwapSort(page,swapPage);
         }
 
-        private bool SwapSort(PageContentModel page1, PageContentModel page2)
+        private bool SwapSort(TeaserPageContentModel page1, TeaserPageContentModel page2)
         {
-            int swapSortId = page1.SortId;
-            page1.SortId = page2.SortId;
-            page2.SortId = swapSortId;
+            var databasePage1 = _pageRepository.GetPage( page1.ID );
+            var databasePage2 = _pageRepository.GetPage( page2.ID );
 
-            bool didSave1 = _pageRepository.SavePage(page1);
-            bool didSave2 = _pageRepository.SavePage(page2);
+            databasePage1.SortId = page2.SortId;
+            databasePage2.SortId = page1.SortId;
+
+            bool didSave1 = _editPageRepository.SavePage(databasePage1);
+            bool didSave2 = _editPageRepository.SavePage(databasePage2);
             return didSave1 && didSave2;
         }
 
-        public bool EditPage(int pageId)
+        public bool CanEditPage()
+        {
+            return _userSession.CanEditPage();
+        }
+
+        public bool AddImage(int pageID, uint imageId)
         {
             if ( !CanEditPage() )
             {
                 return false;
             }
-            return true;
+            return _editPageRepository.AddImage(pageID,imageId);
         }
 
-        private bool CanEditPage()
-        {
-            if ( !_userSession.IsLoggedIn() )
-            {
-                return false;
-            }
-
-            string username = _userSession.GetUsername();
-            var userAccessLevel = _loginRepository.GetAccessForUser(username);
-            if ( userAccessLevel < AccessLevel.Editor )
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public bool AddImage(int pageId, String filename, byte[] data)
+        public bool AddImageToSection(int sectionId, uint imageId)
         {
             if ( !CanEditPage() )
             {
                 return false;
             }
- 
-            return _pageRepository.AddImage(pageId,filename, data);
+            return _editPageRepository.AddImageToSection(sectionId,imageId);
         }
 
-        public bool DeleteImage(int imageId)
+        public bool DeletePage(int pageId)
         {
             if ( !CanEditPage() )
             {
                 return false;
             }
- 
-            return _pageRepository.DeleteImage(imageId);
+
+            // Do not delete page if it has children
+            var childList = _pageRepository.GetPagesWithParentId(pageId);
+            if ( childList.Count > 0 )
+            {
+                return false;
+            }
+
+            return _editPageRepository.DeletePage(pageId);
+        }
+
+        public bool ChangeAccess(int pageId, int accessLevel)
+        {
+            if ( !CanEditPage() )
+            {
+                return false;
+            }
+
+            return _editPageRepository.ChangeAccess(pageId,accessLevel);
         }
     }
 }

@@ -9,21 +9,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger; 
 using Microsoft.AspNetCore.Http;
-
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Hosting;
 
 
-using DarkFactorCoreNet.Repository;
-using DarkFactorCoreNet.Repository.Database;
-using DarkFactorCoreNet.Api;
-using DarkFactorCoreNet.ConfigModel;
-using DarkFactorCoreNet.Provider;
 using DFCommonLib.Utils;
-using DFCommonLib.Config;
 using DFCommonLib.DataAccess;
-using AccountClientModule.Client;
-using AccountClientModule.RestClient;
 using DFCommonLib.Logger;
 
 [assembly: ApiController]
@@ -34,6 +25,14 @@ namespace DarkFactorCoreNet
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            // Run database script
+            IStartupDatabasePatcher startupRepository = DFServices.GetService<IStartupDatabasePatcher>();
+            startupRepository.WaitForConnection();
+            startupRepository.RunPatcher();
+
+            IDFLogger<Startup> logger = new DFLogger<Startup>();
+            logger.Startup(Program.AppName, Program.AppVersion);
         }
 
         public IConfiguration Configuration { get; }
@@ -59,41 +58,6 @@ namespace DarkFactorCoreNet
 
             services.AddOptions();
             services.AddHttpContextAccessor();
-            //services.Configure<DatabaseConfig>(Configuration.GetSection("DatabaseConfigModel"));
-            //services.Configure<EmailConfiguration>(Configuration.GetSection("EmailConfiguration"));
-            services.AddTransient<IConfigurationHelper, ConfigurationHelper<WebConfig> >();
-
-            services.AddScoped<IDbConnectionFactory, LocalMysqlConnectionFactory>();
-            services.AddScoped<IDBPatcher, MySQLDBPatcher>();
-            //services.BuildServiceProvider();
-
-            // Create Logger + service
-            DFServices.Create(services);
-            new DFServices(services)
-                .SetupLogger()
-                .SetupMySql()
-                .LogToConsole(DFLogLevel.INFO)
-                .LogToMySQL(DFLogLevel.WARNING)
-                //.LogToEvent(DFLogLevel.ERROR, AppName);
-                ;
-
-            services.AddSingleton(typeof(IEmailConfiguration), typeof(EmailConfiguration));
-
-            services.AddScoped(typeof(IMenuProvider), typeof(MenuProvider));
-            services.AddScoped(typeof(IPageProvider), typeof(PageProvider));
-            services.AddScoped(typeof(IEditPageProvider), typeof(EditPageProvider));
-            services.AddScoped(typeof(ILoginRepository), typeof(LoginRepository));
-
-            services.AddScoped(typeof(ILoginProvider), typeof(LoginProvider));
-            services.AddScoped(typeof(IUserSessionProvider), typeof(UserSessionProvider));
-            services.AddScoped(typeof(IEmailProvider), typeof(EmailProvider));
-
-            services.AddScoped(typeof(IMenuRepository), typeof(MenuRepository));
-            services.AddScoped(typeof(IPageRepository), typeof(PageRepository));
-
-            services.AddScoped(typeof(ICookieProvider), typeof(CookieProvider));
-
-            AccountClient.SetupService(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -113,16 +77,14 @@ namespace DarkFactorCoreNet
 
             app.UseStaticFiles();
 
-
             // Enable Swagger middleware 
             app.UseSwagger(); 
 
             // specify the Swagger JSON endpoint.
-            /*app.UseSwaggerUI(c =>
+            app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-            */
 
             app.UseSession();  
             app.UseMvc();

@@ -15,6 +15,7 @@ namespace DarkFactorCoreNet.Provider
         string GetUsername();
         string GetToken();
         bool IsLoggedIn();
+        bool CanEditPage();
     }
 
     public class UserSessionProvider : DFSessionProvider, IUserSessionProvider
@@ -79,6 +80,19 @@ namespace DarkFactorCoreNet.Provider
         public string GetToken()
         {
             return GetConfigString(SessionTokenKey);
+        }
+
+        public bool CanEditPage()
+        {
+            if ( IsLoggedIn() )
+            {
+                var accessLevel = GetConfigInt(SessionAccessLevel);
+                if ( accessLevel != null && accessLevel >= (int) AccessLevel.Editor )
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool IsLoggedIn()

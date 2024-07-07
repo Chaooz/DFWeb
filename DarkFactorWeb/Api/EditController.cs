@@ -20,11 +20,13 @@ namespace DarkFactorCoreNet.Api
     {
         IPageProvider _pageProvider;
         IEditPageProvider _editPageProvider;
+        IImageProvider _imageProvider;
 
-        public EditController(IEditPageProvider editPageProvider, IPageProvider pageProvider)
+        public EditController(IEditPageProvider editPageProvider, IPageProvider pageProvider, IImageProvider imageProvider)
         {
             _editPageProvider = editPageProvider;
             _pageProvider = pageProvider;
+            _imageProvider = imageProvider;
         }
 
         [HttpPost]
@@ -57,56 +59,102 @@ namespace DarkFactorCoreNet.Api
         [Route("EditPage")]
         public IActionResult EditPage([FromForm] int pageId)
         {
-            if ( _editPageProvider.EditPage(pageId) )
+            if ( _editPageProvider.CanEditPage() )
             {
-                return Redirect("/admin/edit?id=" + pageId);
+                return Redirect("/Editor/EditPage?id=" + pageId);
             }
             return Redirect("/mainpage?id=" + pageId);
         }
 
         [HttpPost]
-        [Route("SavePromo")]
-        public IActionResult SavePromo([FromForm] int pageId)
+        [Route("DeletePage")]
+        public IActionResult DeletePage([FromForm] int pageId)
         {
-            PageContentModel page = _pageProvider.GetPage(pageId);
-            if ( page != null )
+            if ( _editPageProvider.DeletePage(pageId) )
             {
-                _editPageProvider.MovePageUp(page);
-                return Redirect("/mainpage?id=" + page.ParentId);
-            }
-            return Redirect("/mainpage?id=" + pageId);
+                return Redirect("/");
+            }            
+            return Redirect("/page?id=" + pageId);
         }
 
-        // This action handles the form POST and the upload
         [HttpPost]
         [Route("AddImage")]
-        public async Task<IActionResult> AddImage([FromForm] int pageId, [FromForm] List<IFormFile> files)
+        public IActionResult AddImage([FromForm] int pageId, [FromForm] uint sectionId, [FromForm] uint imageId)
         {
-            foreach (var formFile in files)
+            if ( sectionId == 0 && _editPageProvider.AddImage(pageId, imageId))
             {
-                if (formFile.Length > 0)
-                {
-                    var filePath = Path.GetTempFileName();
-
-                    //using (var memoryStream = System.IO.File.Create(filePath))
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await formFile.CopyToAsync(memoryStream);
-                        var fileArray = memoryStream.ToArray();
-
-                        _editPageProvider.AddImage(pageId, formFile.FileName, fileArray);
-                    }
-                }
+                return Redirect("/Editor/EditPage?id=" + pageId);
             }
-            return Redirect("/admin/edit?id=" + pageId);
+            else if ( sectionId != 0 && _editPageProvider.AddImageToSection((int)sectionId, imageId) )
+            {
+                return Redirect("/Editor/EditPage?id=" + pageId);
+            }
+            return Redirect("/Editor/EditPage?id=" + pageId + "&error=1");
         }
 
         [HttpPost]
-        [Route("DeleteImage")]
-        public IActionResult DeleteImage([FromForm] int pageId, [FromForm] int imageId)
+        [Route("UploadImage")]
+        public async Task<IActionResult> UploadImage([FromForm] int pageId, [FromForm] List<IFormFile> files)
         {
-            _editPageProvider.DeleteImage(imageId);
-            return Redirect("/admin/edit?id=" + pageId);
+            uint imageId = await _imageProvider.UploadImage(pageId,files);
+            if ( imageId != 0 &&  _editPageProvider.AddImage(pageId, imageId) )
+            {
+                return Redirect("/Editor/EditPage?id=" + pageId);
+            }
+            return Redirect("/Editor/EditPage?id=" + pageId + "&error=1");
         }
+
+        [HttpPost]
+        [Route("UpdateSection")]
+        public IActionResult UpdateSection([FromForm] int pageId, [FromForm] int sectionId, [FromForm] string content, [FromForm] int sortId, [FromForm] int layout, [FromForm] int imageId)
+        {
+            ArticleSectionModel model = new ArticleSectionModel()
+            {
+                ID = sectionId,
+                PageId = pageId,
+                Text = content,
+                SortId = sortId,
+                Layout = layout,
+                ImageId = imageId
+            };
+            if ( _editPageProvider.UpdateArticleSection(model) )
+            {
+                return Redirect("/Editor/EditPage?id=" + pageId);
+            }
+            return Redirect("/Editor/EditPage?id=" + pageId + "&error=1");
+        }
+
+        [HttpPost]
+        [Route("DeleteArticleSection")]
+        public string DeleteArticleSection(ArticleSectionModel sectionModel)
+        {
+            if (_editPageProvider.DeleteArticleSection(sectionModel) )
+            {
+                return "OK";
+            }
+            return "FAILED";
+        }
+
+        [HttpPost]
+        [Route("ChangeSectionLayout")]
+        public IActionResult ChangeSectionLayout([FromForm] int pageId, [FromForm] int articleId, [FromForm] int layout)
+        {
+            if ( _editPageProvider.ChangeSectionLayout(articleId,layout) )
+            {
+                return Redirect("/Editor/EditPage?id=" + pageId);
+            }
+            return Redirect("/Editor/EditPage?id=" + pageId + "&error=1");
+        }
+
+        [HttpPost]
+        [Route("ChangeAccess")]
+        public IActionResult ChangeAccess([FromForm] int pageId, [FromForm] int acl)
+        {
+            if ( _editPageProvider.ChangeAccess(pageId, acl) )
+            {
+                return Redirect("/Editor/EditPage?id=" + pageId);
+            }
+            return Redirect("/Editor/EditPage?id=" + pageId + "&error=2");
+       }
     }
 }

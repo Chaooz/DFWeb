@@ -2,8 +2,14 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
 WORKDIR /app
 
+ARG username
+ARG token
+ENV NUGET_USERNAME $username
+ENV NUGET_TOKEN $token
+
 # Copy csproj and restore as distinct layers
 COPY ./DarkFactorWeb/*.csproj ./
+COPY ./DarkFactorWeb/NuGet.config ./
 RUN dotnet restore
 
 # Copy everything else

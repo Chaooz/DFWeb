@@ -129,7 +129,7 @@ namespace DarkFactorCoreNet.Provider
                 return userInfo;
             }
             _userSession.RemoveSession();
-            _cookieProvider.RemoveCookie(COOKIE_NAME);
+//            _cookieProvider.RemoveCookie(COOKIE_NAME);
             return null;
         }
 

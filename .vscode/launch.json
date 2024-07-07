@@ -8,7 +8,7 @@
             "name": "DFWeb Launch",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "rebuild",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/DarkFactorWeb/bin/Debug/net7.0/DarkFactorCoreNet.dll",
             "args": [],
