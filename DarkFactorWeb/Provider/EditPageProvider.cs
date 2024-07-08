@@ -112,6 +112,22 @@ namespace DarkFactorCoreNet.Provider
             {
                 return false;
             }
+
+            if ( articleSectionModel.PageId == 0 )
+            {
+                return false;
+            }
+
+            if ( articleSectionModel.ID == 0 )
+            {
+                return false;
+            }
+
+            if ( articleSectionModel.Text == null )
+            {
+                articleSectionModel.Text = "";
+            }
+
             return _editPageRepository.UpdateArticleSection(articleSectionModel);
         }
 

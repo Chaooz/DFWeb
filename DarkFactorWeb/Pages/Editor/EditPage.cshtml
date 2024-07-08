@@ -96,17 +96,16 @@
 
         @foreach (var articleSection in Model.articleSections)
         {            
+            <form method='POST' action=""  style='display: inline; width:100%'>
+                <input type='hidden' id='SortId_@articleSection.ID' value='@articleSection.SortId'>
+
             <div class="col-md-8" id="article_@articleSection.ID">
                 <BR>
                 <div style="width=100%;padding:2px;background-color:lightgray" >
 
-                    [<a href="#" onClick="clickDeleteSection(@articleSection.PageId, @articleSection.ID);return false;">X</a>]
+                    [<a href="#" onClick="clickConfirmDeleteSection(@articleSection.PageId, @articleSection.ID);return false;">X</a>]
 
-                    <form method='POST' onClick="clickSaveSection(@articleSection.ID);return false" style='display: inline'>
-                        <input type='hidden' id="PageId" name='pageId' value='@articleSection.PageId'>
-                        <input type='hidden' id="ArticleId" name='articleId' value='@articleSection.ID'>
-
-                    <select name='layout' class='edit_input' style="width:50%" align="center">
+                    <select id='layout_@articleSection.ID' class='edit_input' style="width:50%" align="center">
                     @foreach (var layoutKv in layout)
                     {
                         if ( layoutKv.Key == articleSection.Layout )
@@ -119,12 +118,8 @@
                         }
                     }
                     </select>
-                    <input type='submit' value='Save'>
-                    </form>
+                    <input type='submit' value='Save' onClick="clickSaveSection(@articleSection.PageId, @articleSection.ID);return false" >
                 </div>
-            </div>
-
-            <div class="col-md-4">
             </div>
 
             @if (articleSection.Layout == 0)
@@ -138,6 +133,7 @@
                 <div class="col-md-8"><div>
                 @await Html.PartialAsync("/Pages/Views/Components/EditSectionImage.cshtml", articleSection )
                 </div></div>
+                <input type='hidden' id='content_@articleSection.ID' value='@articleSection.Text'>
             }
             else if (articleSection.Layout == 2 )
             {
@@ -163,6 +159,8 @@
             }
             <div class="col-md-4">
             </div>
+
+            </form>
         }
 
         <div>
@@ -181,30 +179,10 @@
 
 <script type="text/javascript">
 
-    //
-    // Internal class to post data
-    //
-    function postData(url, postData)
+    function clickConfirmDeleteSection(pageId, sectionId)
     {
-        $.ajax(url, 
-        {
-            type: 'POST',
-            data: JSON.stringify(postData),
-            contentType: "application/json; charset=utf-8",
-            //dataType: "json",
-
-            success: function(data){
-                console.debug("PostData[OK]:" + data);
-            },
-            failure: function(errMsg) {
-                console.debug("PostData[ERROR]:"+ errMsg);
-            }
-        });
-    }
-
-    function getSectionValue(sectionId,fieldName)
-    {
-        return $("#" + fieldName + "_" + sectionId).val();
+        console.log("DELETE " + pageId + " section:" + sectionId);
+        clickDeleteSection(pageId,sectionId);
     }
 
     // Delete section
@@ -217,21 +195,23 @@
         postData("/api/Edit/DeleteArticleSection", data);
     }
 
-    function clickSaveSection(sectionId)
+    function clickSaveSection(pageId, sectionId)
     {
-        var pageId = $("#PageId").val();
         var content = getSectionValue(sectionId, "content");
+        var sortId = getSectionValue(sectionId, "SortId");
+        var layout = getSectionValue(sectionId, "layout");
+        var imageId = getSectionValue(sectionId, "ImageId");
 
         data = {
-            id: sectionId,
             pageId: pageId,
-            content: content
+            id: sectionId,
+            text: content,
+            sortId: sortId,
+            layout: layout,
+            imageId: imageId
         }
 
-        //sData = JSON.stringify(data);
-        //console.log("clickSaveSection:" + sData);
-
-        postData("/api/Edit/SaveArticleSection", data);
+        postData("/api/Edit/UpdateArticleSection", data);
     }
 
 </script>
