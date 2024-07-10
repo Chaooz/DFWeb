@@ -19,13 +19,6 @@ namespace DarkFactorCoreNet.Pages
         {
             base.OnGet(id);
             articleSections = pageProvider.GetArticleSections(id);
-            foreach (ArticleSectionModel section in articleSections)
-            {
-                if (section.ImageId != 0 )
-                {
-                    section.ImageModel = _imageProvider.GetImage(section.ImageId);
-                }
-            }
         }
     }
 }
