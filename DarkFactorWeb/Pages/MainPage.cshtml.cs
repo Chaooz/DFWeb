@@ -25,7 +25,7 @@ namespace DarkFactorCoreNet.Pages
         // Get all articles on this page
         // TODO: Rename this to ArticleTeaserModel
         //
-        private PageListModel GetSubPages(int parentId)
+        protected PageListModel GetSubPages(int parentId)
         {
             PageListModel model = new PageListModel();
             model.Title = "Main Page";
