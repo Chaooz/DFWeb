@@ -45,8 +45,6 @@ namespace DarkFactorCoreNet
                     .SetupLogger()
                     .SetupMySql()
                     .LogToConsole(DFLogLevel.INFO)
-                    .LogToMySQL(DFLogLevel.WARNING)
-                    //.LogToEvent(DFLogLevel.ERROR, AppName);
                     ;
 
                 services.AddScoped<IDbConnectionFactory, LocalMysqlConnectionFactory>();

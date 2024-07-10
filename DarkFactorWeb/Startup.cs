@@ -26,13 +26,18 @@ namespace DarkFactorCoreNet
         {
             Configuration = configuration;
 
+            IDFLogger<Startup> logger = new DFLogger<Startup>();
+            logger.Startup(Program.AppName, Program.AppVersion);
+
             // Run database script
             IStartupDatabasePatcher startupRepository = DFServices.GetService<IStartupDatabasePatcher>();
             startupRepository.WaitForConnection();
             startupRepository.RunPatcher();
 
-            IDFLogger<Startup> logger = new DFLogger<Startup>();
-            logger.Startup(Program.AppName, Program.AppVersion);
+            // Setup logger to database
+            //DFServices.GetService
+//                    .LogToMySQL(DFLogLevel.WARNING)
+
         }
 
         public IConfiguration Configuration { get; }
