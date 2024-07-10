@@ -26,8 +26,3 @@
             }
         });
     }
-
-    function getSectionValue(sectionId,fieldName)
-    {
-        return $("#" + fieldName + "_" + sectionId).val();
-    }

@@ -17,6 +17,7 @@ namespace DarkFactorCoreNet.Provider
         Task<bool> UpdateImageData(int imageId,  List<IFormFile> files);
         bool DeleteImage(int imageId);
         ImageModel GetImage(int imageId);
+        byte[] GetRawImage(int imageId);
         IList<ImageModel> GetImages(int maxImages);
         bool UpdateImage(int imageId, string filename);
     }
@@ -103,6 +104,11 @@ namespace DarkFactorCoreNet.Provider
         public ImageModel GetImage(int imageId)
         {
             return _imageRepository.GetImage(imageId);
+        }
+
+        public byte[] GetRawImage(int imageId)
+        {
+            return _imageRepository.GetRawImage(imageId);
         }
 
         public IList<ImageModel> GetImages(int maxImages)

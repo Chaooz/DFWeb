@@ -40,13 +40,13 @@
                     <BR>
                     <div>
                         @* Show Image if we have data *@    
-                        @if ( Model.pageModel.ImageModel != null && !string.IsNullOrEmpty(Model.pageModel.ImageModel.Filedata) )
+                        @if ( Model.pageModel.ImageId != 0 )
                         {
                             <div>
                                 &nbsp;
                             </div>
                             <div>
-                                <center><a href="/page?id=@Model.pageModel.ID"><img class="article_image" src="data:image/png;base64,@Model.pageModel.ImageModel.Filedata"></a></center>
+                                <center><a href="/page?id=@Model.pageModel.ID"><img class="article_image" src="/api/Image/GetImage?imageId=@Model.pageModel.ImageId"></a></center>
                             </div>        
                         }
                     </div>

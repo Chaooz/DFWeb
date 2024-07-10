@@ -16,6 +16,7 @@ namespace DarkFactorCoreNet.Repository
         uint UploadImage(int pageId, String filename, byte[] data);
         bool DeleteImage(int imageId);
         ImageModel GetImage(int imageId);
+        byte[] GetRawImage(int imageId);
         List<ImageModel> GetImages(int maxImages);
         bool UpdateImage(int imageId, string filename);
         bool UpdateImageData(int imageId, String filename, byte[] data);
@@ -71,6 +72,37 @@ namespace DarkFactorCoreNet.Repository
                 return (numRows == 1);
             }
         }
+
+        public byte[] GetRawImage(int imageId)
+        {
+            string sql = @"select data, length(data) as datalen from images where id = @imageid ";
+            using (var cmd = _connection.CreateCommand(sql))
+            {
+                cmd.AddParameter("@imageid", imageId);
+             
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        int dataSize = Convert.ToInt32(reader["datalen"]);
+
+                        // Hardcap the filesize to 5 mb
+                        if ( dataSize > 5000000 )
+                        {
+                            return null;
+                        }
+
+                        var fileData = new byte[dataSize];
+                        int index = reader.GetOrdinal("data");
+                        long numBytes = reader.GetBytes(index, 0, fileData, 0, dataSize);
+
+                        return fileData;
+                    }
+                }
+            }
+            return null;
+        }
+
 
         public ImageModel GetImage(int imageId)
         {

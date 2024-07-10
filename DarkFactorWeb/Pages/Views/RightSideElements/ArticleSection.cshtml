@@ -12,9 +12,9 @@
         {
         <div class="article">
 
-            @if (relPage.ImageModel != null && !String.IsNullOrEmpty(relPage.ImageModel.Filedata))
+            @if (relPage.ImageId != 0)
             {
-                <center><a href="/page?id=@relPage.ID"><img width=100% height=100% src="data:image/png;base64,@relPage.ImageModel.Filedata" class="imagefit"></a></center>
+                <center><a href="/page?id=@relPage.ID"><img width=100% height=100% src="/api/Image/GetImage?imageId=@relPage.ImageId" class="imagefit"></a></center>
                 <br />
             }
 

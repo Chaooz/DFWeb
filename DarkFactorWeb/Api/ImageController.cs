@@ -42,11 +42,16 @@ namespace DarkFactorCoreNet.Api
             return Redirect("/Editor/ImageSelector?pageId=" + pageId);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("GetImage")]
-        public ImageModel GetImage([FromForm] int imageId)
+        public IActionResult  GetImage(int imageId)
         {
-            return _imageProvider.GetImage(imageId);
+            var image = _imageProvider.GetRawImage(imageId);
+            if ( image != null )
+            {
+                return File(image, "image/png");
+            }
+            return null;
         }
 
         // This action handles the form POST and the upload

@@ -35,11 +35,6 @@ namespace DarkFactorCoreNet.Pages
             pageModel = pageProvider.GetPage(id);
             relatedPages = GetRelatedPages(id);
             pageId = id;
-
-            if ( pageModel != null )
-            {
-                pageModel.ImageModel = _imageProvider.GetImage(pageModel.ImageId);
-            }
         }
 
         protected List<PageListModel> GetRelatedPages(int id)

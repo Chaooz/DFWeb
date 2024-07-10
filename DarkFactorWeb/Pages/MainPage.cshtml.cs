@@ -37,12 +37,6 @@ namespace DarkFactorCoreNet.Pages
                 model.ShowEditor = userInfo.UserAccessLevel >= (int)AccessLevel.Editor;
             }
 
-            // Load images. TODO: Do this in Javascript
-            foreach (var page in model.Pages)
-            {
-                page.ImageModel = _imageProvider.GetImage(page.ImageId);
-            }
-
             return model;
         }
     }
