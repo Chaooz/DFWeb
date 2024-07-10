@@ -1,9 +1,0 @@
-
-# Upload image
-# Save image as blob in database
-# Show image with %img1% tag
-
-
-
-# Strip style and make it more clean
-# Maybe change image as file on disk
