@@ -116,8 +116,10 @@ namespace DarkFactorCoreNet.Repository
                                        "c.content_text, c.imageid, c.sort, c.published " +
                                        "from content c " +
                                        "where last_updated is not null " +
+                                       "and parentId > 0 " + 
+                                       "and published = {0} " +
                                        "order by last_updated desc " +
-                                       "limit {0}", maxArticles);
+                                       "limit {1}", (int) AccessLevel.Public, maxArticles);
 
             return GetPageList(sql, null);
         }
