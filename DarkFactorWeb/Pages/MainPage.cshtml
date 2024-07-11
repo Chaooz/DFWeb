@@ -41,17 +41,11 @@
 
                     <div class="articletext" style="width:50%;margin-left:10px;margin-right:10px">
 
-                        @if (!string.IsNullOrEmpty(relPage.PromoTitle))
-                        {
-                            <a href="/page?id=@relPage.ID" class="articlesubtitle">@relPage.PromoTitle</a><br />
-                            <br />
-                        }
-
                         @relPage.PromoText
                         <br />
                         <br />
 
-                        <a href="/page?id=@relPage.ID">Read more &gt;&gt;</a><br />
+                        <a href="/page?id=@relPage.PageId">Read more &gt;&gt;</a><br />
                     </div>
                 </div>
                 <BR>

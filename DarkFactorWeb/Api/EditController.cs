@@ -43,6 +43,17 @@ namespace DarkFactorCoreNet.Api
         }
 
         [HttpPost]
+        [Route("SavePage")]
+        public HttpResponseMessage SavePage(PageContentModel page)
+        {
+            if ( _editPageProvider.SaveFullPage(page) )
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK );
+            }
+            return new HttpResponseMessage(HttpStatusCode.NotFound );
+        }
+
+        [HttpPost]
         [Route("MoveDown")]
         public IActionResult MoveDown([FromForm] int pageId)
         {

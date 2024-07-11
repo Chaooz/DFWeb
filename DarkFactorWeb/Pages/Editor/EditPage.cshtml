@@ -32,31 +32,25 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" id="editor">
 
         <div class="col-md-4">
             <div class="article" style="column;padding:10px">
             <form  method='POST' style='display: inline;'>
-                <input class=toolbutton type='submit' value='Save Article'>
-
-                <input type='hidden' name='ID' value='@Model.pageModel.ID'>
-                <input type='hidden' name='ParentId' value='@Model.pageModel.ParentId'>
-                <input type='hidden' name='SortId' value='@Model.pageModel.SortId'>
-                <input type='hidden' name='command' value='save'>
 
                 <div class='edit_header'>Title</div>
-                <input name='ContentTitle' type='text' class='edit_input' style='padding:2px' value='@Model.pageModel.ContentTitle' placeholder='Enter title'><br>
+                <input id='ContentTitle' name='ContentTitle' type='text' class='edit_input' style='padding:2px' value='@Model.pageModel.ContentTitle' placeholder='Enter title'><br>
 
                 <div class='edit_header'>Promo Text</div>
-                <textarea rows=5 name='PromoText' class='edit_input'>@Model.pageModel.PromoText</textarea><br>
+                <textarea rows=5 id='PromoText' name='PromoText' class='edit_input'>@Model.pageModel.PromoText</textarea><br>
 
                 <div class='edit_header'>Content</div>
-                <textarea rows=15 name='ContentText' class='edit_input'>@Model.pageModel.ContentText</textarea><br>
+                <textarea rows=15 id='ContentText' name='ContentText' class='edit_input'>@Model.pageModel.ContentText</textarea><br>
 
                 <div class='edit_header'>Tags</div>
-                <input id='Tags' name='Tags' type='text' class='edit_input' value='@Model.pageModel.Tags'><br>
+                <input id='tags' name='Tags' type='text' class='edit_input' value='@Model.pageModel.Tags'><br>
                 <div class='edit_header'>Related Tags</div>
-                <input id='RelatedTags' name='RelatedTags' type='text' class='edit_input' value='@Model.pageModel.RelatedTags'><br>
+                <input id='related_tags' name='RelatedTags' type='text' class='edit_input' value='@Model.pageModel.RelatedTags'><br>
                 <br>
 
             </form>
@@ -88,9 +82,11 @@
         </div>
 
         <div class="col-md-4">
-            @await Html.PartialAsync("/Pages/Views/RightSideElements/EditMenu.cshtml", Model.menuItems)
-            @await Html.PartialAsync("/Pages/Views/RightSideElements/AdminMenu.cshtml", Model.PageId)
+            <center><input class=toolbutton type='submit' value='Save Page' onClick="clickSavePage(@Model.PageId)" ></center><BR>
+            <center><input class=toolbutton type='submit' value='Delete Page' onClick="clickConfirmDeletePage(@Model.PageId)" ></center><BR>
         </div>
+    </div>
+    <div class="row" id="sections">
 
         @foreach (var articleSection in Model.articleSections)
         {            
@@ -167,7 +163,7 @@
 
         <div class="col-md-8">
             <form method='POST' asp-page-handler="CreateArticleSection" style='display: inline;'>
-                <input type='hidden' name='PageId' value='@Model.pageModel.ID'>
+                <input type='hidden' name='PageId' value='@Model.pageModel.PageId'>
                 <input class=toolbutton type='submit' value='+ Add Section'>
             </form>
         </div>
@@ -191,6 +187,26 @@
             pageId: pageId
         };
         postData("/api/Edit/DeleteArticleSection", data);
+    }
+
+    function clickSavePage(pageId)
+    {
+        var title = getFieldValue("ContentTitle");
+        var text = getFieldValue("ContentText");
+        var promo = getFieldValue("PromoText");
+        var tags = getFieldValue("tags");
+        var relatedTags = getFieldValue("related_tags");
+
+        data = {
+            PageId: pageId,
+            ContentTitle: title,
+            ContentText: text,
+            PromoText: promo,
+            Tags: tags,
+            RelatedTags: relatedTags
+        };
+
+        postData("/api/Edit/SavePage", data);
     }
 
     function clickSaveSection(pageId, sectionId)

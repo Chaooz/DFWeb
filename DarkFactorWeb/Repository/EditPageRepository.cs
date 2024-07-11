@@ -38,7 +38,6 @@ namespace DarkFactorCoreNet.Repository
         {
             string sql = @"update content set "
                          + " parentid=@parentid, "
-                         + " promo_title = @promo_title, "
                          + " promo_text = @promo_text, "
                          + " content_title =@content_title, "
                          + " content_text = @content_text, "
@@ -53,7 +52,6 @@ namespace DarkFactorCoreNet.Repository
             using (var cmd = _connection.CreateCommand(sql))
             {
                 cmd.AddParameter("@parentid", pageModel.ParentId);
-                cmd.AddParameter("@promo_title", pageModel.PromoTitle);
                 cmd.AddParameter("@promo_text", pageModel.PromoText);
                 cmd.AddParameter("@content_title", pageModel.ContentTitle);
                 cmd.AddParameter("@content_text", pageModel.ContentText);
@@ -63,7 +61,7 @@ namespace DarkFactorCoreNet.Repository
                 cmd.AddParameter("@tags", pageModel.Tags);
                 cmd.AddParameter("@related_tags", pageModel.RelatedTags);
 
-                cmd.AddParameter("@id", pageModel.ID);
+                cmd.AddParameter("@id", pageModel.PageId);
                 int numRows = cmd.ExecuteNonQuery();
                 return (numRows == 1);
             }

@@ -6,10 +6,9 @@ namespace DarkFactorCoreNet.Models
 {
     public class TeaserPageContentModel
     {
-        public int ID { get; set; }
+        public int PageId { get; set; }
         public int ParentId { get; set; }
-        public string PromoTitle { get; set; }
-       public string PromoText { get; set; }
+        public string PromoText { get; set; }
         public string ContentTitle { get; set; }
         public int ImageId { get; set; }
         public int SortId { get; set; }

@@ -32,7 +32,7 @@ namespace DarkFactorCoreNet.Repository
 
         public PageContentModel GetPage(int pageId)
         {
-            var sql = @"select id, parentid, promo_title, promo_text, content_title, content_text, imageid, sort, published, tags, related_tags " +
+            var sql = @"select id, parentid, promo_text, content_title, content_text, imageid, sort, published, tags, related_tags " +
                     "from content where id = @pageId";
 
             using (var cmd = _connection.CreateCommand(sql))
@@ -44,9 +44,8 @@ namespace DarkFactorCoreNet.Repository
                     {
                         PageContentModel pageContent = new PageContentModel();
 
-                        pageContent.ID              = Convert.ToInt32(reader["id"]);
+                        pageContent.PageId          = Convert.ToInt32(reader["id"]);
                         pageContent.ParentId        = Convert.ToInt32(reader["parentid"]);
-                        pageContent.PromoTitle      = reader["promo_title"].ToString();
                         pageContent.PromoText       = reader["promo_text"].ToString();
                         pageContent.ContentTitle    = reader["content_title"].ToString();
                         pageContent.ContentText     = reader["content_text"].ToString();
@@ -88,7 +87,7 @@ namespace DarkFactorCoreNet.Repository
 
         public List<TeaserPageContentModel> GetPagesWithParentId(int parentId)
         {
-            string sql = @"select id, parentid, promo_title, promo_text, content_title, content_text, imageid, sort, published " +
+            string sql = @"select id, parentid, promo_text, content_title, content_text, imageid, sort, published " +
                         "from content where parentid = @bindVariable order by sort";
             return GetPageList(sql, parentId);
         }
@@ -98,7 +97,7 @@ namespace DarkFactorCoreNet.Repository
             // TODO : Remove this hackj
             var lowerTag = tag.ToLower();
 
-            string sql = @"select c.id, c.parentid, c.promo_title, c.promo_text, c.content_title, " +
+            string sql = @"select c.id, c.parentid, c.promo_text, c.content_title, " +
                                        "c.content_text, c.imageid, c.sort, c.published " +
                                        "from content c, contenttags, tags " +
                                        "where c.id = contenttags.contentid " +
@@ -112,7 +111,7 @@ namespace DarkFactorCoreNet.Repository
         {
             List<TeaserPageContentModel> pageList = new List<TeaserPageContentModel>();
 
-            string sql = string.Format(@"select c.id, c.parentid, c.promo_title, c.promo_text, c.content_title, " +
+            string sql = string.Format(@"select c.id, c.parentid, c.promo_text, c.content_title, " +
                                        "c.content_text, c.imageid, c.sort, c.published " +
                                        "from content c " +
                                        "where last_updated is not null " +
@@ -147,9 +146,8 @@ namespace DarkFactorCoreNet.Repository
                     {
                         TeaserPageContentModel pageContent = new TeaserPageContentModel();
 
-                        pageContent.ID              = Convert.ToInt32(reader["id"]);
+                        pageContent.PageId          = Convert.ToInt32(reader["id"]);
                         pageContent.ParentId        = Convert.ToInt32(reader["parentid"]);
-                        pageContent.PromoTitle      = reader["promo_title"].ToString();
                         pageContent.PromoText       = reader["promo_text"].ToString();
                         pageContent.ContentTitle    = reader["content_title"].ToString();
                         pageContent.ImageId         = Convert.ToInt32(reader["imageid"]);

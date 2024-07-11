@@ -13,6 +13,8 @@ namespace DarkFactorCoreNet.Pages
 {
     public class EditModel : FullPageModel
     {
+        public bool IsEdit;
+
         private IEditPageProvider editPageProvider;
 
         public EditModel(
@@ -29,38 +31,34 @@ namespace DarkFactorCoreNet.Pages
         public void OnGet(int id)
         {
             base.OnGet(id);
-
-            if ( pageModel != null )
-            {
-                pageModel.IsEdit = true;
-            }
+            IsEdit = true;
         }
 
-        public IActionResult OnPostAsync([FromForm] PageContentModel pageContentModel)
-        {
-            bool didSuceed = false;
-            switch(pageContentModel.Command )
-            {
-                case "save":
-                    didSuceed = editPageProvider.SaveFullPage(pageContentModel);
-                    return Redirect("/page?id=" + pageContentModel.ID);
-                case "create_page":
-                    didSuceed = editPageProvider.CreatePage(pageContentModel.ID,"New page");
-                    break;
-                case "create_child_page":
-                    didSuceed = editPageProvider.CreateChildPage(pageContentModel.ID, "New page");
-                    break;
-                case "delete_page":
-                    didSuceed = editPageProvider.DeletePage(pageContentModel.ID);
-                    break;
-            }
+        // public IActionResult OnPostAsync([FromForm] PageContentModel pageContentModel)
+        // {
+        //     bool didSuceed = false;
+        //     switch(pageContentModel.Command )
+        //     {
+        //         case "save":
+        //             didSuceed = editPageProvider.SaveFullPage(pageContentModel);
+        //             return Redirect("/page?id=" + pageContentModel.ID);
+        //         case "create_page":
+        //             didSuceed = editPageProvider.CreatePage(pageContentModel.ID,"New page");
+        //             break;
+        //         case "create_child_page":
+        //             didSuceed = editPageProvider.CreateChildPage(pageContentModel.ID, "New page");
+        //             break;
+        //         case "delete_page":
+        //             didSuceed = editPageProvider.DeletePage(pageContentModel.ID);
+        //             break;
+        //     }
 
-            if (pageContentModel != null && pageContentModel.ID != 0 )
-            {
-                return Redirect("/page?id=" + pageContentModel.ID);
-            }
-            return Redirect("/");
-        }
+        //     if (pageContentModel != null && pageContentModel.ID != 0 )
+        //     {
+        //         return Redirect("/page?id=" + pageContentModel.ID);
+        //     }
+        //     return Redirect("/");
+        // }
 
         public IActionResult OnPostCreateArticleSection([FromForm] int pageId)
         {

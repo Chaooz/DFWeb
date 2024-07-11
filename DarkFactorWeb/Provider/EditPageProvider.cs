@@ -105,12 +105,12 @@ namespace DarkFactorCoreNet.Provider
 
         public bool SaveFullPage(PageContentModel pageModel)
         {
-            var editPage = _pageRepository.GetPage( pageModel.ID );
-            editPage.Tags = pageModel.Tags;
+            var editPage = _pageRepository.GetPage( pageModel.PageId );
             editPage.PromoText = pageModel.PromoText;
-            editPage.PromoTitle = pageModel.PromoTitle;
             editPage.ContentText = pageModel.ContentText;
             editPage.ContentTitle = pageModel.ContentTitle;
+            editPage.Tags = pageModel.Tags;
+            editPage.RelatedTags = pageModel.RelatedTags;
             return _editPageRepository.SavePage(editPage);
         }
 
@@ -222,8 +222,8 @@ namespace DarkFactorCoreNet.Provider
 
         private bool SwapSort(TeaserPageContentModel page1, TeaserPageContentModel page2)
         {
-            var databasePage1 = _pageRepository.GetPage( page1.ID );
-            var databasePage2 = _pageRepository.GetPage( page2.ID );
+            var databasePage1 = _pageRepository.GetPage( page1.PageId );
+            var databasePage2 = _pageRepository.GetPage( page2.PageId);
 
             databasePage1.SortId = page2.SortId;
             databasePage2.SortId = page1.SortId;

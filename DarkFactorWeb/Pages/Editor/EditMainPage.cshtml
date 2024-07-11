@@ -89,20 +89,12 @@
                     {
                         <div class="articleedit" style="width:100%;display:flex">
                             <form class="form-inline" style="margin-left:2px;" action="/api/Edit/MoveDown" method="POST">
-                                <input type="hidden" id="pageid" name="pageid" value="@relPage.ID">
+                                <input type="hidden" id="pageid" name="pageid" value="@relPage.PageId">
                                 <button class="btn btn-sm btn-outline-primary my-2 my-sm-0" type="submit"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i></button>
                             </form>
                             <form class="form-inline" style="margin-left:2px" action="/api/Edit/MoveUp" method="POST">
-                                <input type="hidden" id="pageid" name="pageid" value="@relPage.ID">
+                                <input type="hidden" id="pageid" name="pageid" value="@relPage.PageId">
                                 <button class="btn btn-sm btn-outline-primary my-2 my-sm-0" type="submit"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i></button>
-                            </form>
-                            <form class="form-inline" style="margin-left:2px" action="/api/Edit/EditPage" method="POST">
-                                <input type="hidden" id="pageid" name="pageid" value="@relPage.ID">
-                                <button class="btn btn-sm btn-outline-primary my-2 my-sm-0" type="submit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                            </form>
-                            <form class="form-inline" style="margin-left:2px" action="/api/Edit/Delete" method="POST">
-                                <input type="hidden" id="pageid" name="pageid" value="@relPage.ID">
-                                <button class="btn btn-sm btn-outline-primary my-2 my-sm-0" type="submit"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                             </form>
                         </div>
                     }
@@ -115,17 +107,11 @@
 
                     <div class="articletext" style="width:50%;margin-left:10px;margin-right:10px">
 
-                        @if (!string.IsNullOrEmpty(relPage.PromoTitle))
-                        {
-                            <a href="/page?id=@relPage.ID" class="articlesubtitle">@relPage.PromoTitle</a><br />
-                            <br />
-                        }
-
                         @relPage.PromoText
                         <br />
                         <br />
 
-                        <a href="/page?id=@relPage.ID">Read more &gt;&gt;</a><br />
+                        <a href="/page?id=@relPage.PageId">Read more &gt;&gt;</a><br />
                     </div>
                 </div>
                 <BR>
