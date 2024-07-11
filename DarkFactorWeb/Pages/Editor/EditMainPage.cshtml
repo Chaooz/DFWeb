@@ -4,6 +4,19 @@
     ViewData["Title"] = Model.pageModel.ContentTitle;
 }
 
+@{
+    var acl = new Dictionary<int, string>();
+    acl[0] = "Public";
+    acl[1] = "Member";
+    acl[2] = "Unpublished";
+
+    var layout = new Dictionary<int, string>();
+    layout[0] = "Text Only";
+    layout[1] = "Image Only";
+    layout[2] = "Text Left, Image Right";
+    layout[3] = "Image Left, Text Right";
+}
+
 <div>
     <div class="row" id="menu">
         <div class="col-md-12">
@@ -16,7 +29,61 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-4">
+            <div class="article" style="column;padding:10px">
+                <input type='hidden' name='ID' value='@Model.pageModel.ID'>
+                <input type='hidden' name='command' value='save'>
+
+                <div class='edit_header'>Title</div>
+                <input name='Title' type='text' class='edit_input' style='padding:2px' value='@Model.mainPageItems.Title' placeholder='Enter title'><br>
+
+                <div class='edit_header'>Related Tags</div>
+                <input name='RelatedTags' type='text' class='edit_input' value='@Model.mainPageItems.RelatedTags'><br>
+                <br>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="article">
+                    <input type='hidden' name='pageId' value='@Model.pageModel.ID'>
+                    <div class='edit_header'>Access Control</div>
+                    <select name='acl' class='edit_input' style="width:75%" align="center">
+                        @foreach (var aclKv in acl)
+                        {
+                            if ( aclKv.Key == Model.pageModel.Acl )
+                            {
+                                <option value=@aclKv.Key selected> @aclKv.Value </option>
+                            }   
+                            else
+                            {
+                                <option value=@aclKv.Key> @aclKv.Value </option>
+                            }
+                        }
+                    </select>
+                    <input type='submit' value='Update'>
+                <BR>
+                @await Html.PartialAsync("/Pages/Views/Components/ImageComponent.cshtml", Model.pageModel)
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <input class=toolbutton type='submit' value='Save Page' onClick="clickSavePage(@Model.pageModel.ID)" >
+            <input class=toolbutton type='submit' value='Delete Page'>
+        </div>
+    </div>
+
+    <BR>
+
     <div class="row" id="mainblock">
+        <div class="col-lg-12 col-md-12">
+            <input class=toolbutton type='submit' value='Add Article'>
+        </div>
+    </div>
+
+    <BR>
+
+    <div class="row" id="mainblock">
+
         <div class="col-lg-8 col-md-8">
 
             <div>
@@ -77,3 +144,42 @@
 
 </div>
 
+
+<script type="text/javascript">
+
+    function clickConfirmDeleteSection(pageId, sectionId)
+    {
+        console.log("DELETE " + pageId + " section:" + sectionId);
+        clickDeleteSection(pageId,sectionId);
+    }
+
+    // Delete section
+    function clickDeleteSection(pageId, sectionId)
+    {
+        data = {
+            id:sectionId,
+            pageId: pageId
+        };
+        postData("/api/Edit/DeleteArticleSection", data);
+    }
+
+    //
+    // Save the content of the page
+    //
+    function clickSavePage(pageId)
+    {
+        var title = getFieldValue("title");
+
+        data = {
+            pageId: pageId,
+            id: sectionId,
+            text: content,
+            sortId: sortId,
+            layout: layout,
+            imageId: imageId
+        }
+
+        //postData("/api/Edit/UpdateArticleSection", data);
+    }
+
+</script>

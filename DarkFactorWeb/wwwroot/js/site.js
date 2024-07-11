@@ -26,3 +26,13 @@
             }
         });
     }
+    
+    function getSectionValue(sectionId,fieldName) 
+    { 
+        return $("#" + fieldName + "_" + sectionId).val(); 
+    } 
+
+    function getFieldValue(sectionId,fieldName) 
+    { 
+        return $("#" + fieldName ).val(); 
+    } 

@@ -10,6 +10,7 @@ namespace DarkFactorCoreNet.Models
     public class PageListModel
     {
         public string Title { get; set; }
+        public string RelatedTags{ get; set; }
         public List<TeaserPageContentModel> Pages;
 
         public bool ShowEditor;
