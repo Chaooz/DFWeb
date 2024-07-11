@@ -17,5 +17,12 @@ namespace DarkFactorCoreNet.Pages
             IImageProvider imageProvider) : base(pageProvider,menuProvider, loginProvider, imageProvider)
         {
         }
+
+        override
+        public void OnGet(int id)
+        {
+            base.OnGet(id);
+            Title = "Delete page";
+        }
     }
 }

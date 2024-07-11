@@ -8,6 +8,7 @@ namespace DarkFactorCoreNet.Pages
 {
     public class EditMainPage : MainPage
     {
+        public bool ShowEditor;
         private IEditPageProvider _editPageProvider;
 
         public EditMainPage( IEditPageProvider editPageProvider, IPageProvider pageProvider, IMenuProvider menuProvider, ILoginProvider loginProvider, IImageProvider imageProvider) 
@@ -24,7 +25,7 @@ namespace DarkFactorCoreNet.Pages
             var userInfo = _loginProvider.GetLoginInfo();
             if ( userInfo != null )
             {
-                mainPageItems.ShowEditor = userInfo.UserAccessLevel >= (int)AccessLevel.Editor;
+                ShowEditor = userInfo.UserAccessLevel >= (int)AccessLevel.Editor;
             }
         }
 

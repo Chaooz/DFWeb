@@ -7,7 +7,11 @@ namespace DarkFactorCoreNet.Pages
 {
     public class MainPage : BasePageModel
     {
-        public PageListModel mainPageItems;
+        public string RelatedTags;
+
+        public int Acl;
+
+        public List<TeaserPageContentModel> mainPageItems;
 
         public MainPage(IPageProvider pageProvider, IMenuProvider menuProvider, ILoginProvider loginProvider, IImageProvider imageProvider) 
         : base(pageProvider,menuProvider, loginProvider, imageProvider)
@@ -18,19 +22,18 @@ namespace DarkFactorCoreNet.Pages
         public void OnGet(int id)
         {
             base.OnGet(id);
-            mainPageItems = GetSubPages(id);
+
+            Title = "MainPage";
+            Acl = (int) AccessLevel.Public;
+            RelatedTags = "testtag1 testtag2";
+
+            mainPageItems = GetPageArticles(id);
         }
 
-        //
-        // Get all articles on this page
-        // TODO: Rename this to ArticleTeaserModel
-        //
-        protected PageListModel GetSubPages(int parentId)
+        virtual
+        public List<TeaserPageContentModel> GetPageArticles(int pageId)
         {
-            PageListModel model = new PageListModel();
-            model.Title = "Main Page";
-            model.Pages = pageProvider.GetPagesWithParentId(parentId);
-            return model;
+            return pageProvider.GetPagesWithParentId(pageId);
         }
     }
 }

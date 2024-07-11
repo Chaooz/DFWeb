@@ -21,7 +21,7 @@
     {
     <div class="row">
         <div class="col-md-12">
-                <a href="/Editor/EditPage?id=@Model.pageId" class="navigation-item" style="float:right;">[ Edit Page ]</a>
+                <a href="/Editor/EditPage?id=@Model.PageId" class="navigation-item" style="float:right;">[ Edit Page ]</a>
         </div>
         <br />
     </div>
@@ -30,7 +30,7 @@
     <div class="row">
         <div class="col-lg-8 col-md-8">
             <div>
-                <div id="content_feature_@Model.pageId" class="article_featured">
+                <div id="content_feature_@Model.PageId" class="article_featured">
                     <div>
                         <H2>@Model.pageModel.ContentTitle</H2>
                     </div>
@@ -47,7 +47,7 @@
                                 &nbsp;
                             </div>
                             <div>
-                                <center><a href="/page?id=@Model.pageModel.ID"><img class="article_image" src="/api/Image/GetImage?imageId=@Model.pageModel.ImageId"></a></center>
+                                <center><a href="/page?id=@Model.PageId"><img class="article_image" src="/api/Image/GetImage?imageId=@Model.pageModel.ImageId"></a></center>
                             </div>        
                         }
                     </div>

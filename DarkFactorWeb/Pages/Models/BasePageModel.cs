@@ -9,13 +9,11 @@ namespace DarkFactorCoreNet.Pages
 {
     public class BasePageModel : MenuPageModel
     {
-        public PageContentModel pageModel;
         public List<PageListModel> relatedPages;
-        public int pageId;
-
+        public int PageId;
+        public string Title;
         protected IPageProvider pageProvider;
         protected IImageProvider _imageProvider;
-
 
         public BasePageModel(   IPageProvider pageProvider, 
                                 IMenuProvider menuProvider, 
@@ -24,17 +22,15 @@ namespace DarkFactorCoreNet.Pages
         {
             this.pageProvider = pageProvider;
             _imageProvider = imageProvider;
-            pageId = 0;
+            PageId = 0;
         }
 
         virtual
         public void OnGet(int id)
         {
             base.GetMenuData(id);
-
-            pageModel = pageProvider.GetPage(id);
             relatedPages = GetRelatedPages(id);
-            pageId = id;
+            PageId = id;
         }
 
         protected List<PageListModel> GetRelatedPages(int id)
@@ -51,7 +47,6 @@ namespace DarkFactorCoreNet.Pages
             }
             return model;
         }
-
 
         protected PageListModel GetPagesWithTag(string tag)
         {

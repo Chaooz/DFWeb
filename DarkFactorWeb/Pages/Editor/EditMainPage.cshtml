@@ -1,7 +1,7 @@
 @page
 @model EditMainPage
 @{
-    ViewData["Title"] = Model.pageModel.ContentTitle;
+    ViewData["Title"] = Model.Title;
 }
 
 @{
@@ -32,25 +32,24 @@
     <div class="row">
         <div class="col-md-4">
             <div class="article" style="column;padding:10px">
-                <input type='hidden' name='ID' value='@Model.pageModel.ID'>
+                <input type='hidden' name='ID' value='@Model.PageId'>
                 <input type='hidden' name='command' value='save'>
 
                 <div class='edit_header'>Title</div>
-                <input name='Title' type='text' class='edit_input' style='padding:2px' value='@Model.mainPageItems.Title' placeholder='Enter title'><br>
+                <input name='Title' type='text' class='edit_input' style='padding:2px' value='@Model.Title' placeholder='Enter title'><br>
 
                 <div class='edit_header'>Related Tags</div>
-                <input name='RelatedTags' type='text' class='edit_input' value='@Model.mainPageItems.RelatedTags'><br>
+                <input name='RelatedTags' type='text' class='edit_input' value='@Model.RelatedTags'><br>
                 <br>
             </div>
         </div>
         <div class="col-md-4">
             <div class="article">
-                    <input type='hidden' name='pageId' value='@Model.pageModel.ID'>
                     <div class='edit_header'>Access Control</div>
                     <select name='acl' class='edit_input' style="width:75%" align="center">
                         @foreach (var aclKv in acl)
                         {
-                            if ( aclKv.Key == Model.pageModel.Acl )
+                            if ( aclKv.Key == Model.Acl )
                             {
                                 <option value=@aclKv.Key selected> @aclKv.Value </option>
                             }   
@@ -62,12 +61,12 @@
                     </select>
                     <input type='submit' value='Update'>
                 <BR>
-                @await Html.PartialAsync("/Pages/Views/Components/ImageComponent.cshtml", Model.pageModel)
+                @*await Html.PartialAsync("/Pages/Views/Components/ImageComponent.cshtml", Model.pageModel)*@
             </div>
         </div>
 
         <div class="col-md-4">
-            <input class=toolbutton type='submit' value='Save Page' onClick="clickSavePage(@Model.pageModel.ID)" >
+            <input class=toolbutton type='submit' value='Save Page' onClick="clickSavePage(@Model.PageId)" >
             <input class=toolbutton type='submit' value='Delete Page'>
         </div>
     </div>
@@ -87,9 +86,9 @@
         <div class="col-lg-8 col-md-8">
 
             <div>
-                @foreach (var relPage in Model.mainPageItems.Pages)
+                @foreach (var relPage in Model.mainPageItems)
                 {
-                    @if ( Model.mainPageItems.ShowEditor )
+                    @if ( Model.ShowEditor )
                     {
                         <div class="articleedit" style="width:100%;display:flex">
                             <form class="form-inline" style="margin-left:2px;" action="/api/Edit/MoveDown" method="POST">

@@ -27,7 +27,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <a href="/Page?id=@Model.pageId" class="navigation-item" style="float:right;">[ View Page ]</a>
+            <a href="/Page?id=@Model.PageId" class="navigation-item" style="float:right;">[ View Page ]</a>
             <br />
         </div>
     </div>
@@ -67,7 +67,7 @@
         <div class="col-md-4">
             <div class="article">
                 <form  method='POST' action="/api/Edit/ChangeAccess" style='display: inline;'>
-                    <input type='hidden' name='pageId' value='@Model.pageModel.ID'>
+                    <input type='hidden' name='pageId' value='@Model.PageId'>
                     <div class='edit_header'>Access Control</div>
                     <select name='acl' class='edit_input' style="width:75%" align="center">
                         @foreach (var aclKv in acl)
@@ -91,7 +91,7 @@
 
         <div class="col-md-4">
             @await Html.PartialAsync("/Pages/Views/RightSideElements/EditMenu.cshtml", Model.menuItems)
-            @await Html.PartialAsync("/Pages/Views/RightSideElements/AdminMenu.cshtml", Model.pageId)
+            @await Html.PartialAsync("/Pages/Views/RightSideElements/AdminMenu.cshtml", Model.PageId)
         </div>
 
         @foreach (var articleSection in Model.articleSections)

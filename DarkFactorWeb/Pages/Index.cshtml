@@ -2,7 +2,7 @@
 @using DarkFactorCoreNet.Models
 @model IndexModel
 @{
-    ViewData["Title"] = Model.pageModel.ContentTitle;
+    ViewData["Title"] = Model.Title;
 }
 
 <div>
@@ -21,7 +21,7 @@
     {
     <div class="row">
         <div class="col-md-12">
-                <a href="/Editor/EditMainPage?id=@Model.pageId" class="navigation-item" style="float:right;">[ Edit Page ]</a>
+                <a href="/Editor/EditMainPage?id=@Model.PageId" class="navigation-item" style="float:right;">[ Edit Page ]</a>
         </div>
         <br />
     </div>
@@ -31,7 +31,7 @@
         <div class="col-lg-8 col-md-8">
 
             <div>
-                @foreach (var relPage in Model.mainPageItems.Pages)
+                @foreach (var relPage in Model.mainPageItems)
                 {
                     <div class="article" style="width:100%;display:flex">
 
