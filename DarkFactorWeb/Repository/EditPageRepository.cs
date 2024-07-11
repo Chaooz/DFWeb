@@ -44,7 +44,8 @@ namespace DarkFactorCoreNet.Repository
                          + " content_text = @content_text, "
                          + " imageid = @imageid, "
                          + " sort =@sort, "
-                         + " published = @published "
+                         + " published = @published, "
+                         + " last_updated = now() "
                          + "where id = @id ";
 
             using (var cmd = _connection.CreateCommand(sql))
@@ -78,14 +79,26 @@ namespace DarkFactorCoreNet.Repository
         public bool CreatePageWithParent( int parentPageId, string pageTitle, int sortId )
         {
             // Create page in database
-            string sql = @"insert into content(parentid,content_title,sort,content_text,published,externurl) " + 
-                        "values(@parentid,@content_title, @sortid, null, false, null) ";
+            string sql = @"insert into content(parentid,content_title,sort,content_text,published,externurl, last_updated) " + 
+                        "values(@parentid,@content_title, @sortid, null, @published, null, now() ) ";
 
             using (var cmd = _connection.CreateCommand(sql))
             {
                 cmd.AddParameter("@parentid", parentPageId);
                 cmd.AddParameter("@content_title", pageTitle);
                 cmd.AddParameter("@sortid", sortId + 1);
+                cmd.AddParameter("@published", AccessLevel.Editor);
+                int numRows = cmd.ExecuteNonQuery();
+                return (numRows == 1);
+            }
+        }
+
+        private bool UpdatedArticle(int articleId)
+        {
+            string sql = @"update content set last_updated = now() where id = @articleId ";
+            using (var cmd = _connection.CreateCommand(sql))
+            {
+                cmd.AddParameter("@articleId", articleId);
                 int numRows = cmd.ExecuteNonQuery();
                 return (numRows == 1);
             }
@@ -129,7 +142,9 @@ namespace DarkFactorCoreNet.Repository
                 cmd.AddParameter("@sortid", sortId);
                 cmd.AddParameter("@layout", layout);
                 int numRows = cmd.ExecuteNonQuery();
-                return numRows == 1;
+
+                var updatedArticle = UpdatedArticle(pageId);
+                return numRows == 1 && updatedArticle;
             }
         }
 
@@ -140,6 +155,7 @@ namespace DarkFactorCoreNet.Repository
                          + " imageid = @imageid, "
                          + " sort = @sort, "
                          + " layout = @layout "
+                         + " last_updated = now() "
                          + "where id = @id ";
 
             using (var cmd = _connection.CreateCommand(sql))
@@ -150,7 +166,8 @@ namespace DarkFactorCoreNet.Repository
                 cmd.AddParameter("@layout", articleSectionModel.Layout);
                 cmd.AddParameter("@id", articleSectionModel.ID);
                 int numRows = cmd.ExecuteNonQuery();
-                return (numRows == 1);
+                var updatedArticle = UpdatedArticle(articleSectionModel.PageId);
+                return numRows == 1 && updatedArticle;
             }
         }
 
@@ -165,7 +182,8 @@ namespace DarkFactorCoreNet.Repository
                 cmd.AddParameter("@id", articleSectionModel.ID);
                 cmd.AddParameter("@PageId", articleSectionModel.PageId);
                 int numRows = cmd.ExecuteNonQuery();
-                return (numRows == 1);
+                var updatedArticle = UpdatedArticle(articleSectionModel.PageId);
+                return numRows == 1 && updatedArticle;
             }
         }
 
@@ -187,13 +205,13 @@ namespace DarkFactorCoreNet.Repository
 
         public bool AddImage(int pageId, uint imageId)
         {
-            var sql = @"update content set imageid = @imageid where id = @pageid "; 
+            var sql = @"update content set imageid = @imageid, last_updated = now() where id = @pageid "; 
             using (var cmd = _connection.CreateCommand(sql))
             {
                 cmd.AddParameter("@pageid", pageId);
                 cmd.AddParameter("@imageid", imageId);
                 int numRows = cmd.ExecuteNonQuery();
-                return (numRows == 1);
+                return numRows == 1;
             }
         }
 
@@ -212,7 +230,7 @@ namespace DarkFactorCoreNet.Repository
 
         public bool ChangeAccess(int pageId, int accessLevel)
         {
-            var sql = @"update content set published = @accessLevel where id = @pageid "; 
+            var sql = @"update content set published = @accessLevel, last_updated = now() where id = @pageid "; 
             using (var cmd = _connection.CreateCommand(sql))
             {
                 cmd.AddParameter("@pageid", pageId);
