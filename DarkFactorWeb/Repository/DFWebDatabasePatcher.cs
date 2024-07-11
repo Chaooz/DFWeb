@@ -36,6 +36,11 @@ namespace DarkFactorCoreNet.Repository
             + ")"
             );
 
+            // Last_Updated
+            _dbPatcher.Patch(PATCHER,4, "ALTER TABLE `content` "
+            + " ADD `last_updated` date " 
+            );
+
             return _dbPatcher.Successful();
         }
     }

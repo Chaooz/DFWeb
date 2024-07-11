@@ -14,6 +14,7 @@ namespace DarkFactorCoreNet.Repository
         PageContentModel GetPage(int pageId);
         List<TeaserPageContentModel> GetPagesWithParentId(int parentId);
         List<TeaserPageContentModel> GetPagesWithTag(string tag);
+        List<TeaserPageContentModel> GetNewArticles(int maxArticles);
         List<TagModel> GetTagsForPage(int pageId );
         List<String> GetRelatedTags(int pageId);
         IList<ArticleSectionModel> GetArticleSections(int pageId);
@@ -80,6 +81,21 @@ namespace DarkFactorCoreNet.Repository
 
             return GetPageList(sql, tag);
         }
+
+        public List<TeaserPageContentModel> GetNewArticles(int maxArticles)
+        {
+            List<TeaserPageContentModel> pageList = new List<TeaserPageContentModel>();
+
+            string sql = string.Format(@"select c.id, c.parentid, c.promo_title, c.promo_text, c.content_title, " +
+                                       "c.content_text, c.imageid, c.sort, c.published " +
+                                       "from content c " +
+                                       "where last_updated is not null " +
+                                       "order by last_updated " +
+                                       "limit {0}", maxArticles);
+
+            return GetPageList(sql, null);
+        }
+
 
         private List<TeaserPageContentModel> GetPageList(string sql, int bindVariable)
         {

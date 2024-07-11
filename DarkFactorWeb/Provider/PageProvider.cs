@@ -14,6 +14,7 @@ namespace DarkFactorCoreNet.Provider
         PageContentModel GetPage(int pageId);
         List<TeaserPageContentModel> GetPagesWithParentId(int parentId);
         List<TeaserPageContentModel> GetPagesWithTag(string tag);
+        List<TeaserPageContentModel> GetNewArticles(int maxArticles);
         List<String> GetRelatedTags(int pageId);
         IList<ArticleSectionModel> GetArticleSections(int pageId);
     }
@@ -41,6 +42,12 @@ namespace DarkFactorCoreNet.Provider
         {
             return pageRepository.GetPagesWithTag(tag);
         }
+
+        public List<TeaserPageContentModel> GetNewArticles(int maxArticles)
+        {
+            return pageRepository.GetNewArticles(maxArticles);
+        }
+
 
         public List<String> GetRelatedTags(int pageId)
         {
