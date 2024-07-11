@@ -38,7 +38,7 @@ namespace DarkFactorCoreNet.Repository
 
             // Last_Updated
             _dbPatcher.Patch(PATCHER,4, "ALTER TABLE `content` "
-            + " ADD `last_updated` date " 
+            + " ADD `last_updated` datetime " 
             );
 
             return _dbPatcher.Successful();

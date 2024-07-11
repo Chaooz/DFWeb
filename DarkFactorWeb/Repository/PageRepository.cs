@@ -90,7 +90,7 @@ namespace DarkFactorCoreNet.Repository
                                        "c.content_text, c.imageid, c.sort, c.published " +
                                        "from content c " +
                                        "where last_updated is not null " +
-                                       "order by last_updated " +
+                                       "order by last_updated desc " +
                                        "limit {0}", maxArticles);
 
             return GetPageList(sql, null);
