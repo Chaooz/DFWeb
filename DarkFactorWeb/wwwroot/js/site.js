@@ -32,7 +32,7 @@
         return $("#" + fieldName + "_" + sectionId).val(); 
     } 
 
-    function getFieldValue(sectionId,fieldName) 
+    function getFieldValue(fieldName) 
     { 
         return $("#" + fieldName ).val(); 
     } 

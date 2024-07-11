@@ -7,9 +7,7 @@ namespace DarkFactorCoreNet.Pages
 {
     public class MainPage : BasePageModel
     {
-        public string RelatedTags;
-
-        public int Acl;
+        public MainPageContentModel pageModel;
 
         public List<TeaserPageContentModel> mainPageItems;
 
@@ -22,11 +20,7 @@ namespace DarkFactorCoreNet.Pages
         public void OnGet(int id)
         {
             base.OnGet(id);
-
-            Title = "MainPage";
-            Acl = (int) AccessLevel.Public;
-            RelatedTags = "testtag1 testtag2";
-
+            pageModel = pageProvider.GetMainPage(id);
             mainPageItems = GetPageArticles(id);
         }
 

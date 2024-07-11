@@ -45,6 +45,8 @@ namespace DarkFactorCoreNet.Repository
                          + " imageid = @imageid, "
                          + " sort =@sort, "
                          + " published = @published, "
+                         + " tags = @tags, "
+                         + " related_tags = @related_tags, "
                          + " last_updated = now() "
                          + "where id = @id ";
 
@@ -58,6 +60,8 @@ namespace DarkFactorCoreNet.Repository
                 cmd.AddParameter("@imageid", pageModel.ImageId);
                 cmd.AddParameter("@sort", pageModel.SortId);
                 cmd.AddParameter("@published", pageModel.Acl);
+                cmd.AddParameter("@tags", pageModel.Tags);
+                cmd.AddParameter("@related_tags", pageModel.RelatedTags);
 
                 cmd.AddParameter("@id", pageModel.ID);
                 int numRows = cmd.ExecuteNonQuery();

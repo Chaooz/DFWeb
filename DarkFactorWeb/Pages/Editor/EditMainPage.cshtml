@@ -1,7 +1,7 @@
 @page
 @model EditMainPage
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = Model.pageModel.Title;
 }
 
 @{
@@ -32,24 +32,21 @@
     <div class="row">
         <div class="col-md-4">
             <div class="article" style="column;padding:10px">
-                <input type='hidden' name='ID' value='@Model.PageId'>
-                <input type='hidden' name='command' value='save'>
-
                 <div class='edit_header'>Title</div>
-                <input name='Title' type='text' class='edit_input' style='padding:2px' value='@Model.Title' placeholder='Enter title'><br>
+                <input id='Title' name='Title' type='text' class='edit_input' style='padding:2px' value='@Model.pageModel.Title' placeholder='Enter title'><br>
 
                 <div class='edit_header'>Related Tags</div>
-                <input name='RelatedTags' type='text' class='edit_input' value='@Model.RelatedTags'><br>
+                <input id='RelatedTags' name='RelatedTags' type='text' class='edit_input' value='@Model.pageModel.RelatedTags'><br>
                 <br>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="article">
+            <div class="article" style="column;padding:10px">
                     <div class='edit_header'>Access Control</div>
-                    <select name='acl' class='edit_input' style="width:75%" align="center">
+                    <select id='acl' name='acl' class='edit_input' style="width:75%" align="center">
                         @foreach (var aclKv in acl)
                         {
-                            if ( aclKv.Key == Model.Acl )
+                            if ( aclKv.Key == Model.pageModel.Acl )
                             {
                                 <option value=@aclKv.Key selected> @aclKv.Value </option>
                             }   
@@ -66,8 +63,8 @@
         </div>
 
         <div class="col-md-4">
-            <input class=toolbutton type='submit' value='Save Page' onClick="clickSavePage(@Model.PageId)" >
-            <input class=toolbutton type='submit' value='Delete Page'>
+            <center><input class=toolbutton type='submit' value='Save Page' onClick="clickSavePage(@Model.PageId)" ></center><BR>
+            <center><input class=toolbutton type='submit' value='Delete Page' onClick="clickConfirmDeletePage(@Model.PageId)" ></center><BR>
         </div>
     </div>
 
@@ -146,20 +143,19 @@
 
 <script type="text/javascript">
 
-    function clickConfirmDeleteSection(pageId, sectionId)
+    function clickConfirmDeletePage(pageId)
     {
-        console.log("DELETE " + pageId + " section:" + sectionId);
+        console.log("DELETE " + pageId );
         clickDeleteSection(pageId,sectionId);
     }
 
-    // Delete section
-    function clickDeleteSection(pageId, sectionId)
+    // Delete page
+    function clickDeletePage(pageId)
     {
         data = {
-            id:sectionId,
             pageId: pageId
         };
-        postData("/api/Edit/DeleteArticleSection", data);
+        postData("/api/Edit/DeletePage", data);
     }
 
     //
@@ -167,18 +163,18 @@
     //
     function clickSavePage(pageId)
     {
-        var title = getFieldValue("title");
+        var title = getFieldValue("Title");
+        var relatedTags = getFieldValue("RelatedTags");
+        var acl = getFieldValue("acl");
 
         data = {
             pageId: pageId,
-            id: sectionId,
-            text: content,
-            sortId: sortId,
-            layout: layout,
-            imageId: imageId
-        }
+            title: title,
+            acl: acl,
+            relatedTags:relatedTags
+        };
 
-        //postData("/api/Edit/UpdateArticleSection", data);
+        postData("/api/Edit/SaveMainPage", data);
     }
 
 </script>

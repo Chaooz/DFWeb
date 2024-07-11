@@ -54,11 +54,9 @@
                 <textarea rows=15 name='ContentText' class='edit_input'>@Model.pageModel.ContentText</textarea><br>
 
                 <div class='edit_header'>Tags</div>
-                @foreach (var tag in Model.pageModel.Tags)
-                {
-                    <span> @tag.name [<a href="">X</a>]</span>
-                }
-                <input name='NewTag' type='text' class='edit_input' value=''><br>
+                <input id='Tags' name='Tags' type='text' class='edit_input' value='@Model.pageModel.Tags'><br>
+                <div class='edit_header'>Related Tags</div>
+                <input id='RelatedTags' name='RelatedTags' type='text' class='edit_input' value='@Model.pageModel.RelatedTags'><br>
                 <br>
 
             </form>

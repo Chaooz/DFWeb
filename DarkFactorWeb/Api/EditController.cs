@@ -11,6 +11,8 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using System.Net.Http;
+using System.Net;
 
 namespace DarkFactorCoreNet.Api
 {
@@ -27,6 +29,17 @@ namespace DarkFactorCoreNet.Api
             _editPageProvider = editPageProvider;
             _pageProvider = pageProvider;
             _imageProvider = imageProvider;
+        }
+
+        [HttpPost]
+        [Route("SaveMainPage")]
+        public HttpResponseMessage SaveMainPage(MainPageContentModel mainPage)
+        {
+            if ( _editPageProvider.SaveMainPage(mainPage) )
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK );
+            }
+            return new HttpResponseMessage(HttpStatusCode.NotFound );
         }
 
         [HttpPost]

@@ -12,6 +12,7 @@ namespace DarkFactorCoreNet.Repository
     public interface IPageRepository
     {
         PageContentModel GetPage(int pageId);
+        MainPageContentModel GetMainPage(int pageId);
         List<TeaserPageContentModel> GetPagesWithParentId(int parentId);
         List<TeaserPageContentModel> GetPagesWithTag(string tag);
         List<TeaserPageContentModel> GetNewArticles(int maxArticles);
@@ -31,7 +32,7 @@ namespace DarkFactorCoreNet.Repository
 
         public PageContentModel GetPage(int pageId)
         {
-            var sql = @"select id, parentid, promo_title, promo_text, content_title, content_text, imageid, sort, published " +
+            var sql = @"select id, parentid, promo_title, promo_text, content_title, content_text, imageid, sort, published, tags, related_tags " +
                     "from content where id = @pageId";
 
             using (var cmd = _connection.CreateCommand(sql))
@@ -52,7 +53,32 @@ namespace DarkFactorCoreNet.Repository
                         pageContent.ImageId         = Convert.ToInt32(reader["imageid"]);
                         pageContent.SortId          = Convert.ToInt32(reader["sort"]);
                         pageContent.Acl             = Convert.ToInt32(reader["published"]);
+                        pageContent.Tags            = reader["tags"].ToString();
+                        pageContent.RelatedTags     = reader["related_tags"].ToString();
+                        return pageContent;
+                    }
+                }
+            }
+            return null;
+        }
 
+        public MainPageContentModel GetMainPage(int pageId)
+        {
+            var sql = @"select content_title, published, related_tags " +
+                    "from content where id = @pageId";
+
+            using (var cmd = _connection.CreateCommand(sql))
+            {
+                cmd.AddParameter("@pageId", pageId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        MainPageContentModel pageContent = new MainPageContentModel();
+                        pageContent.PageID          = pageId;
+                        pageContent.Title           = reader["content_title"].ToString();
+                        pageContent.Acl             = Convert.ToInt32(reader["published"]);
+                        pageContent.RelatedTags     = reader["related_tags"].ToString();
                         return pageContent;
                     }
                 }

@@ -41,6 +41,12 @@ namespace DarkFactorCoreNet.Repository
             + " ADD `last_updated` datetime " 
             );
 
+            // Last_Updated
+            _dbPatcher.Patch(PATCHER,5, "ALTER TABLE `content` "
+            + " ADD `tags` varchar(100) NOT NULL DEFAULT '', " 
+            + " ADD `related_tags` varchar(100) NOT NULL DEFAULT '' " 
+            );
+
             return _dbPatcher.Successful();
         }
     }
