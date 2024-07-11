@@ -1,15 +1,9 @@
 ﻿@using DarkFactorCoreNet.Models
-@model List<PageListModel>
+@model List<TeaserPageContentModel>
 
-@foreach (var pageListModel in Model)
+@foreach (var relPage in Model)
 {
-    <div class="articletitle">
-        <img src="http://www.darkfactor.net/img/DarkFactor_WebLogo.png" width="30px" >&nbsp;<strong>@pageListModel.Title</strong>
-    </div>
-
     <div>
-        @foreach (var relPage in pageListModel.Pages)
-        {
         <div class="article">
 
             @if (relPage.ImageId != 0)
@@ -18,14 +12,14 @@
                 <br />
             }
 
-            @relPage.PromoText
-            <br />
-            <br />
-
-            <a href="/page?id=@relPage.PageId">Read more &gt;&gt;</a><br />
+            <div style="margin-left: 10px;margin-right: 10px;">
+                <B>@relPage.ContentTitle</B> <br />
+                @relPage.PromoText <br />
+                <br />
+                <a href="/page?id=@relPage.PageId">Read more &gt;&gt;</a><br />
+            </div>
         </div>
-
-        }
+        <BR>
     </div>
 }
 

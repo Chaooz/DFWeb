@@ -9,12 +9,10 @@ namespace DarkFactorCoreNet.Pages
     public class EditMainPage : MainPage
     {
         public bool ShowEditor;
-        private IEditPageProvider _editPageProvider;
 
         public EditMainPage( IEditPageProvider editPageProvider, IPageProvider pageProvider, IMenuProvider menuProvider, ILoginProvider loginProvider, IImageProvider imageProvider) 
         : base(pageProvider,menuProvider, loginProvider, imageProvider)
         {
-            _editPageProvider = editPageProvider;
         }
 
         override
@@ -27,23 +25,6 @@ namespace DarkFactorCoreNet.Pages
             {
                 ShowEditor = userInfo.UserAccessLevel >= (int)AccessLevel.Editor;
             }
-        }
-
-        public IActionResult OnPostAsync([FromForm] string pageId, [FromForm] string title, [FromForm] string relatedTags, [FromForm] string command )
-        {
-            switch(command )
-            {
-                case "save":
-                    // didSuceed = _editPageProvider.SaveFullPage(pageContentModel);
-                    return Redirect("/MainPage?id=" + pageId);
-                // case "create_child_page":
-                //     didSuceed = editPageProvider.CreateChildPage(pageContentModel.ID, "New page");
-                //     break;
-                // case "delete_page":
-                //     didSuceed = editPageProvider.DeletePage(pageContentModel.ID);
-                //     break;
-            }
-            return Redirect("/");
         }
     }
 }

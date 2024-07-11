@@ -33,7 +33,7 @@ namespace DarkFactorCoreNet.Api
 
         [HttpPost]
         [Route("SaveMainPage")]
-        public HttpResponseMessage SaveMainPage(MainPageContentModel mainPage)
+        public HttpResponseMessage SaveMainPage(PageContentModel mainPage)
         {
             if ( _editPageProvider.SaveMainPage(mainPage) )
             {

@@ -9,9 +9,11 @@ namespace DarkFactorCoreNet.Pages
 {
     public class BasePageModel : MenuPageModel
     {
-        public List<PageListModel> relatedPages;
+        public PageContentModel pageModel;
+        public List<TeaserPageContentModel> relatedPages;
         public int PageId;
         public string Title;
+
         protected IPageProvider pageProvider;
         protected IImageProvider _imageProvider;
 
@@ -29,41 +31,31 @@ namespace DarkFactorCoreNet.Pages
         public void OnGet(int id)
         {
             base.GetMenuData(id);
-            relatedPages = GetRelatedPages(id);
+            string relatedTags = "";
+            pageModel = pageProvider.GetPage(id);
+            if ( pageModel != null )
+            {
+                Title = pageModel.ContentTitle;
+                relatedTags = pageModel.RelatedTags;
+            }
+            relatedPages = GetRelatedPages(relatedTags);
             PageId = id;
         }
 
-        protected List<PageListModel> GetRelatedPages(int id)
+        protected List<TeaserPageContentModel> GetRelatedPages(string relatedTags)
         {
-            List<PageListModel> model = new List<PageListModel>();
-            List<String> tagList = GetRelatedTags(id);
-            foreach( String tag in tagList)
+            List<TeaserPageContentModel> relatedPages = new List<TeaserPageContentModel>();
+
+            var tagList = relatedTags.Split(" ");
+            foreach( string tag in tagList)
             {
-                var tagPage = GetPagesWithTag(tag);
-                if (tagPage.Pages.Count > 0)
+                var pagesWithTag = pageProvider.GetPagesWithTag(tag);
+                if (pagesWithTag.Count > 0)
                 {
-                    model.Add(tagPage);
+                    relatedPages.AddRange(pagesWithTag);
                 }
             }
-            return model;
-        }
-
-        protected PageListModel GetPagesWithTag(string tag)
-        {
-            return GetPagesWithTag(tag, tag);
-        }
-
-        protected List<String> GetRelatedTags(int pageId)
-        {
-            return pageProvider.GetRelatedTags(pageId);
-        }
-
-        protected PageListModel GetPagesWithTag(string title, string tag)
-        {
-            PageListModel pageListModel = new PageListModel();
-            pageListModel.Title = title;
-            pageListModel.Pages = pageProvider.GetPagesWithTag(tag);
-            return pageListModel;
+            return relatedPages;
         }
     }
 }

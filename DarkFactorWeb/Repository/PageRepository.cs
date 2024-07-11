@@ -12,7 +12,6 @@ namespace DarkFactorCoreNet.Repository
     public interface IPageRepository
     {
         PageContentModel GetPage(int pageId);
-        MainPageContentModel GetMainPage(int pageId);
         List<TeaserPageContentModel> GetPagesWithParentId(int parentId);
         List<TeaserPageContentModel> GetPagesWithTag(string tag);
         List<TeaserPageContentModel> GetNewArticles(int maxArticles);
@@ -53,30 +52,6 @@ namespace DarkFactorCoreNet.Repository
                         pageContent.SortId          = Convert.ToInt32(reader["sort"]);
                         pageContent.Acl             = Convert.ToInt32(reader["published"]);
                         pageContent.Tags            = reader["tags"].ToString();
-                        pageContent.RelatedTags     = reader["related_tags"].ToString();
-                        return pageContent;
-                    }
-                }
-            }
-            return null;
-        }
-
-        public MainPageContentModel GetMainPage(int pageId)
-        {
-            var sql = @"select content_title, published, related_tags " +
-                    "from content where id = @pageId";
-
-            using (var cmd = _connection.CreateCommand(sql))
-            {
-                cmd.AddParameter("@pageId", pageId);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        MainPageContentModel pageContent = new MainPageContentModel();
-                        pageContent.PageID          = pageId;
-                        pageContent.Title           = reader["content_title"].ToString();
-                        pageContent.Acl             = Convert.ToInt32(reader["published"]);
                         pageContent.RelatedTags     = reader["related_tags"].ToString();
                         return pageContent;
                     }
@@ -135,7 +110,7 @@ namespace DarkFactorCoreNet.Repository
             
             using (var cmd = _connection.CreateCommand(sql))
             {
-                if ( !string.IsNullOrEmpty( bindVariable ))
+                if ( bindVariable != null )
                 {
                     cmd.AddParameter("@bindVariable", bindVariable);
                 }

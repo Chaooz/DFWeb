@@ -12,7 +12,7 @@ namespace DarkFactorCoreNet.Provider
     public interface IEditPageProvider
     {
         bool CreatePage( int pageId, string pageTitle );
-        bool SaveMainPage(MainPageContentModel mainPage);
+        bool SaveMainPage(PageContentModel mainPage);
         bool CreateChildPage( int parentPageId, string pageTitle );
         bool SaveFullPage(PageContentModel pageModel);
         bool CreateArticleSection(int pageId, string title, string content);
@@ -65,17 +65,17 @@ namespace DarkFactorCoreNet.Provider
             return false;
         }
 
-        public bool SaveMainPage(MainPageContentModel mainPage)
+        public bool SaveMainPage(PageContentModel mainPage)
         {
             if ( !CanEditPage() )
             {
                 return false;
             }
 
-            var editPage = _pageRepository.GetPage(mainPage.PageID);
+            var editPage = _pageRepository.GetPage(mainPage.PageId);
             if ( editPage != null )
             {
-                editPage.ContentTitle = mainPage.Title;
+                editPage.ContentTitle = mainPage.ContentTitle;
                 editPage.Acl = mainPage.Acl;
                 editPage.RelatedTags = mainPage.RelatedTags;
                 return _editPageRepository.SavePage(editPage);

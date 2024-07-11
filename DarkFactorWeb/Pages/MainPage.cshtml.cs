@@ -7,8 +7,6 @@ namespace DarkFactorCoreNet.Pages
 {
     public class MainPage : BasePageModel
     {
-        public MainPageContentModel pageModel;
-
         public List<TeaserPageContentModel> mainPageItems;
 
         public MainPage(IPageProvider pageProvider, IMenuProvider menuProvider, ILoginProvider loginProvider, IImageProvider imageProvider) 
@@ -20,7 +18,6 @@ namespace DarkFactorCoreNet.Pages
         public void OnGet(int id)
         {
             base.OnGet(id);
-            pageModel = pageProvider.GetMainPage(id);
             mainPageItems = GetPageArticles(id);
         }
 

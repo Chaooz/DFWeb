@@ -1,7 +1,7 @@
 @page
 @model EditMainPage
 @{
-    ViewData["Title"] = Model.pageModel.Title;
+    ViewData["Title"] = Model.pageModel.ContentTitle;
 }
 
 @{
@@ -33,7 +33,7 @@
         <div class="col-md-4">
             <div class="article" style="column;padding:10px">
                 <div class='edit_header'>Title</div>
-                <input id='Title' name='Title' type='text' class='edit_input' style='padding:2px' value='@Model.pageModel.Title' placeholder='Enter title'><br>
+                <input id='Title' name='Title' type='text' class='edit_input' style='padding:2px' value='@Model.pageModel.ContentTitle' placeholder='Enter title'><br>
 
                 <div class='edit_header'>Related Tags</div>
                 <input id='RelatedTags' name='RelatedTags' type='text' class='edit_input' value='@Model.pageModel.RelatedTags'><br>
@@ -155,7 +155,7 @@
 
         data = {
             pageId: pageId,
-            title: title,
+            contenttitle: title,
             acl: acl,
             relatedTags:relatedTags
         };
