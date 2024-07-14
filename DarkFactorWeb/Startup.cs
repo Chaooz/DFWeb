@@ -32,7 +32,11 @@ namespace DarkFactorCoreNet
             // Run database script
             IStartupDatabasePatcher startupRepository = DFServices.GetService<IStartupDatabasePatcher>();
             startupRepository.WaitForConnection();
-            startupRepository.RunPatcher();
+            if ( !startupRepository.RunPatcher() )
+            {
+                logger.LogError("-Could not patch database");
+                Environment.Exit(1);
+            }
 
             // Setup logger to database
             //DFServices.GetService
