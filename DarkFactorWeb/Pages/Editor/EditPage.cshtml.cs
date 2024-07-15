@@ -32,6 +32,11 @@ namespace DarkFactorCoreNet.Pages
         {
             base.OnGet(id);
             IsEdit = true;
+
+            if (this.pageModel != null)
+            {
+                pageModel.IsEdit = true;
+            }
         }
 
         // public IActionResult OnPostAsync([FromForm] PageContentModel pageContentModel)
