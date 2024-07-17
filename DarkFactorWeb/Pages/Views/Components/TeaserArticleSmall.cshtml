@@ -1,7 +1,7 @@
 @using DarkFactorCoreNet.Models
 @model TeaserPageContentModel
 
-<div class="article">
+<div class="article" style="height:100%">
 
     @if (Model.ImageId != 0)
     {
@@ -9,11 +9,11 @@
         <br />
     }
 
-    <div style="margin-left: 10px;margin-right: 10px;">
-        <B>@Model.ContentTitle</B> <br />
+    <div style="margin:10px">
+        <B>GAMES | DARKFACTOR </B><BR>
+        <H3><a href="/page?id=@Model.PageId">@Model.ContentTitle</a></H3>
+        <B>5 July 2024</B><BR>
         @Model.PromoText <br />
-        <br />
-        <a href="/page?id=@Model.PageId">Read more &gt;&gt;</a><br />
     </div>
 </div>
 <BR>
