@@ -59,31 +59,18 @@
         <div class="d-lg-none">hide on screens wider than lg</div>
         <div class="d-none d-lg-block">hide on screens smaller than lg</div> 
         *@
-        <div class="col-lg-4 d-none d-lg-block">
-            @await Html.PartialAsync("Views/RightSideElements/ArticleSection.cshtml", Model.relatedPages)
-        </div>
+        @foreach (var relPage in Model.relatedPages)
+        {
+            <div class="col-lg-4 d-none d-lg-block">
+                @await Html.PartialAsync("Views/Components/TeaserArticleSmall.cshtml", relPage)
+            </div>
+        }
 
+        @* Show remaining articles on page as small 4 col articles  *@
         @foreach (var relPage in Model.mainPageItems.Skip(1))
         {
-            <div class="col-lg-8 col-md-8">
-                <div>
-                    <div class="article" style="width:100%;display:flex">
-
-                        <div style="width:50%;align-items:center">
-                            @await Html.PartialAsync("/Pages/Views/Components/ImageComponent.cshtml", relPage)
-                        </div>
-
-                        <div class="articletext" style="width:50%;margin-left:10px;margin-right:10px">
-
-                            @relPage.PromoText
-                            <br />
-                            <br />
-
-                            <a href="/page?id=@relPage.PageId">Read more &gt;&gt;</a><br />
-                        </div>
-                    </div>
-                    <BR>
-                </div>
+            <div class="col-sm-6 col-lg-4">
+                @await Html.PartialAsync("Views/Components/TeaserArticleSmall.cshtml", relPage)
             </div>
         }
     </div>
