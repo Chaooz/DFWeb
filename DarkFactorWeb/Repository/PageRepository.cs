@@ -62,7 +62,7 @@ namespace DarkFactorCoreNet.Repository
 
         public List<TeaserPageContentModel> GetPagesWithParentId(int parentId)
         {
-            string sql = @"select id, parentid, promo_text, content_title, content_text, imageid, sort, published " +
+            string sql = @"select id, parentid, promo_text, content_title, content_text, imageid, sort, published, tags " +
                         "from content where parentid = @bindVariable order by sort";
             return GetPageList(sql, parentId);
         }
@@ -73,7 +73,7 @@ namespace DarkFactorCoreNet.Repository
             var lowerTag = tag.ToLower();
 
             string sql = @"select c.id, c.parentid, c.promo_text, c.content_title, " +
-                                       "c.content_text, c.imageid, c.sort, c.published " +
+                                       "c.content_text, c.imageid, c.sort, c.published, c.tags " +
                                        "from content c, contenttags, tags " +
                                        "where c.id = contenttags.contentid " +
                                        "and contenttags.tagid = tags.id " +
@@ -87,7 +87,7 @@ namespace DarkFactorCoreNet.Repository
             List<TeaserPageContentModel> pageList = new List<TeaserPageContentModel>();
 
             string sql = string.Format(@"select c.id, c.parentid, c.promo_text, c.content_title, " +
-                                       "c.content_text, c.imageid, c.sort, c.published " +
+                                       "c.content_text, c.imageid, c.sort, c.published, c.tags " +
                                        "from content c " +
                                        "where last_updated is not null " +
                                        "and parentId > 0 " + 
@@ -128,6 +128,7 @@ namespace DarkFactorCoreNet.Repository
                         pageContent.ImageId         = Convert.ToInt32(reader["imageid"]);
                         pageContent.SortId          = Convert.ToInt32(reader["sort"]);
                         pageContent.Acl             = Convert.ToInt32(reader["published"]);
+                        pageContent.Tags            = reader["tags"].ToString();
                         pageList.Add(pageContent);
                     }
                 }

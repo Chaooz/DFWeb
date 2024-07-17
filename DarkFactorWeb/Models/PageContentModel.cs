@@ -10,7 +10,6 @@ namespace DarkFactorCoreNet.Models
         // public HtmlString HtmlContent { get; set; }
         // public HtmlString HtmlTeaser { get; set; }
         public string Command { get; set; }
-        public string Tags { get; set; }
         public string RelatedTags { get; set; }
     }
 }
