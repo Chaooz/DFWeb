@@ -28,33 +28,56 @@
     }
 
     <div class="row" id="mainblock">
-        <div class="col-lg-8 col-md-8">
 
-            <div>
-                @foreach (var relPage in Model.mainPageItems)
-                {
+        @foreach (var relPage in Model.mainPageItems.Take(1))
+        {
+            <div class="col-lg-8 col-md-8">
+                <div>
                     <div class="article" style="width:100%;display:flex">
 
-                    <div style="width:50%;align-items:center">
-                        @await Html.PartialAsync("/Pages/Views/Components/ImageComponent.cshtml", relPage)
+                        <div style="width:50%;align-items:center">
+                            @await Html.PartialAsync("/Pages/Views/Components/ImageComponent.cshtml", relPage)
+                        </div>
+
+                        <div class="articletext" style="width:50%;margin-left:10px;margin-right:10px">
+
+                            @relPage.PromoText
+                            <br />
+                            <br />
+
+                            <a href="/page?id=@relPage.PageId">Read more &gt;&gt;</a><br />
+                        </div>
                     </div>
-
-                    <div class="articletext" style="width:50%;margin-left:10px;margin-right:10px">
-
-                        @relPage.PromoText
-                        <br />
-                        <br />
-
-                        <a href="/page?id=@relPage.PageId">Read more &gt;&gt;</a><br />
-                    </div>
+                    <BR>
                 </div>
-                <BR>
-                }
             </div>
-        </div>
+        }
         <div class="col-lg-4 col-md-4">
             @await Html.PartialAsync("Views/RightSideElements/ArticleSection.cshtml", Model.relatedPages)
         </div>
+        @foreach (var relPage in Model.mainPageItems.Skip(1))
+        {
+            <div class="col-lg-8 col-md-8">
+                <div>
+                    <div class="article" style="width:100%;display:flex">
+
+                        <div style="width:50%;align-items:center">
+                            @await Html.PartialAsync("/Pages/Views/Components/ImageComponent.cshtml", relPage)
+                        </div>
+
+                        <div class="articletext" style="width:50%;margin-left:10px;margin-right:10px">
+
+                            @relPage.PromoText
+                            <br />
+                            <br />
+
+                            <a href="/page?id=@relPage.PageId">Read more &gt;&gt;</a><br />
+                        </div>
+                    </div>
+                    <BR>
+                </div>
+            </div>
+        }
     </div>
 
 </div>
