@@ -20,9 +20,12 @@
     }
 
     <div style="margin:10px">
-        <B>@FormatTags(Model.Tags)</B><BR>
-        <H3><a href="/page?id=@Model.PageId">@Model.ContentTitle</a></H3>
+        @if (Model.Tags != null)
+        {
+            <B>@FormatTags(Model.Tags)</B><BR>
+        }
+        <H3><a href="/page?id=@Model.PageId" class="article_title">@Model.ContentTitle</a></H3>
         <B>@Model.LastUpdated</B><BR>
-        @Model.PromoText <br />
+        <p class="article_promo">@Model.PromoText</p> <br />
     </div>
 </div>

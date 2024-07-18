@@ -25,7 +25,7 @@
     flex-wrap: wrap;
     justify-content: stretch;
   }
-  
+
 /* Article styling */
 
 .article{
@@ -58,6 +58,26 @@
 {
     aspect-ratio: 16 / 9;
     width:100%;
+}
+
+.article_title
+{
+    font-size:28px;
+    font-family: sans-serif;
+}
+
+.article_title > a  {
+    color: black;
+}
+
+.article_promo
+{
+    font-size:18px;
+    font-family: sans-serif;
+}
+
+.article_promo > a  {
+    color: black;
 }
 
 .buttonrow

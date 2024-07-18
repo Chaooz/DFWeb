@@ -52,17 +52,9 @@
         </div>
         </div>
 
-        @* 
-        Hide Article Section list on the right side if we are on a medium or smaller screen
-        <div class="d-lg-none">hide on screens wider than lg</div>
-        <div class="d-none d-lg-block">hide on screens smaller than lg</div> 
-        *@
-        @foreach (var relPage in Model.relatedPages)
-        {
-            <div class="col-lg-4 d-none d-lg-block">
-                @await Html.PartialAsync("Views/Components/TeaserArticleSmall.cshtml", relPage)
-            </div>
-        }
+        @* Display related articles on the side ( in full desktop screen view ) *@
+        @await Html.PartialAsync("Views/Components/RelatedArticleSmall.cshtml", Model.relatedPages)
+
     </div>
 
 </div>
