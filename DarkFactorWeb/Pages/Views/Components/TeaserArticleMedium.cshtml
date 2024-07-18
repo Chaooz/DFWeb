@@ -1,0 +1,29 @@
+@using DarkFactorCoreNet.Models
+@model TeaserPageContentModel
+
+@{
+    string FormatTags(string tags)
+    {
+        tags = tags.ToUpper();
+        tags = tags.Replace(" ", " | ");
+        tags = tags.Replace("_", " ");
+        return tags;
+    }
+}
+
+<div class = "article_featured">
+    @if (Model.ImageId != 0)
+    {
+        <div class="row" id="mainFeaturedBlock">
+        <div class="col-md-6">
+            <H1><a href="/page?id=@Model.PageId">@Model.ContentTitle</a></H1>
+            <B>@Model.LastUpdated | @FormatTags(Model.Tags)</B><BR>
+            @Model.PromoText <br />
+            <BR>
+        </div>
+        <div class="col-md-6">
+            <a href="/page?id=@Model.PageId"><img width=100% height=100% src="/api/Image/GetImage?imageId=@Model.ImageId" class="imagefit" style="display:flex"></a>
+        </div>
+        </div>
+    }
+</div>
