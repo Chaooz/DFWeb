@@ -32,10 +32,10 @@
     <div class="row" id="mainblock">
 
         <div class="col-lg-8">
-        <div class="row" id="mainLeftblock">
+        <div class="row" id="mainLeftblock" >
         @foreach (var relPage in Model.mainPageItems.Take(1))
         {
-            <div class="col-sm-12">
+            <div class="col-sm-12 mb-4">
                 @await Html.PartialAsync("Views/Components/TeaserArticleMedium.cshtml", relPage)
             </div>
         }
@@ -45,7 +45,7 @@
         *@
         @foreach (var relPage in Model.mainPageItems.Skip(1))
         {
-            <div class="col-sm-6">
+            <div class="col-sm-6 mb-4">
                 @await Html.PartialAsync("Views/Components/TeaserArticleSmall.cshtml", relPage)
             </div>
         }

@@ -8,6 +8,24 @@
     padding-top:10px;
 }
 
+@media (min-width: 768px) {
+    .container {
+        max-width: max-content;
+    }
+}
+
+@media (min-width: 576px) {
+    .container {
+        max-width: max-content;
+    }
+}
+
+.equal-height-cols{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: stretch;
+  }
+  
 /* Article styling */
 
 .article{
