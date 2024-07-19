@@ -14,6 +14,8 @@ namespace DarkFactorCoreNet.Pages
         public int PageId;
         public string Title;
 
+        public string EditUrl;
+
         protected IPageProvider pageProvider;
         protected IImageProvider _imageProvider;
 

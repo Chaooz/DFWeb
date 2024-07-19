@@ -20,6 +20,7 @@ namespace DarkFactorCoreNet.Pages
         {
             base.OnGet(id);
             articleSections = pageProvider.GetArticleSections(id);
+            EditUrl = "/Editor/EditPage";
         }
     }
 }

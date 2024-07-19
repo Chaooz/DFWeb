@@ -19,6 +19,7 @@ namespace DarkFactorCoreNet.Pages
         {
             base.OnGet(id);
             mainPageItems = GetPageArticles(id);
+            EditUrl = "/Editor/EditMainPage";
         }
 
         virtual

@@ -19,16 +19,6 @@
         </div>
     </div>
 
-    @if ( Model.UserInfoModel.UserAccessLevel >= (int) AccessLevel.Editor )
-    {
-    <div class="row">
-        <div class="col-md-12">
-                <a href="/Editor/EditMainPage?id=@Model.PageId" class="navigation-item" style="float:right;">[ Edit Page ]</a>
-        </div>
-        <br />
-    </div>
-    }
-
     <div class="row" id="mainblock">
 
         <div class="col-lg-8">
