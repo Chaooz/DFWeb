@@ -12,6 +12,7 @@ namespace DarkFactorCoreNet.Repository
 {
     public interface IPageRepository
     {
+        int GetMainPageId();
         PageContentModel GetPage(int pageId);
         List<TeaserPageContentModel> GetPagesWithParentId(int parentId);
         List<TeaserPageContentModel> GetPagesWithTag(string tag);
@@ -28,6 +29,23 @@ namespace DarkFactorCoreNet.Repository
         public PageRepository(IDbConnectionFactory connection)
         {
             _connection = connection;
+        }
+
+        public int GetMainPageId()
+        {
+            int pageId = 0;
+            var sql = @"select id from content where main_page = 1";
+            using (var cmd = _connection.CreateCommand(sql))
+            {
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        pageId = Convert.ToInt32(reader["id"]);
+                    }
+                }
+            }
+            return pageId;
         }
 
         public PageContentModel GetPage(int pageId)

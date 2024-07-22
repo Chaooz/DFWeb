@@ -39,9 +39,9 @@ namespace DarkFactorCoreNet.Pages
             {
                 Title = pageModel.ContentTitle;
                 relatedTags = pageModel.RelatedTags;
+                PageId = id;
+                relatedPages = GetRelatedPages(relatedTags);
             }
-            relatedPages = GetRelatedPages(relatedTags);
-            PageId = id;
         }
 
         protected List<TeaserPageContentModel> GetRelatedPages(string relatedTags)

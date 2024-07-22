@@ -12,6 +12,13 @@ namespace DarkFactorCoreNet.Pages
         }
 
         override
+        public void OnGet(int id)
+        {
+            int mainPageId = pageProvider.GetMainPageId();
+            base.OnGet(mainPageId);
+        }
+
+        override
         public List<TeaserPageContentModel> GetPageArticles(int pageId)
         {
             return  pageProvider.GetNewArticles(10);

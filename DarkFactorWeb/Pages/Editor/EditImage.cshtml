@@ -1,7 +1,10 @@
 @page
 @model EditImageModel
 @{
-    ViewData["Title"] = Model.imageModel.Filename;
+    if ( Model.imageModel != null )
+    {
+        ViewData["Title"] = Model.imageModel.Filename;
+    }
 }
 
 <div>

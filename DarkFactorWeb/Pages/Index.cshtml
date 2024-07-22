@@ -2,8 +2,13 @@
 @using DarkFactorCoreNet.Models
 @model IndexModel
 @{
-    ViewData["Title"] = Model.Title;
+    if ( Model.pageModel != null )
+    {
+        ViewData["Title"] = Model.pageModel.ContentTitle;
+    }
 }
+
+<!-- https://getbootstrap.com/docs/4.0/layout/grid/ -->
 
 <div>
     <div class="row" id="menu">
@@ -18,36 +23,31 @@
     </div>
 
     <div class="row" id="mainblock">
-        <div class="col-lg-8 col-md-8">
 
-            <div>
-                @foreach (var relPage in Model.mainPageItems)
-                {
-                    <div class="article" style="width:100%;display:flex">
-
-                    <div style="width:50%;align-items:center">
-                        @await Html.PartialAsync("/Pages/Views/Components/ImageComponent.cshtml", relPage)
-                    </div>
-
-                    <div class="articletext" style="width:50%;margin-left:10px;margin-right:10px">
-
-                        @relPage.PromoText
-                        <br />
-                        <br />
-
-                        <a href="/page?id=@relPage.PageId">Read more &gt;&gt;</a><br />
-                    </div>
-                </div>
-                <BR>
-                }
+        <div class="col-lg-8">
+        <div class="row" id="mainLeftblock" >
+        @foreach (var relPage in Model.mainPageItems.Take(1))
+        {
+            <div class="col-sm-12 mb-4">
+                @await Html.PartialAsync("Views/Components/TeaserArticleMedium.cshtml", relPage)
             </div>
-
-
-
+        }
+        @* Show remaining articles:
+            - Small screen: 2 articles on page (sm-6)
+            - Large screen: 3 articles on page (lg-4) 
+        *@
+        @foreach (var relPage in Model.mainPageItems.Skip(1))
+        {
+            <div class="col-sm-6 mb-4">
+                @await Html.PartialAsync("Views/Components/TeaserArticleSmall.cshtml", relPage)
+            </div>
+        }
         </div>
-        <div class="col-lg-4 col-md-4">
-            @await Html.PartialAsync("Views/RightSideElements/ArticleSection.cshtml", Model.relatedPages)
         </div>
+
+        @* Display related articles on the side ( in full desktop screen view ) *@
+        @await Html.PartialAsync("Views/Components/RelatedArticleSmall.cshtml", Model.relatedPages)
+
     </div>
 
 </div>

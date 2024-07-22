@@ -47,6 +47,11 @@ namespace DarkFactorCoreNet.Repository
             + " ADD `related_tags` varchar(100) NOT NULL DEFAULT '' " 
             );
 
+            // Main page
+            _dbPatcher.Patch(PATCHER,6, "ALTER TABLE `content` "
+            + " ADD `main_page` int(11) NOT NULL DEFAULT 0 " 
+            );
+
             return _dbPatcher.Successful();
         }
     }
