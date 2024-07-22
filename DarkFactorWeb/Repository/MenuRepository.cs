@@ -23,7 +23,7 @@ namespace DarkFactorCoreNet.Repository
         {
             List<MenuItem> itemList = new List<MenuItem>();
 
-            var sql = @"select id, parentid, content_title, published from content order by sort";
+            var sql = @"select id, parentid, content_title, published from content where main_page = 0 order by sort";
             using (var cmd = _connection.CreateCommand(sql))
             {
                 using (var reader = cmd.ExecuteReader())
