@@ -157,7 +157,6 @@ namespace DarkFactorCoreNet.Repository
                          + " imageid = @imageid, "
                          + " sort = @sort, "
                          + " layout = @layout "
-                         + " last_updated = now() "
                          + "where id = @id ";
 
             using (var cmd = _connection.CreateCommand(sql))
