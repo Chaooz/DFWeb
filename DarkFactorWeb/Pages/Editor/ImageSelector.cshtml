@@ -8,14 +8,37 @@
 <div>
 
     <div class="row">
-        <div class="article" style="width:100%">
-        <div class="article" style="width:100%;padding:5px">Upload image</div>
+        <div class="col-md-4">
+            <div class="article" style="width:100%">
+                <div class="article" style="width:100%;padding:5px">Upload image</div>
 
-        <form  method='POST' action="/api/Edit/UploadImage" enctype="multipart/form-data" style='display: inline;'>
-            <input type='hidden' name='pageId' value='@Model.pageId'>
-            <input type="file" name="files" text="Upload1" alt="Upload2"/>
-            <input type='submit' value='Save'>
-        </form>
+                <form  method='POST' action="/api/Edit/UploadImage" enctype="multipart/form-data" style='display: inline;'>
+                    <input type='hidden' name='pageId' value='@Model.pageId'>
+                    <input type="file" name="files" text="Upload1" alt="Upload2"/>
+                    <input type='submit' value='Save'>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="article" style="width:100%;align:center">
+                <form method='GET' action="/Editor/ImageSelector" enctype="multipart/form-data" style='display: inline;'>
+                    <input type='hidden' name='pageId' value='@Model.pageId'>
+                    <input type='hidden' name='imagePageId' value='@Model.prevImagePageId'>
+                    <input type='submit' value='Prev Page'>
+                </form>
+                <form method='GET' action="/Editor/ImageSelector" enctype="multipart/form-data" style='display: inline;'>
+                    <input type='hidden' name='pageId' value='@Model.pageId'>
+                    <input type='hidden' name='imagePageId' value='@Model.nextImagePageId'>
+                    <input type='submit' value='Next Page'>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            &nbsp;
         </div>
     </div>
 

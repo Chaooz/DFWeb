@@ -18,7 +18,7 @@ namespace DarkFactorCoreNet.Provider
         bool DeleteImage(int imageId);
         ImageModel GetImage(int imageId);
         byte[] GetRawImage(int imageId);
-        IList<ImageModel> GetImages(int maxImages);
+        IList<ImageModel> GetImages(int imagesPrPage, int pageNumber);
         bool UpdateImage(int imageId, string filename);
     }
 
@@ -111,11 +111,11 @@ namespace DarkFactorCoreNet.Provider
             return _imageRepository.GetRawImage(imageId);
         }
 
-        public IList<ImageModel> GetImages(int maxImages)
+        public IList<ImageModel> GetImages(int imagesPrPage, int pageNumber)
         {
             if ( CanEditPage() )
             {
-                return _imageRepository.GetImages(maxImages);
+                return _imageRepository.GetImages(imagesPrPage,pageNumber);
             } 
             return null;
         }

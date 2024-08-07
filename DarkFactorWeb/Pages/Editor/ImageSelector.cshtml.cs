@@ -15,6 +15,9 @@ namespace DarkFactorCoreNet.Editor
         public int pageId;
         public int sectionId;
 
+        public int prevImagePageId;
+        public int nextImagePageId;
+
         public IList<ImageModel> imageList;
         private IImageProvider imageProvider;
 
@@ -24,11 +27,15 @@ namespace DarkFactorCoreNet.Editor
             imageList = new List<ImageModel>();
         }
 
-        public void OnGet(int pageId, int sectionId = 0)
+        public void OnGet(int pageId, int sectionId = 0, int imagePageId = 0)
         {
             this.pageId = pageId;
             this.sectionId = sectionId;
-            imageList = imageProvider.GetImages(10);
+
+            this.prevImagePageId = Math.Max(0,imagePageId - 1);
+            this.nextImagePageId = imagePageId + 1;
+
+            imageList = imageProvider.GetImages(9,imagePageId);
             if ( imageList == null )
             {
                 // Reroute to main page

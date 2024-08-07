@@ -17,7 +17,7 @@ namespace DarkFactorCoreNet.Repository
         bool DeleteImage(int imageId);
         ImageModel GetImage(int imageId);
         byte[] GetRawImage(int imageId);
-        List<ImageModel> GetImages(int maxImages);
+        List<ImageModel> GetImages(int imagesPrPage, int pageNumber);
         bool UpdateImage(int imageId, string filename);
         bool UpdateImageData(int imageId, String filename, byte[] data);
     }
@@ -141,13 +141,14 @@ namespace DarkFactorCoreNet.Repository
             return null;
         }
 
-        public List<ImageModel> GetImages(int maxImages)
+        public List<ImageModel> GetImages(int imagesPrPage, int pageNumber)
         {
             List<ImageModel> model = new List<ImageModel>();
-            string sql = @"select id, filename, data, length(data) as datalen from images limit @maxImages ";
+            string sql = @"select id, filename, data, length(data) as datalen from images limit @imagesPrPage offset @pageNumber ";
             using (var cmd = _connection.CreateCommand(sql))
             {
-                cmd.AddParameter("@maxImages", maxImages);
+                cmd.AddParameter("@imagesPrPage", imagesPrPage);
+                cmd.AddParameter("@pageNumber", pageNumber * imagesPrPage);
 
                 using (var reader = cmd.ExecuteReader())
                 {
