@@ -34,6 +34,7 @@ namespace DFWeb.BE
                 .LogToConsole(DFLogLevel.INFO)
                 ;
 
+            services.AddScoped<IDbConnectionFactory, LocalMysqlConnectionFactory>();
             services.AddTransient<IStartupDatabasePatcher, DFWebDatabasePatcher>();
 
             AccountClient.SetupService(services);

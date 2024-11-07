@@ -43,16 +43,6 @@ namespace DarkFactorCoreNet
                 //services.Configure<EmailConfiguration>(Configuration.GetSection("EmailConfiguration"));
                 services.AddTransient<IConfigurationHelper, ConfigurationHelper<WebConfig> >();
 
-                // Create Logger + service
-                /*DFServices.Create(services);
-                new DFServices(services)
-                    .SetupLogger()
-                    .SetupMySql()
-                    .LogToConsole(DFLogLevel.INFO)
-                    ;
-                */
-
-                services.AddScoped<IDbConnectionFactory, LocalMysqlConnectionFactory>();
 
                 services.AddSingleton(typeof(IEmailConfiguration), typeof(EmailConfiguration));
 
