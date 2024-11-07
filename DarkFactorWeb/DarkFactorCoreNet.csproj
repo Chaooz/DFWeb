@@ -12,4 +12,7 @@
     <PackageReference Include="DarkFactor.Common.Lib" Version="1.4.1" />
     <PackageReference Include="DarkFactor.AccountClient.Lib" Version="1.1.9" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DFWeb.BE\DFWeb.BE.csproj" />
+  </ItemGroup>
 </Project>
