@@ -19,6 +19,8 @@ using DarkFactorCoreNet.Provider;
 
 using AccountClientModule.Client;
 
+using DFWeb.BE;
+
 namespace DarkFactorCoreNet
 {
     public class Program
@@ -35,17 +37,20 @@ namespace DarkFactorCoreNet
             Host.CreateDefaultBuilder(args)
             .ConfigureServices((hostContext, services) =>
             {
+                DFWebBELibrary.ConfigureServices(hostContext, services);
+
                 //services.Configure<DatabaseConfig>(Configuration.GetSection("DatabaseConfigModel"));
                 //services.Configure<EmailConfiguration>(Configuration.GetSection("EmailConfiguration"));
                 services.AddTransient<IConfigurationHelper, ConfigurationHelper<WebConfig> >();
 
                 // Create Logger + service
-                DFServices.Create(services);
+                /*DFServices.Create(services);
                 new DFServices(services)
                     .SetupLogger()
                     .SetupMySql()
                     .LogToConsole(DFLogLevel.INFO)
                     ;
+                */
 
                 services.AddScoped<IDbConnectionFactory, LocalMysqlConnectionFactory>();
 
@@ -69,9 +74,6 @@ namespace DarkFactorCoreNet
                 services.AddScoped(typeof(IImageRepository), typeof(ImageRepository));
 
                 services.AddScoped(typeof(ICookieProvider), typeof(CookieProvider));
-
-                AccountClient.SetupService(services);
-
             })
             .ConfigureWebHostDefaults(webBuilder =>
             {
