@@ -14,6 +14,7 @@ using DFCommonLib.Config;
 using DFCommonLib.DataAccess;
 using AccountClientModule.Client;
 
+using DFWeb.BE.Repository;
 // dotnet new classlib -n DFWeb.BE -f net7.0
 
 namespace DFWeb.BE
@@ -32,6 +33,8 @@ namespace DFWeb.BE
                 .SetupMySql()
                 .LogToConsole(DFLogLevel.INFO)
                 ;
+
+            services.AddTransient<IStartupDatabasePatcher, DFWebDatabasePatcher>();
 
             AccountClient.SetupService(services);
         }

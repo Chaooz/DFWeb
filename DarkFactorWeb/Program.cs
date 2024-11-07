@@ -54,8 +54,6 @@ namespace DarkFactorCoreNet
 
                 services.AddScoped<IDbConnectionFactory, LocalMysqlConnectionFactory>();
 
-                services.AddTransient<IStartupDatabasePatcher, DFWebDatabasePatcher>();
-
                 services.AddSingleton(typeof(IEmailConfiguration), typeof(EmailConfiguration));
 
                 services.AddScoped(typeof(IMenuProvider), typeof(MenuProvider));

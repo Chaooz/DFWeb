@@ -1,7 +1,7 @@
 using DFCommonLib.DataAccess;
 using DFCommonLib.Logger;
 
-namespace DarkFactorCoreNet.Repository
+namespace DFWeb.BE.Repository
 {
     public class DFWebDatabasePatcher : StartupDatabasePatcher
     {
