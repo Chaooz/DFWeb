@@ -1,0 +1,15 @@
+DarkFactor 
+Article
+
+
+Title:
+DarkFactor
+
+Ingres:
+Making games have always been a passion ever since I got hold of a computer and found my coder buddy that shared the same interests. DarkFactor was created as a startup to have fun with this hobby and share our products with the world
+
+Text:
+Creating games as a passion started in the happy 1980es with C64 and quickly over on Amiga with AMOS and some C and Assembler. Pre internet years we printed the entire Assembler manual and read up and used as reference one summer when making our first 3D game, a RTS game inspired by Dune.
+
+Over the years our gaming company had many names, Magic Creations, Alien Creations, Northstar amongst other names, but starting in 2000 we wanted to have something more mysterious and DarkFactor was born. 
+

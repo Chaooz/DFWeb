@@ -1,0 +1,9 @@
+Bots
+
+Action based card game where you contriol your robots destruction of your oponent. Supporting LAN multiplayer game as well as AI controlled robots for extra difficulty this is a nice little game for Mac, PC, iOS and Android.
+
+BOTS is a pet game project I have been working on for a few years. The game is an action based card game where you control your robot through a maze of obsticles while defending off other robots.<BR>
+<BR>
+The game client is made in Unity using c#. Since this game can be played over LAN or internet against other players all the game logic is running on a game server made in .Net Core. <BR>
+<BR>
+The game itself is also a sandbox to implement newer techniques and architecture that I use in modern c# applications. The server is running in docker, connecting to a database also running in docker.

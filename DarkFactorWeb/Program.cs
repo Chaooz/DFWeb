@@ -13,11 +13,13 @@ using DFCommonLib.Utils;
 using DFCommonLib.Config;
 using DFCommonLib.DataAccess;
 
-using DarkFactorCoreNet.Repository;
-using DarkFactorCoreNet.ConfigModel;
-using DarkFactorCoreNet.Provider;
+using DFWeb.BE.Repository;
+using DFWeb.BE.ConfigModel;
+using DFWeb.BE.Provider;
 
 using AccountClientModule.Client;
+
+using DFWeb.BE;
 
 namespace DarkFactorCoreNet
 {
@@ -35,21 +37,12 @@ namespace DarkFactorCoreNet
             Host.CreateDefaultBuilder(args)
             .ConfigureServices((hostContext, services) =>
             {
+                DFWebBELibrary.ConfigureServices(hostContext, services);
+
                 //services.Configure<DatabaseConfig>(Configuration.GetSection("DatabaseConfigModel"));
                 //services.Configure<EmailConfiguration>(Configuration.GetSection("EmailConfiguration"));
                 services.AddTransient<IConfigurationHelper, ConfigurationHelper<WebConfig> >();
 
-                // Create Logger + service
-                DFServices.Create(services);
-                new DFServices(services)
-                    .SetupLogger()
-                    .SetupMySql()
-                    .LogToConsole(DFLogLevel.INFO)
-                    ;
-
-                services.AddScoped<IDbConnectionFactory, LocalMysqlConnectionFactory>();
-
-                services.AddTransient<IStartupDatabasePatcher, DFWebDatabasePatcher>();
 
                 services.AddSingleton(typeof(IEmailConfiguration), typeof(EmailConfiguration));
 
@@ -69,9 +62,6 @@ namespace DarkFactorCoreNet
                 services.AddScoped(typeof(IImageRepository), typeof(ImageRepository));
 
                 services.AddScoped(typeof(ICookieProvider), typeof(CookieProvider));
-
-                AccountClient.SetupService(services);
-
             })
             .ConfigureWebHostDefaults(webBuilder =>
             {
