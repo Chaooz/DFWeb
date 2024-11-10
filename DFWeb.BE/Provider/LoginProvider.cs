@@ -1,20 +1,20 @@
 
 using System;
 using System.Security.Cryptography;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Linq;
+
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 using DFCommonLib.Config;
 using DFCommonLib.Utils;
-
 using AccountClientModule.Client;
 using AccountCommon.SharedModel;
 
-using DarkFactorCoreNet.Repository;
-using DarkFactorCoreNet.Models;
-using DarkFactorCoreNet.ConfigModel;
+using DFWeb.BE.Models;
+using DFWeb.BE.Repository;
+using DFWeb.BE.ConfigModel;
 
-namespace DarkFactorCoreNet.Provider
+namespace DFWeb.BE.Provider
 {
     public interface ILoginProvider
     {

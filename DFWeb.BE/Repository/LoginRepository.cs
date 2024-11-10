@@ -1,9 +1,10 @@
 using System;
 
 using DFCommonLib.DataAccess;
-using DarkFactorCoreNet.Models;
 
-namespace DarkFactorCoreNet.Repository
+using DFWeb.BE.Models;
+
+namespace DFWeb.BE.Repository
 {
     public interface ILoginRepository
     {

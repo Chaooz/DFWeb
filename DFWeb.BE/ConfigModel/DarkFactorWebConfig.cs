@@ -1,7 +1,7 @@
 
 using DFCommonLib.Config;
 
-namespace DarkFactorCoreNet.ConfigModel
+namespace DFWeb.BE.ConfigModel
 {
     public class WebConfig : Customer
     {

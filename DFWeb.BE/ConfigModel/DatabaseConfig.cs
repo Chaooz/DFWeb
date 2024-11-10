@@ -1,5 +1,5 @@
 
-namespace DarkFactorCoreNet.ConfigModel
+namespace DFWeb.BE.ConfigModel
 {
     public class DatabaseConfig
     {

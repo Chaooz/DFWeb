@@ -1,5 +1,5 @@
 
-namespace DarkFactorCoreNet.Models
+namespace DFWeb.BE.Models
 {
     public enum AccessLevel
     {

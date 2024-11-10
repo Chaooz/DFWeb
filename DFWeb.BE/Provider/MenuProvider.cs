@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using DarkFactorCoreNet.Models;
 using System.Linq;
 
-using DarkFactorCoreNet.Repository;
+using DFWeb.BE.Repository;
+using DFWeb.BE.Models;
 
-namespace DarkFactorCoreNet.Provider
+namespace DFWeb.BE.Provider
 {
     public interface IMenuProvider
     {

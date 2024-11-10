@@ -2,14 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
-using DarkFactorCoreNet.Repository;
-using DarkFactorCoreNet.Models;
-using Microsoft.AspNetCore.Http;
 using System.IO;
 
-namespace DarkFactorCoreNet.Provider
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+
+using DFWeb.BE.Models;
+using DFWeb.BE.Repository;
+using DFWeb.BE.ConfigModel;
+
+namespace DFWeb.BE.Provider
 {
     public interface IImageProvider
     {

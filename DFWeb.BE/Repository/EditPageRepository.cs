@@ -1,14 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Html;
-using DarkFactorCoreNet.Models;
-using DFCommonLib.DataAccess;
-using Org.BouncyCastle.Security;
 using System.Data.SqlTypes;
+
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 
-namespace DarkFactorCoreNet.Repository
+using Org.BouncyCastle.Security;
+
+using DFCommonLib.DataAccess;
+
+using DFWeb.BE.Models;
+
+namespace DFWeb.BE.Repository
 {
     public interface IEditPageRepository
     {

@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using DarkFactorCoreNet.Repository;
-using DarkFactorCoreNet.Models;
-using DarkFactorCoreNet.Provider;
+using DFWeb.BE.Models;
+using DFWeb.BE.Provider;
 
 namespace DarkFactorCoreNet.Pages
 {

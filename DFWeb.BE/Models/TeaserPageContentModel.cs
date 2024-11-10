@@ -2,7 +2,7 @@ using System;
 using Microsoft.AspNetCore.Html;
 using System.Collections.Generic;
 
-namespace DarkFactorCoreNet.Models
+namespace DFWeb.BE.Models
 {
     public class TeaserPageContentModel
     {

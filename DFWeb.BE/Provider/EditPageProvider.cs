@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
-using DarkFactorCoreNet.Repository;
-using DarkFactorCoreNet.Models;
 
-namespace DarkFactorCoreNet.Provider
+using DFWeb.BE.Models;
+using DFWeb.BE.Repository;
+
+namespace DFWeb.BE.Provider
 {
     public interface IEditPageProvider
     {

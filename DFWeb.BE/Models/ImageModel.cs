@@ -1,6 +1,6 @@
 
 
-namespace DarkFactorCoreNet.Models
+namespace DFWeb.BE.Models
 {
     public class ImageModel
     {

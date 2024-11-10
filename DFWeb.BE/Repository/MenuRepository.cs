@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using DarkFactorCoreNet.Models;
 using DFCommonLib.DataAccess;
 
-namespace DarkFactorCoreNet.Repository
+using DFWeb.BE.Models;
+
+namespace DFWeb.BE.Repository
 {
     public interface IMenuRepository
     {

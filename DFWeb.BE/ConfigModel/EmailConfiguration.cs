@@ -1,4 +1,4 @@
-namespace DarkFactorCoreNet.ConfigModel
+namespace DFWeb.BE.ConfigModel
 {
     public interface IEmailConfiguration
     {

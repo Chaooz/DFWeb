@@ -2,16 +2,19 @@ using System;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using DarkFactorCoreNet.ConfigModel;
+
+using Microsoft.Extensions.Options;
+
 using MailKit.Net.Pop3;
 using MailKit.Net.Smtp;
 using MimeKit;
 using MimeKit.Text;
-using Microsoft.Extensions.Options;
+
+using DFWeb.BE.ConfigModel;
 
 // https://dotnetcoretutorials.com/2017/01/11/sending-receiving-email-net-core/
 
-namespace DarkFactorCoreNet.Provider
+namespace DFWeb.BE.Provider
 {
     public class EmailAddress
     {

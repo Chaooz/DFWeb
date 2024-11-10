@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using DarkFactorCoreNet.Models;
-using DarkFactorCoreNet.Provider;
+using DFWeb.BE.Models;
+using DFWeb.BE.Provider;
 
 namespace DarkFactorCoreNet.Pages
 {

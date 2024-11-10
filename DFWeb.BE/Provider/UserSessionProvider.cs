@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Http;
-using DarkFactorCoreNet.Models;
-using AccountClientModule.Provider;
 using Org.BouncyCastle.Pqc.Crypto.Ntru;
 
-namespace DarkFactorCoreNet.Provider
+using DFWeb.BE.Models;
+
+using AccountClientModule.Provider;
+
+namespace DFWeb.BE.Provider
 {
     public interface IUserSessionProvider
     {
