@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using DFWeb.BE.Models;
 using DFWeb.BE.Provider;
+using DFWeb.FR.Models;
 
 namespace DarkFactorCoreNet.Pages
 {

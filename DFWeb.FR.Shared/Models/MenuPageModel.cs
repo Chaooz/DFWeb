@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using DFWeb.BE.Models;
 using DFWeb.BE.Provider;
 
-namespace DarkFactorCoreNet.Pages
+namespace DFWeb.FR.Models
 {
     public class MenuPageModel : PageModel
     {

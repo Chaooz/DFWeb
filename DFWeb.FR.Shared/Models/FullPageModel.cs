@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using DFWeb.BE.Models;
 using DFWeb.BE.Provider;
 
-namespace DarkFactorCoreNet.Pages
+namespace DFWeb.FR.Models
 {
     public class FullPageModel : BasePageModel
     {

@@ -14,5 +14,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DFWeb.BE\DFWeb.BE.csproj" />
+    <ProjectReference Include="..\DFWeb.FR.Shared\DFWeb.FR.Shared.csproj" />
   </ItemGroup>
 </Project>
