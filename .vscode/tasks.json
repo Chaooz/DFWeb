@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/DarkFactorWeb/DarkFactorCoreNet.csproj",
+                "${workspaceFolder}/DFWeb.FR.BootStrap/DFWeb.FR.BootStrap.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -20,7 +20,7 @@
             "args": [
                 "build",
                 "--no-incremental",
-                "${workspaceFolder}/DarkFactorWeb/DarkFactorCoreNet.csproj",
+                "${workspaceFolder}/DFWeb.FR.BootStrap/DFWeb.FR.BootStrap.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -32,7 +32,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/DarkFactorWeb/DarkFactorCoreNet.csproj",
+                "${workspaceFolder}/DFWeb.FR.BootStrap/DFWeb.FR.BootStrap.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -45,7 +45,7 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/DarkFactorWeb/DarkFactorCoreNet.csproj",
+                "${workspaceFolder}/DFWeb.FR.BootStrap/DFWeb.FR.BootStrap.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

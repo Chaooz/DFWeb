@@ -5,14 +5,14 @@
    "version": "0.2.0",
    "configurations": [
         {
-            "name": "DFWeb Launch",
+            "name": "DFWeb BootStrap Launch",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "rebuild",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/DarkFactorWeb/bin/Debug/net7.0/DarkFactorCoreNet.dll",
+            "program": "${workspaceFolder}/DFWeb.FR.BootStrap/bin/Debug/net7.0/DFWeb.FR.BootStrap.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/DarkFactorWeb",
+            "cwd": "${workspaceFolder}/DFWeb.FR.BootStrap",
             "stopAtEntry": false,
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {
@@ -23,7 +23,7 @@
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
             "sourceFileMap": {
-                "/Views": "${workspaceFolder}/DarkFactorWeb/Views"
+                "/Views": "${workspaceFolder}/DFWeb.FR.BootStrap/Views"
             }
         },
         {
