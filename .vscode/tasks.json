@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build_bootstrap",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -14,7 +14,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "rebuild",
+            "label": "rebuild_bootstrap",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -27,7 +27,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish",
+            "label": "publish_bootstrap",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -39,7 +39,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "watch",
+            "label": "watch_bootstrap",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -50,6 +50,18 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build_tailwind",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/DFWeb.FR.Tailwind/DFWeb.FR.Tailwind.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
         }
-    ]
+   ]
 }

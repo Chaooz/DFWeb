@@ -1,0 +1,43 @@
+@using DFWeb.BE.Models
+@model List<TeaserPageContentModel>
+
+@{
+    string FormatTags(string tags)
+    {
+        tags = tags.ToUpper();
+        tags = tags.Replace(" ", " | ");
+        tags = tags.Replace("_", " ");
+        return tags;
+    }
+}
+
+@* 
+Hide Article Section list on the right side if we are on a medium or smaller screen
+<div class="d-lg-none">hide on screens wider than lg</div>
+<div class="d-none d-lg-block">hide on screens smaller than lg</div> 
+*@
+
+<div class="col-lg-4 d-none d-lg-block">
+
+@foreach (var relPage in Model)
+{
+    <div class="article" style="padding-bottom:10px">
+
+        @if (relPage.ImageId != 0)
+        {
+            <center><a href="/page?id=@relPage.PageId"><img width=100% height=100% src="/api/Image/GetImage?imageId=@relPage.ImageId" class="imagefit"></a></center>
+            <br />
+        }
+
+        <div style="margin:10px">
+            @if (relPage.Tags != null)
+            {
+                <B>@FormatTags(relPage.Tags)</B><BR>
+            }
+            <H3><a href="/page?id=@relPage.PageId" class="article_title">@relPage.ContentTitle</a></H3>
+            <B>@relPage.LastUpdated</B><BR>
+            <p class="article_promo">@relPage.PromoText</p> <br />
+        </div>
+    </div>
+}
+</div>
