@@ -11,32 +11,18 @@
     }
 }
 
-<div class = "article_featured">
-    @if (Model.ImageId != 0)
-    {
-        <div class="row" id="mainFeaturedBlock">
-            <div class="col-md-6">
-                <H1><a href="/page?id=@Model.PageId" class="article_title">@Model.ContentTitle</a></H1>
-                <B>@Model.LastUpdated | @FormatTags(Model.Tags)</B><BR>
-                <p class="article_promo">@Model.PromoText</p> <br />
-            </div>
-            <div class="col-md-6">
-                <a href="/page?id=@Model.PageId"><img width=100% height=100% src="/api/Image/GetImage?imageId=@Model.ImageId" class="imagefit" style="display:flex"></a>
-            </div>
+<div class="max-w-lg mx-auto bg-slate-100 rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+    <div class="md:flex">
+        @if (Model.ImageId != 0)
+        {
+        <div class="md:shrink-0">
+            <img class="w-48 h-full object-cover md:h-full md:w-48" src="/api/Image/GetImage?imageId=@Model.ImageId" alt="Modern building architecture">
         </div>
-
-        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
-            <div class="md:flex">
-                <div class="md:shrink-0">
-                <img class="h-48 w-full object-cover md:h-full md:w-48" src="/api/Image/GetImage?imageId=@Model.ImageId" alt="Modern building architecture">
-                </div>
-                <div class="p-8">
-                <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">@Model.ContentTitle</div>
-                <a href="#" class="block mt-1 text-lg leading-tight font-medium text-black hover:underline">@Model.LastUpdated | @FormatTags(Model.Tags)</a>
-                <p class="mt-2 text-slate-500">@Model.PromoText</p>
-                </div>
-            </div>
+        }
+        <div class="p-2">
+            <div class="uppercase tracking-wide text-sm text-black font-semibold">@Model.ContentTitle</div>
+            <a href="#" class="block mt-1 text-lg leading-tight font-medium text-black">@Model.LastUpdated | @FormatTags(Model.Tags)</a>
+            <p class="mt-2 text-slate-500">@Model.PromoText</p>
         </div>
-
-    }
+    </div>
 </div>
