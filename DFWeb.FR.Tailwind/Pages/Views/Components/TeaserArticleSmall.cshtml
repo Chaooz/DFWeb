@@ -11,18 +11,18 @@
     }
 }
 
-<div class="max-w-md mx-auto bg-slate-50 rounded-xl shadow-md overflow-hidden md:max-w-1xl">
+<div class="tw-max-w-sm tw-mx-auto tw-bg-slate-50 tw-rounded-xl tw-shadow-md tw-overflow-hidden">
     <div>
         @if (Model.ImageId != 0)
         {
         <div>
-            <img class="w-full h-48 object-cover" src="/api/Image/GetImage?imageId=@Model.ImageId" alt="Modern building architecture">
+             <a href="/page?id=@Model.PageId"><img class="tw-w-full tw-h-48 tw-object-cover" src="/api/Image/GetImage?imageId=@Model.ImageId" alt="ImageText"></a>
         </div>
         }
-        <div class="p-2">
-            <div class="uppercase tracking-wide text-sm text-black font-semibold">@Model.ContentTitle</div>
-            <a href="#" class="block mt-1 text-lg leading-tight font-medium text-black">@Model.LastUpdated | @FormatTags(Model.Tags)</a>
-            <p class="mt-2 text-slate-500">@Model.PromoText</p>
+        <div class="tw-p-4">
+            <div class="tw-uppercase tw-tracking-wide tw-text-sm tw-text-black tw-font-semibold">@Model.ContentTitle</div>
+            <a href="#" class="tw-block tw-mt-1 tw-text-lg tw-leading-tight tw-font-medium tw-text-black">@Model.LastUpdated | @FormatTags(Model.Tags)</a>
+            <p class="tw-mt-2 tw-text-slate-500">@Model.PromoText</p>
         </div>
     </div>
 </div>

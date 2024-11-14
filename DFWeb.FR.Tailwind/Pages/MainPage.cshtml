@@ -7,27 +7,18 @@
 
 <!-- https://getbootstrap.com/docs/4.0/layout/grid/ -->
 
-<div>
-    <div class="row" id="menu">
-        <div class="col-md-12">
+
+<div class="tw-relative tw-w-full tw-flex-none">
+    <div class="tw-w-full" id="menu" >
             @await Html.PartialAsync("Views/TopElements/TopMenu.cshtml", Model)
-        </div>
-    </div>
-    <div class="row" id="navigation">
-        <div class="col-md-12">
-            @await Html.PartialAsync("Views/TopElements/TopNavigation.cshtml", Model)
-        </div>
     </div>
 
-    <div class="row" id="mainblock">
+    <div  id="mainblock" class="tw-mx-auto lg:tw-grid tw-grid-flow-row tw-grid-cols-3 tw-gap-2">
+    <div  id="articleblock" class="tw-col-span-2 tw-max-w-5xl tw-mx-auto lg:tw-grid tw-grid-flow-row tw-grid-cols-2 tw-gap-2">
 
-        <div class="col-lg-8">
-        <div class="row" id="mainLeftblock" >
         @foreach (var relPage in Model.mainPageItems.Take(1))
         {
-            <div class="col-sm-12 mb-4">
-                @await Html.PartialAsync("Views/Components/TeaserArticleMedium.cshtml", relPage)
-            </div>
+            @await Html.PartialAsync("Views/Components/TeaserArticleMedium.cshtml", relPage)
         }
         @* Show remaining articles:
             - Small screen: 2 articles on page (sm-6)
@@ -35,16 +26,16 @@
         *@
         @foreach (var relPage in Model.mainPageItems.Skip(1))
         {
-            <div class="col-sm-6 mb-4">
-                @await Html.PartialAsync("Views/Components/TeaserArticleSmall.cshtml", relPage)
-            </div>
+            @await Html.PartialAsync("Views/Components/TeaserArticleSmall.cshtml", relPage)
         }
-        </div>
-        </div>
+    </div>
+
+    <div  id="relatedblock" >
 
         @* Display related articles on the side ( in full desktop screen view ) *@
         @await Html.PartialAsync("Views/Components/RelatedArticleSmall.cshtml", Model.relatedPages)
 
+    </div>
     </div>
 
 </div>
