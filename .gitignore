@@ -9,7 +9,7 @@
 
 # Ignore Tailwind generated classes
 **/node_modules
-tailwind_output.css
+# tailwind_output.css
 package.json
 package-lock.json
 
