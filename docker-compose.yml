@@ -37,7 +37,7 @@ services:
     build:
       network: host
       context: ./
-      dockerfile: ./DarkFactorWeb/Dockerfile
+      dockerfile: ./DFWeb.FR.Tailwind/Dockerfile
       args:
         username: ${NUGET_USERNAME}
         token: ${NUGET_TOKEN}
