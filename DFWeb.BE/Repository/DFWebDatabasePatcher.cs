@@ -62,8 +62,9 @@ namespace DFWeb.BE.Repository
             );
 
             _dbPatcher.Patch(PATCHER,6, "CREATE TABLE `tags` ("
-                + "`id` int(11) NOT NULL AUTO_INCREMENT"
-                + "`tag` varchar(50) NOT NULL DEFAULT ''"
+                + "`id` int(11) NOT NULL AUTO_INCREMENT, "
+                + "`tag` varchar(50) NOT NULL DEFAULT '', "
+                + "PRIMARY KEY (`id`)"
                 + ")"
             );
 
