@@ -36,20 +36,51 @@ namespace DFWeb.BE.Repository
             + ")"
             );
 
-            // Last_Updated
-            _dbPatcher.Patch(PATCHER,4, "ALTER TABLE `content` "
-            + " ADD `last_updated` datetime " 
+            _dbPatcher.Patch(PATCHER,4, "CREATE TABLE `content` ("
+            + "`id` int(11) NOT NULL AUTO_INCREMENT,"
+            + "`parentid` int(11) NOT NULL DEFAULT 0,"
+            + "`content_title` varchar(50) NOT NULL DEFAULT '',"
+            + "`sort` int(11) NOT NULL DEFAULT 0,"
+            + "`promo_title` text DEFAULT NULL,"
+            + "`promo_text` text DEFAULT NULL,"
+            + "`content_text` text DEFAULT NULL,"
+            + "`imageId` int(11) NOT NULL,"
+            + "`published` int(11) NOT NULL DEFAULT 0,"
+            + "`externurl` varchar(255) DEFAULT NULL,"
+            + "`last_updated` datetime DEFAULT NULL,"
+            + "`tags` varchar(100) NOT NULL DEFAULT '',"
+            + "`related_tags` varchar(100) NOT NULL DEFAULT '',"
+            + "`main_page` int(11) NOT NULL DEFAULT 0,"
+            + "PRIMARY KEY (`id`)"
+            + ")"
             );
 
-            // Last_Updated
-            _dbPatcher.Patch(PATCHER,5, "ALTER TABLE `content` "
-            + " ADD `tags` varchar(100) NOT NULL DEFAULT '', " 
-            + " ADD `related_tags` varchar(100) NOT NULL DEFAULT '' " 
+            _dbPatcher.Patch(PATCHER,5, "CREATE TABLE `contenttags` ("
+                + "`contentid` int(11) NOT NULL,"
+                + "`tagid` int(11) NOT NULL"
+                + ")"
             );
 
-            // Main page
-            _dbPatcher.Patch(PATCHER,6, "ALTER TABLE `content` "
-            + " ADD `main_page` int(11) NOT NULL DEFAULT 0 " 
+            _dbPatcher.Patch(PATCHER,6, "CREATE TABLE `tags` ("
+                + "`id` int(11) NOT NULL AUTO_INCREMENT"
+                + "`tag` varchar(50) NOT NULL DEFAULT ''"
+                + ")"
+            );
+
+            _dbPatcher.Patch(PATCHER,7, "CREATE TABLE `relatedtags` ("
+                + "`contentid` int(11) NOT NULL,"
+                + "`tagid` int(11) NOT NULL"
+                + ")"
+            );
+
+            _dbPatcher.Patch(PATCHER,8, "CREATE TABLE `images` ("
+                + "`id` int(11) NOT NULL AUTO_INCREMENT,"
+                + "`pageid` varchar(50) NOT NULL DEFAULT '',"
+                + "`filename` varchar(255) NOT NULL DEFAULT '',"
+                + "`data` mediumblob DEFAULT NULL,"
+                + "`uploadeddate` datetime DEFAULT NULL,"
+                + "PRIMARY KEY (`id`)"
+                + ")"
             );
 
             return _dbPatcher.Successful();
