@@ -77,7 +77,6 @@ jobs:
       CONFIG_SETTINGS: ${{ inputs.config_settings }}
       CONFIG_ENCRYPTIONKEY: ${{ secrets.CONFIG_ENCRYPTIONKEY }}
       CONFIG_TEMPLATE_PATH: "DFWeb.FR.BootStrap/Config"
-      CONFIG_FILE: appsettings.${{ env.ASPNETCORE_ENVIRONMENT }}.json
 
     steps:
 
@@ -85,6 +84,8 @@ jobs:
       uses: actions/checkout@v6
 
     - name: Read config template into CONFIG_TEMPLATE 
+      env:
+        CONFIG_FILE: appsettings.${{ env.ASPNETCORE_ENVIRONMENT }}.json
       run: |
         if [ ! -f "${{ env.CONFIG_TEMPLATE_PATH }}/${{ env.CONFIG_FILE }}" ]; then
           echo "Config template file does not exist: ${{ env.CONFIG_TEMPLATE_PATH }}/${{ env.CONFIG_FILE }}"
@@ -112,6 +113,7 @@ jobs:
 
     - name: Generate config file from template
       env:
+        CONFIG_FILE: appsettings.${{ env.ASPNETCORE_ENVIRONMENT }}.json
         CONFIG_SETTINGS: ${{ inputs.config_settings }}
         DATABASE_SSLMODE: ${{ vars.DATABASE_SSLMODE }}
         DATABASE_SERVER: ${{ vars.DATABASE_SERVER }}
