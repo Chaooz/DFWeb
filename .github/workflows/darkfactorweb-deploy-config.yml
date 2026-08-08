@@ -42,20 +42,10 @@ on:
         options:
           - staging
           - production
-      config_settings:
-        description: 'Optional flags: accountserver,bugreportweb'
-        required: false
-        default: ''
-        type: string
-      debug:
-        description: 'Print config diagnostics'
-        required: false
-        default: false
-        type: boolean
 
   push:
     paths:
-      - .github/workflows/darkfactorweb-config.yml
+      - .github/workflows/darkfactorweb-deploy-config.yml
 
 jobs:
 
@@ -73,15 +63,28 @@ jobs:
 
     env:
       ASPNETCORE_ENVIRONMENT: ${{ inputs.environment == 'production' && 'production' || 'staging' }}
-      CONFIG_TEMPLATE: ${{ vars.CONFIG }}
       CONFIG_PATH: "/home/darkfactor/dfweb-config"
-      CONFIG_SETTINGS: ${{ inputs.config_settings }}
+      CONFIG_SETTINGS: "accountserver,bugreportweb"
       CONFIG_ENCRYPTIONKEY: ${{ secrets.CONFIG_ENCRYPTIONKEY }}
+      CONFIG_TEMPLATE_PATH: "DFWeb.FR.BootStrap/Config"
 
     steps:
 
-#    - name: Checkout repository
-#      uses: actions/checkout@v4      
+    - name: Checkout repository
+      uses: actions/checkout@v6
+
+    - name: Read config template into CONFIG_TEMPLATE 
+      env:
+        CONFIG_FILE: appsettings.${{ env.ASPNETCORE_ENVIRONMENT }}.json
+      run: |
+        if [ ! -f "${{ env.CONFIG_TEMPLATE_PATH }}/${{ env.CONFIG_FILE }}" ]; then
+          echo "Config template file does not exist: ${{ env.CONFIG_TEMPLATE_PATH }}/${{ env.CONFIG_FILE }}"
+          exit 1
+        fi
+        export CONFIG_TEMPLATE=$(cat "${{ env.CONFIG_TEMPLATE_PATH }}/${{ env.CONFIG_FILE }}")
+        echo "CONFIG_TEMPLATE<<EOF" >> $GITHUB_ENV
+        echo "$CONFIG_TEMPLATE" >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
 
     - name: Verify Config template
       run: |
@@ -91,7 +94,6 @@ jobs:
         fi
 
     - name: Verify DB secrets
-      if: ${{ !contains(inputs.config_settings, 'skipdbcheck') }}  
       run: |
         if [ -z "${{ vars.DATABASE_SERVER }}" ] || [ -z "${{ vars.DATABASE_PORT }}" ] || [ -z "${{ secrets.DATABASE_USERNAME }}" ] || [ -z "${{ secrets.DATABASE_PASSWORD }}" ]; then
           echo "Database settings are not set. Please check the secrets."
@@ -101,14 +103,14 @@ jobs:
     - name: Generate config file from template
       env:
         CONFIG_FILE: appsettings.${{ env.ASPNETCORE_ENVIRONMENT }}.json
-        CONFIG_SETTINGS: ${{ inputs.config_settings }}
+        CONFIG_SETTINGS: ${{ env.CONFIG_SETTINGS }}
         DATABASE_SSLMODE: ${{ vars.DATABASE_SSLMODE }}
         DATABASE_SERVER: ${{ vars.DATABASE_SERVER }}
         DATABASE_PORT: ${{ vars.DATABASE_PORT }}
         DATABASE_NAME: ${{ vars.DATABASE_NAME }}
         DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
         DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-        ACCOUNTSERVER_URL: ${{ secrets.ACCOUNTSERVER_URL }}
+        ACCOUNTSERVER_URL: ${{ vars.ACCOUNTSERVER_URL }}
         ACCOUNTSERVER_CLIENTID: ${{ secrets.ACCOUNTSERVER_CLIENTID }}
         ACCOUNTSERVER_CLIENTSECRET: ${{ secrets.ACCOUNTSERVER_CLIENTSECRET }}
         ACCOUNTSERVER_SCOPE: ${{ vars.ACCOUNTSERVER_SCOPE }}
@@ -125,12 +127,6 @@ jobs:
         template = os.environ.get("CONFIG_TEMPLATE", "")
         if not template.strip():
             print("CONFIG template is empty. Set repository/environment variable 'CONFIG'.", file=sys.stderr)
-
-        db_server = os.environ.get("DATABASE_SERVER", "").strip()
-        try:
-            ipaddress.ip_address(db_server)
-        except ValueError:
-          print(f"Warning: DATABASE_SERVER is missing or not an IP address: {db_server!r}", file=sys.stderr)
 
         config_settings = os.environ.get("CONFIG_SETTINGS", "")
         result = template
@@ -204,38 +200,3 @@ jobs:
         print(f"Wrote config file: {output_path}")
         PY
 
-    - name: Debug generated config
-      if: ${{ inputs.debug }}
-      run: |
-        python3 - <<'PY'
-        import ipaddress
-        import json
-        import os
-        import pathlib
-        import re
-        import sys
-
-        output_path = pathlib.Path(os.environ["CONFIG_PATH"]) / os.environ["CONFIG_FILE"]
-        text = output_path.read_text(encoding="utf-8")
-        data = json.loads(text)
-        db_server = data.get("DatabaseConnection", {}).get("Server", "")
-        try:
-            ipaddress.ip_address(db_server)
-            ip_ok = True
-        except ValueError:
-            ip_ok = False
-
-        # Redact sensitive fields before printing preview.
-        preview = re.sub(r'("Password"\s*:\s*")[^"]*(")', r'\1***\2', text)
-        preview = re.sub(r'("ClientSecret"\s*:\s*")[^"]*(")', r'\1***\2', preview)
-
-        print(f"Generated file: {output_path}")
-        print(f"DatabaseConnection.Server: {db_server}")
-        print(f"DatabaseConnection.Server is IP: {ip_ok}")
-        print("Preview (redacted):")
-        print(preview)
-
-        if not ip_ok:
-            print("DatabaseConnection.Server is not an IP address.", file=sys.stderr)
-            sys.exit(1)
-        PY

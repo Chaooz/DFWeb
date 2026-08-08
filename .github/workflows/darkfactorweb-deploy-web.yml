@@ -54,6 +54,7 @@ jobs:
       environment: staging
       external_port: 8500
       project_name: "DFWeb.FR.BootStrap"
+      app_name: "DFWeb.Staging"
       image_name: ${{ needs.build-docker-image.outputs.docker_image_name }}
       config_path: "~/dfweb-config/"
     secrets: inherit
@@ -78,6 +79,7 @@ jobs:
       environment: production
       external_port: 9500
       project_name: "DFWeb.FR.BootStrap"
+      app_name: "DFWeb.Production"
       image_name: ${{ needs.build-docker-image.outputs.docker_image_name }}
       config_path: "~/dfweb-config/"
     secrets: inherit
