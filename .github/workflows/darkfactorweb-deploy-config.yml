@@ -73,15 +73,27 @@ jobs:
 
     env:
       ASPNETCORE_ENVIRONMENT: ${{ inputs.environment == 'production' && 'production' || 'staging' }}
-      CONFIG_TEMPLATE: ${{ vars.CONFIG }}
       CONFIG_PATH: "/home/darkfactor/dfweb-config"
       CONFIG_SETTINGS: ${{ inputs.config_settings }}
       CONFIG_ENCRYPTIONKEY: ${{ secrets.CONFIG_ENCRYPTIONKEY }}
+      CONFIG_TEMPLATE_PATH: "DFWeb.FR.BootStrap/Config"
+      CONFIG_FILE: appsettings.${{ env.ASPNETCORE_ENVIRONMENT }}.json
 
     steps:
 
-#    - name: Checkout repository
-#      uses: actions/checkout@v4      
+    - name: Checkout repository
+      - uses: actions/checkout@v6
+
+    - name: Read config template into CONFIG_TEMPLATE 
+      run: |
+        if [ ! -f "${{ env.CONFIG_TEMPLATE_PATH }}/${{ env.CONFIG_FILE }}" ]; then
+          echo "Config template file does not exist: ${{ env.CONFIG_TEMPLATE_PATH }}/${{ env.CONFIG_FILE }}"
+          exit 1
+        fi
+        export CONFIG_TEMPLATE=$(cat "${{ env.CONFIG_TEMPLATE_PATH }}/${{ env.CONFIG_FILE }}")
+        echo "CONFIG_TEMPLATE<<EOF" >> $GITHUB_ENV
+        echo "$CONFIG_TEMPLATE" >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
 
     - name: Verify Config template
       run: |
@@ -100,7 +112,6 @@ jobs:
 
     - name: Generate config file from template
       env:
-        CONFIG_FILE: appsettings.${{ env.ASPNETCORE_ENVIRONMENT }}.json
         CONFIG_SETTINGS: ${{ inputs.config_settings }}
         DATABASE_SSLMODE: ${{ vars.DATABASE_SSLMODE }}
         DATABASE_SERVER: ${{ vars.DATABASE_SERVER }}
@@ -108,7 +119,7 @@ jobs:
         DATABASE_NAME: ${{ vars.DATABASE_NAME }}
         DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
         DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-        ACCOUNTSERVER_URL: ${{ secrets.ACCOUNTSERVER_URL }}
+        ACCOUNTSERVER_URL: ${{ vars.ACCOUNTSERVER_URL }}
         ACCOUNTSERVER_CLIENTID: ${{ secrets.ACCOUNTSERVER_CLIENTID }}
         ACCOUNTSERVER_CLIENTSECRET: ${{ secrets.ACCOUNTSERVER_CLIENTSECRET }}
         ACCOUNTSERVER_SCOPE: ${{ vars.ACCOUNTSERVER_SCOPE }}
