@@ -59,7 +59,7 @@ contributors working in this repository.
 
 ## Git Workflow Requirements
 
-- All skills are located in the folder AGENTS/skills
+- All skills are located in the folder .agents/skills
 - At the start of every new session, create and switch to a new Git branch
   before making changes.
 - Use a descriptive branch name that reflects the session scope (for example:

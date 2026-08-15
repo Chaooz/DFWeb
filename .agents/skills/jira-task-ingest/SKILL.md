@@ -58,8 +58,8 @@ GH_SECRET_JIRA_API_TOKEN
 
 ## Quick Commands
 ```bash
-./.github/skills/jira-task-ingest/scripts/fetch-jira-issue.sh JIRA-123 jira.json
-./.github/skills/jira-task-ingest/scripts/jira-json-to-agent-todos.sh jira.json agent-todos.json
+./.agents/skills/jira-task-ingest/scripts/fetch-jira-issue.sh JIRA-123 jira.json
+./.agents/skills/jira-task-ingest/scripts/jira-json-to-agent-todos.sh jira.json agent-todos.json
 ```
 
 ## Output Contract

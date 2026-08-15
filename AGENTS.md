@@ -4,7 +4,7 @@ toolRestrictions: []
 
 # Project Agent Configuration: DarkFactor Web
 
-The common instructions are in AGENTS/agent-common.md
+The common instructions are in .agents/AGENTS.md
 
 ## Goals for this app
 
