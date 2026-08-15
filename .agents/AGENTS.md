@@ -3,22 +3,18 @@ toolRestrictions: []
 maxParallelToolCalls: 20
 ---
 
-# Project Agent Configuration: DarkFactor Web
+# Common instructions
 
 ## Purpose
 
-This agent.md file defines the agent's role, coding standards, and conventions
-for the DarkFactor webproject. It serves as a guide for automated agents and
+This agent-common.md file defines the agent's role, coding standards, and conventions
+for the DarkFactor projects. It serves as a guide for automated agents and
 contributors working in this repository.
 
 ## Goals for this app
 
-- This app is a front-end and back-end for the website used to display
-  articles and news from the DarkFactor gaming company.
-- All data received from the client is done through the controllers.
 - The instructions should be comprehensive and clear, guiding GitHub Copilot
   to best practices for all developers.
-- The gameserver requires authentication for most of its API functions
 - Instructions should be adaptable to different repositories, scenarios, and
   user needs.
 - You have the flexibility to adjust the content based on the repository in
@@ -46,7 +42,6 @@ contributors working in this repository.
 - All configuration files are in the config folder.
 - Controllers, Providers, and Repositories are separated by folder.
 - Use tasks defined in tasks.json for build and run operations.
-- Automated tests are in DFWeb.FR.Tests and DFWeb.BE.Tests
 
 ## Build & Run
 
@@ -64,6 +59,7 @@ contributors working in this repository.
 
 ## Git Workflow Requirements
 
+- All skills are located in the folder .agents/skills
 - At the start of every new session, create and switch to a new Git branch
   before making changes.
 - Use a descriptive branch name that reflects the session scope (for example:
@@ -76,10 +72,6 @@ contributors working in this repository.
 - Continue committing incrementally after each resolved action rather than
   batching multiple completed actions into a single commit.
 - Before opening a pull request, make sure all unit tests pass and Docker containers build and run successfully.
-
-## Related Repositories
-
-- [DFCommonLib](https://github.com/DarkFactorAS/DFCommonLib.git)
 
 ## Contact
 
