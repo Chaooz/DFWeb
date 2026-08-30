@@ -39,7 +39,8 @@ DarkFactor gaming company articles and news.
 - Add or update focused tests for changed behavior; run the applicable test
   project before finishing.
 - Update documentation and configuration when a change affects either.
-- Skills are located in `.agents/skills`.
+- Shared task workflows are supplied by the `.agents` agent-kit dependency.
+  Keep project-specific instructions in this file, not in that dependency.
 - Create branches and commits only when the user explicitly requests them or
   when repository automation requires them. Before a pull request, run the
   applicable unit tests and validate Docker containers when Docker behavior is
