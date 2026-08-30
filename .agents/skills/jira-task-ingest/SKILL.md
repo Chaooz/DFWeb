@@ -71,7 +71,7 @@ GH_SECRET_JIRA_API_TOKEN
 ./.agents/skills/jira-task-ingest/scripts/jira-json-to-agent-todos.sh jira.json agent-todos.json
 ```
 
-The scripts require a Bash-compatible shell and `jq`. On Windows, run them
+The scripts require a Bash-compatible shell, `curl`, and `jq`. On Windows, run them
 from Git Bash or WSL; use PowerShell only to set the environment variables.
 
 ## Output Contract
