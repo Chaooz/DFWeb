@@ -29,6 +29,14 @@ export JIRA_EMAIL="your-email@company.com"
 export JIRA_API_TOKEN="your-api-token"
 ```
 
+In PowerShell on Windows:
+
+```powershell
+$env:JIRA_BASE_URL = "https://your-company.atlassian.net"
+$env:JIRA_EMAIL = "your-email@company.com"
+$env:JIRA_API_TOKEN = "your-api-token"
+```
+
 If this skill runs from cloud (for example GitHub Actions or Codespaces), it also supports GitHub secret-style environment variable names as fallbacks when `JIRA_*` is not present:
 
 ```bash
@@ -48,7 +56,8 @@ GH_SECRET_JIRA_API_TOKEN
 ## Procedure
 1. Resolve credentials from `JIRA_*` variables, or from cloud secret fallbacks when running in cloud.
 2. Fetch the Jira issue JSON with [fetch-jira-issue.sh](./scripts/fetch-jira-issue.sh).
-3. Create a new branch for the Jira issue, for example `jira/JIRA-123`.
+3. Create a new branch for the Jira issue only when the user requests it or
+   repository automation requires it, for example `jira/JIRA-123`.
 4. Extract implementation signals from the payload:
    - Summary, description, acceptance criteria, links, subtasks
    - Priority, status, labels, components
@@ -61,6 +70,9 @@ GH_SECRET_JIRA_API_TOKEN
 ./.agents/skills/jira-task-ingest/scripts/fetch-jira-issue.sh JIRA-123 jira.json
 ./.agents/skills/jira-task-ingest/scripts/jira-json-to-agent-todos.sh jira.json agent-todos.json
 ```
+
+The scripts require a Bash-compatible shell and `jq`. On Windows, run them
+from Git Bash or WSL; use PowerShell only to set the environment variables.
 
 ## Output Contract
 Produce:
